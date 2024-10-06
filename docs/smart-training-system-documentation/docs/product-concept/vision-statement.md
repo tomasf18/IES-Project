@@ -1,0 +1,50 @@
+---
+id: vision-statement
+title: Vision Statement
+sidebar_label: Vision Statement
+sidebar_position: 1
+---
+
+# Vision Statement
+
+**Smart Training System (STS)** is a web-based application designed to support **coaches**, **team directors**, **personal trainers**, and **players** in real-time monitoring and analysis of player performance. It addresses the need for immediate access to crucial metrics such as:
+
+- **Fatigue Levels**
+- **Heart Rate**
+- **Performance Indicators** (e.g., ball possession, shots on target)
+
+By providing these insights, the platform enhances decision-making during training sessions and matches, allowing coaches to optimize player performance and strategies effectively.
+
+## Problem Statement
+
+The primary problem that the system solves is the **lack of accessible real-time performance data**, which limits coaches' and trainers' ability to make informed adjustments. Key features designed to address this include:
+
+- **User Access Management** for team directors
+- **Performance Statistics** for coaches
+- **Historical Tracking** for players
+
+These features focus on delivering targeted functionality that meets the specific needs of each user role.
+
+## Project Focus
+
+Initially, the project considered broader features catering to **football fans**, providing comprehensive information about the Premier League. However, the focus has shifted to prioritize the needs of **coaches**, **team directors**, and **personal trainers**. This refined approach ensures that the system effectively supports their decision-making processes while maintaining **data security** and **confidentiality**.
+
+## Differentiation
+
+The **STS platform** differentiates itself by emphasizing:
+
+- **Real-Time Data Collection**: Immediate feedback and adjustments
+- **User-Friendly Interfaces**: Tailored for coaches, team directors, personal trainers, and players
+
+This focus sets STS apart from existing solutions that primarily rely on post-game analysis, enabling proactive performance management.
+
+## Development Insights
+
+The project concept emerged from **team collaboration** and **insights from professors**, ensuring relevance to practical needs. **User stories** outlining features like:
+
+- **Permission Management**
+- **Real-Time Performance Tracking**
+- **Injury Alerts**
+
+directed the development of a system that effectively meets user requirements.
+
