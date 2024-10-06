@@ -2,7 +2,6 @@
 id: github-workflow
 title: GitHub Workflow
 sidebar_label: GitHub Workflow
-sidebar_position: 7
 ---
 
 # GitHub Workflow
@@ -14,29 +13,34 @@ This document outlines the branch naming conventions, issue naming conventions, 
 To maintain a well-organized repository, we follow the following branch naming conventions:
 
 ### Feature Branch
-`/feature/<feature_name>`  
+`feature/<feature_name>`  
 - **Purpose**: Used for developing new features or functionality.
-- **Example**: `/feature/user-authentication`
+- **Example**: `feature/user-authentication`
 
 ### Bugfix Branch
-`/bugfix/<bug_name>`  
+`bugfix/<bug_name>`  
 - **Purpose**: Used for fixing bugs or issues identified in the code.
-- **Example**: `/bugfix/login-error`
+- **Example**: `bugfix/login-error`
 
 ### Hotfix Branch
-`/hotfix/<critical_bug_name>`  
+`hotfix/<critical_bug_name>`  
 - **Purpose**: Reserved for critical fixes, often in production environments.
-- **Example**: `/hotfix/critical-login-failure`
+- **Example**: `hotfix/critical-login-failure`
 
 ### Experimental Branch
-`/experiment/<experiment_name>`  
+`experiment/<experiment_name>`  
 - **Purpose**: Used for testing new ideas, experimental features, or concepts.
-- **Example**: `/experiment/new-algorithm`
+- **Example**: `experiment/new-algorithm`
 
 ### Documentation Branch
-`/docs/<section>`  
+`docs/<section>`  
 - **Purpose**: Used exclusively for updating project documentation.
-- **Example**: `/docs/architecture-section`
+- **Example**: `docs/architecture-section`
+
+### Release Branch
+`release/<version_number>`  
+- **Purpose**: Used to prepare a specific version of the project for release.
+- **Example**: `release/v1.0.0`
 
 ---
 
@@ -76,5 +80,4 @@ This format helps maintain a clean and understandable commit history.
 ---
 
 By following these conventions, the project remains organized, making collaboration more efficient and ensuring that the repository is easy to navigate for all contributors.
-
 
