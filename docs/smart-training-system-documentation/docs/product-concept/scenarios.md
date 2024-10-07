@@ -39,3 +39,20 @@ Before an upcoming match against a strong opponent, Carlos wants to revisit past
 
 **Underlined Actions**: _accesses previous match statistics_; _identifies patterns_; _develops a new strategy_; _keeps insights confidential_.
 
+Here’s how you can write these scenarios using the same notation:
+
+## Scenario 6: David Assigns Permissions to a Team Director
+
+David receives notification that a new team director, João, has been hired and needs access to the Smart Training System. He logs into the administrative dashboard and navigates to the user management section. David creates a new user account for João and assigns him the role of Team Director, carefully configuring the permissions to allow João to autonomously manage the access levels of his team members without accessing sensitive system settings.
+
+**Underlined Actions**: _logs into the administrative dashboard_; _navigates to the user management section_; _creates a new user account_; _assigns the Team Director role_; _configures permissions_.
+
+
+## Scenario 7: David Checks System Status
+
+As part of his daily routine, David logs into the Smart Training System's admin dashboard to ensure everything is running smoothly. He checks the system status and sees that all services are operational without any issues. After verifying that there are no alerts or warnings, David logs out, confident that the system is performing as expected.
+
+**Underlined Actions**: _logs into the admin dashboard_; _checks the system status_; _verifies no alerts_; _logs out_.
+
+
+
