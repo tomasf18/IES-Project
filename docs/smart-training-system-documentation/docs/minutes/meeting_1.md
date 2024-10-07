@@ -45,7 +45,7 @@ sidebar_label: Meeting 1 - October 3, 2024
   - 3) Writing the Docusaurus Documentation
 
 - **Tomás** will:
-  - 1) Install and setup Docusaurus
+  - 1) Install and Docusaurus setup
   - 2) Prepare Docusaurus tools documentation for team members
   - 3) Backlog management system set up: issues creation
 
