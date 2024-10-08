@@ -13,6 +13,7 @@ The design and development of the **Smart Training System** were supported by se
 - A secondary Persona, **Ricardo**, a Personal Trainer (Box 2)
 - A served Persona, **Miguel**, a football player (Box 3)
 - An administrative Persona, **João**, the Team Director (Box 4)
+- An administrative Persona, **David**, the System Administrator (Box 5)
 
 ## Box 1. Primary Persona: Carlos, the Football Team Coach
 
@@ -53,4 +54,14 @@ He often feels that he doesn't have access to enough data about his performance 
 He is responsible for managing user access levels within the club's systems. João wants to ensure that sensitive information is only accessible to authorized personnel and that new players are onboarded smoothly.
 
 **MOTIVATION**: João seeks an efficient way to manage user permissions, add or remove team members, and ensure that everyone has appropriate access to the resources they need.
+
+## Box 5. Administrative Persona: David, the System Administrator
+
+![David, the System Administrator](/img/admin.png) <!-- Replace with actual image path -->
+
+**David** is a 40-year-old system administrator who has been managing IT infrastructure for sports organizations for the past 10 years. He is highly skilled in system security, network management, and ensuring the smooth operation of software platforms. In his free time, David enjoys photography and participates in online security forums to stay updated on the latest trends in cybersecurity.
+
+David is responsible for overseeing the Smart Training System's backend, including assigning permissions, monitoring performance, and ensuring that the system meets the club's security and operational needs. He regularly checks activity logs and security alerts to prevent any vulnerabilities from compromising the system.
+
+**MOTIVATION**: David aims to ensure the Smart Training System operates efficiently, that security protocols are enforced, and that the system settings are optimized to align with the club’s evolving needs.
 
