@@ -10,32 +10,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Real-Time Data Monitoring',
+    Svg: require('@site/static/img/undraw_fitness_stats_sht6.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Track player statistics like heart rate, fatigue levels, and performance metrics in real-time, providing actionable insights during training and matches.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Role-Based Access Control',
+    Svg: require('@site/static/img/undraw_team_spirit_re_yl1v.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Manage permissions efficiently with role-based access for coaches, team directors, personal trainers, and players, ensuring secure and organized data access.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'In-Game Metrics Analysis',
+    Svg: require('@site/static/img/undraw_all_the_data_re_hh4w.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Monitor in-game metrics like ball possession and shots on target, allowing coaches to make data-driven decisions for real-time tactical adjustments.
       </>
     ),
   },
