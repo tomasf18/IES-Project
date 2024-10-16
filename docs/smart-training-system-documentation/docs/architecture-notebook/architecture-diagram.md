@@ -8,7 +8,7 @@ sidebar_label: Architectural Diagram
 
 Below is a high-level diagram illustrating the system architecture of the **Smart Training System**, showing how the various components and technologies are integrated to form a cohesive and scalable platform.
 
-![System Architecture Diagram](/img/architecture.0.0.1.svg) <!-- Replace with the actual image path -->
+![System Architecture Diagram](/img/architecture.0.1.0.svg)
 
 This architecture represents a modern, scalable web application using a microservices approach and Data-driven design. The architecture is divided into multiple layers to ensure modularity, scalability, and maintainability: 
 
