@@ -38,21 +38,20 @@ sidebar_label: Meeting 4 - October 17, 2024
   - Define the REST API (endpoints, etc.).
   - Create the API documentation.
 
-- **Pedro** will:
-  - Architecture:
-        - Break down broader components (see diagram) into more specific explanations for the project.
-        - Make the interaction between models in report
-        - Specify each service, for example:
-            - A service that manages all player data, adding and removing players.
-            - Include a PlayerService to handle player-specific data.
-            - Include a StatsService for handling player statistics.
-            - Include a LiveService for managing live data during games.
-            - Consider whether the service managing past statistics should also handle current ones. If they are separated, will this lead to redundant code?
-            - Break the system into microservices. If a service is removed from the project, it should be functional as a standalone component in another project.
-            - Etc.
+- **Pedro** will:       
+    - Break down broader components (see diagram) into more specific explanations for the project.  
+    - Make the interaction between models in report  
+    - Specify each service, for example:  
+        - A service that manages all player data, adding and removing players.  
+        - Include a PlayerService to handle player-specific data.  
+        - Include a StatsService for handling player statistics.  
+        - Include a LiveService for managing live data during games.  
+        - Consider whether the service managing past statistics should also handle current ones. If they are separated, will this lead to redundant code?  
+        - Break the system into microservices. If a service is removed from the project, it should be functional as a standalone component in another project.  
+        - Etc.  
 
-  - Define the REST API (endpoints, etc.).
-  - Create the API documentation.
+  - Define the REST API (endpoints, etc.).  
+  - Create the API documentation.  
 
 - **João** : 
   - Add acceptance criteria to the user stories(GitHub).
