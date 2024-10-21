@@ -23,16 +23,16 @@ sidebar_label: Meeting <no> - <Month> <day>, <year>
 
 ## Action Items
 - **Danilo** is responsible for: 
-  - 1) 
+  -  
 
 - **Pedro** will:
-  - 1) 
+  - 
 
 - **João** : 
-  - 1) 
+  - 
 
 - **Tomás** will: 
-  - 1) 
+  - 
 
 ## Next Steps
 - 
