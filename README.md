@@ -21,6 +21,9 @@ This system aims to empower coaches with actionable insights, enabling them to m
 
 - https://github.com/detiuaveiro/ies-24-25-group-project-201
 
+**Mockup**
+
+- https://www.figma.com/design/BzGZhhuvqFLRJjauDoeD33/STS---Smart-Training-System-Prototype?node-id=320-2988&node-type=canvas&t=4w5HPUCX1WpmwqUH-0
 
 
 
