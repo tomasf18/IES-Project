@@ -8,6 +8,8 @@ sidebar_label: Tech Stack
 
 This section provides an overview of the technologies used in the **Smart Training System** and their purposes within the project. The architecture leverages modern technologies to ensure scalability, flexibility, and efficiency in handling real-time data and user interactions.
 
+![System Architecture Diagram](/img/architecture.0.2.0.svg)
+
 ## Technology Stack and Purpose
 
 ### Nginx
@@ -15,14 +17,15 @@ This section provides an overview of the technologies used in the **Smart Traini
   - SSL/TLS certificates (e.g., via certbot for certificate management)
   - Load Balancing
   - Caching
+  - Authentication
 
 ### Spring (Spring Boot)
 - **Purpose**: API & Business Logic Layer
-  - Integration with Databases
+  - Integration with Databases (JPA)
   - Message Handling
-  - Integration with RabbitMQ
+  - Integration with Kafka (Consumer)
 
-### RabbitMQ
+### Kafka
 - **Purpose**: Asynchronous Task Processing
   - Message Brokering
   - Event-Driven Architecture
@@ -44,5 +47,9 @@ This section provides an overview of the technologies used in the **Smart Traini
   - Efficient Resource Management
 
 
-
+### EK Stack (Elasticsearch, Kibana)
+- **Purpose**: Monitoring & Logging (Administrator)
+  - Real-time Monitoring
+  - Endpoints Analysis
+  - Sensor Data Analysis
 

@@ -11,15 +11,15 @@ There are several key requirements and constraints that significantly impact the
 
 ## Real-Time Data Ingestion and Processing
 
-The system will handle real-time data streams from physical sensors (IoT devices) and external data sources (e.g., competition data). This requires the architecture to support high-throughput message processing with minimal latency. To address this, RabbitMQ is used to manage and distribute tasks asynchronously, allowing the backend to process large volumes of data without bottlenecks. 
+The system will handle real-time data streams from physical sensors (IoT devices) and external data sources (e.g., competition data). This requires the architecture to support high-throughput message processing with minimal latency. To address this, Kafka is used to manage and distribute tasks asynchronously, allowing the backend to process large volumes of data without bottlenecks. 
 
 **Key Constraint**: The architecture must handle spikes in data streams and manage processing effectively under conditions where large amounts of sensor data are ingested continuously. 
 
 ## Multiple Platforms and User Interfaces
 
-The system will be accessed from various platforms, including web browsers, mobile devices (in the future), and potentially large screens for data visualization (e.g., real-time dashboards or performance monitoring). The chosen frontend technologies (React, Tailwind CSS) ensure responsive and cross-platform compatibility, making the system accessible from different user devices. 
+The system will be accessed from various platforms, including web browsers, mobile devices, and potentially large screens for data visualization (e.g., real-time dashboards or performance monitoring). The chosen frontend technologies (React Native, Tailwind CSS) ensure responsive and cross-platform compatibility, making the system accessible from different user devices. 
 
-**Key Requirement**: The system must maintain a consistent and optimized user experience across different platforms (desktop, mobile (in future), large screen displays). 
+**Key Requirement**: The system must maintain a consistent and optimized user experience across different platforms (desktop, mobile, large screen displays). 
 
 ## Data Storage and Scalability
 
@@ -41,13 +41,13 @@ The system will interact with potentially sensitive data, such as user profiles 
 
 ## Modular and Maintainable Architecture
 
-The architecture must be designed for long-term maintenance and future expansion. With the use of Spring Boot and Docker, the system can be containerized, making it easier to deploy updates, isolate components, and manage dependencies. This also ensures that individual services (e.g., RabbitMQ, databases) can be scaled or replaced without disrupting the entire system. 
+The architecture must be designed for long-term maintenance and future expansion. With the use of Spring Boot and Docker, the system can be containerized, making it easier to deploy updates, isolate components, and manage dependencies. This also ensures that individual services (e.g., Kafka, databases) can be scaled or replaced without disrupting the entire system. 
 
 **Key Requirement**: The architecture must be modular to allow for the independent deployment of services, minimizing downtime and allowing for the evolution of the system over time. 
 
 ## Performance Monitoring and Logging
 
-As the system will run in a production environment, it is essential to monitor performance and logs in real-time. The ELK Stack (Elasticsearch, Logstash, Kibana) must be integrated to provide real-time monitoring, log aggregation, and troubleshooting. This enables the development team to track performance metrics and quickly resolve any issues that arise in production. 
+As the system will run in a production environment, it is essential to monitor performance and logs in real-time. The EK Stack (Elasticsearch, Kibana) must be integrated to provide real-time monitoring, and troubleshooting. This enables the development team to track performance metrics and quickly resolve any issues that arise in production. 
 
 **Key Requirement**: The system must provide robust monitoring and logging capabilities, enabling the team to keep track of system health, detect anomalies, and address performance bottlenecks. 
 
