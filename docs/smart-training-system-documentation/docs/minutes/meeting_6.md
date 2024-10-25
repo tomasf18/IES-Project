@@ -42,7 +42,7 @@ sidebar_label: Meeting 6 - October 25, 2024
 - **Tomás** is responsable for: 
   - 1) Containerizing the backend services with Docker to streamline deployment.
   - 2) Reviewing and verifying the Swagger documentation to create the API documentation.
-  -  Assisting with frontend development after the Docker setup is complete.
+  - 3) Assisting with frontend development after the Docker setup is complete.
 
 
 ## Next Steps
