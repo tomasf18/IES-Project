@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Smart Training System Documentation',
   tagline: 'From Data to Dominance: Enhance Every Game!',
-  favicon: 'img/soccer.ico',
+  favicon: 'img/logo_icon.png',
   url: 'https://smart-training-system-docs.com',
   baseUrl: '/',
 
@@ -48,7 +48,7 @@ const config: Config = {
       title: 'STS Docs',
       logo: {
         alt: 'My Site Logo',
-        src: 'img/soccer.ico',
+        src: 'img/logo.png',
       },
       items: [
         {

@@ -35,11 +35,9 @@ João receives a notification that a new player has joined the team. He logs int
 
 ## Scenario 5: Carlos Analyzes Past Match Data
 
-Before an upcoming match against a strong opponent, Carlos wants to revisit past games. He accesses previous match statistics, focusing on ball possession and pass accuracy. Carlos identifies patterns that could be improved and develops a new strategy. He keeps these insights confidential within the system to maintain a competitive edge.
+Before an upcoming match against a strong opponent, Carlos wants to revisit past games. He accesses previous match statistics, focusing on players' physical and performance data. Carlos identifies patterns that could be improved and develops a new strategy. He keeps these insights confidential within the system to maintain a competitive edge.
 
 **Underlined Actions**: _accesses previous match statistics_; _identifies patterns_; _develops a new strategy_; _keeps insights confidential_.
-
-Here’s how you can write these scenarios using the same notation:
 
 ## Scenario 6: David Assigns Permissions to a Team Director
 
