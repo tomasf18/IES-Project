@@ -1,4 +1,4 @@
-package ies.lab.quotes.quotes.entities;
+package sts.backend.core_app.models.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
