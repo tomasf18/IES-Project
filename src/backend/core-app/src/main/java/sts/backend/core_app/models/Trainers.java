@@ -54,4 +54,13 @@ public class Trainers {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    @Override
+    public String toString() {
+        return "Trainers{" +
+                "trainerId=" + trainerId +
+                ", user=" + user +
+                ", team=" + team +
+                '}';
+    }
 }

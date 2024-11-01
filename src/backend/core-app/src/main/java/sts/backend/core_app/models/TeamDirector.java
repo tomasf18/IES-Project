@@ -55,6 +55,14 @@ public class TeamDirector {
         this.team = team;
     }
     
+    @Override
+    public String toString() {
+        return "TeamDirector{" +
+                "directorId=" + directorId +
+                ", user=" + user +
+                ", team=" + team +
+                '}';
+    }
 
     
 }
