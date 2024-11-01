@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_all_the_data_re_hh4w.svg').default,
     description: (
       <>
-        Monitor in-game metrics like ball possession and shots on target, allowing coaches to make data-driven decisions for real-time tactical adjustments.
+        Monitor in-game metrics like heart rate, body temperature and respiratory rate, allowing coaches to make data-driven decisions for real-time tactical adjustments.
       </>
     ),
   },

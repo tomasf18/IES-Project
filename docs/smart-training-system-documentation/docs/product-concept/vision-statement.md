@@ -11,7 +11,6 @@ sidebar_position: 1
 
 - **Fatigue Levels**
 - **Heart Rate**
-- **Performance Indicators** (e.g., ball possession, shots on target)
 
 By providing these insights, the platform enhances decision-making during training sessions and matches, allowing coaches to optimize player performance and strategies effectively.
 
