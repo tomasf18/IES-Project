@@ -16,6 +16,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
+    @NotBlank(message = "User: name is mandatory")
+    @Size(max = 50, message = "User: name must be at most 50 characters")
+    private String name;
+
     @NotBlank(message = "User: username is mandatory")
     @Size(max = 50, message = "User: username must be at most 50 characters")
     @Column(unique=true)
@@ -34,14 +38,19 @@ public class User {
     @Size(max = 255, message = "User: profilePictureUrl must be at most 255 characters")
     private String profilePictureUrl;
 
+    @NotBlank(message = "User: userTypeId is mandatory")
+    private Long userTypeId;
+
     // standard constructors / setters / getters / toString
     public User() {}
 
-    public User(String username, String email, String password, String profilePictureUrl) {
+    public User(String name, String username, String email, String password, String profilePictureUrl, Long userTypeId) {
+        this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
         this.profilePictureUrl = profilePictureUrl;
+        this.userTypeId = userTypeId;
     }
 
     public Long getUserId() {
@@ -50,6 +59,14 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -84,13 +101,23 @@ public class User {
         this.profilePictureUrl = profilePictureUrl;
     }
 
+    public Long getUserTypeId() {
+        return userTypeId;
+    }
+
+    public void setUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                ", userTypeId=" + userTypeId +
                 '}';
     }
     
