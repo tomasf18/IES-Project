@@ -5,7 +5,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity(name = "matches")
 public class Match {
@@ -20,7 +19,7 @@ public class Match {
     @Size(max = 50, message = "Match: match type must be at most 50 characters")
     private String type;
 
-    @Size(max = 50, message = "Match: match location must be at most 50 characters")
+    @Size(max = 100, message = "Match: match location must be at most 100 characters")
     private String location;
 
     @Size(max = 50, message = "Match: match weather must be at most 50 characters")
