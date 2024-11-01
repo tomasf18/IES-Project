@@ -9,11 +9,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity(name = "trainers")
-public class TeamDirector {
+public class Trainers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long directorId;
+    private Long trainerId;
 
     @OneToOne
     @JoinColumn(name = "userId", nullable = false)
@@ -24,19 +24,19 @@ public class TeamDirector {
     private Team team;
 
     // standard constructors / setters / getters / toString
-    public TeamDirector() {}
+    public Trainers() {}
 
-    public TeamDirector(User user, Team team) {
+    public Trainers(User user, Team team) {
         this.user = user;
-        this.team = team;  
+        this.team = team;
     }
 
-    public Long getDirectorId() {
-        return directorId;
+    public Long getTrainerId() {
+        return trainerId;
     }
 
-    public void setDirectorId(Long directorId) {
-        this.directorId = directorId;
+    public void setTrainerId(Long trainerId) {
+        this.trainerId = trainerId;
     }
 
     public User getUser() {
@@ -54,15 +54,13 @@ public class TeamDirector {
     public void setTeam(Team team) {
         this.team = team;
     }
-    
+
     @Override
     public String toString() {
-        return "TeamDirector{" +
-                "directorId=" + directorId +
+        return "Trainers{" +
+                "trainerId=" + trainerId +
                 ", user=" + user +
                 ", team=" + team +
                 '}';
     }
-
-    
 }
