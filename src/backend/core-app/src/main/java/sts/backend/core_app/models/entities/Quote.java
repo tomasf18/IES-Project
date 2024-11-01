@@ -15,7 +15,7 @@ public class Quote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long    id;
+    private long  id;
 
     @NotBlank(message = "Quote is mandatory")
     private String quote;
