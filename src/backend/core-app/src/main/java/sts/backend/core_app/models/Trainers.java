@@ -12,6 +12,9 @@ public class Trainers {
     @JoinColumn(name = "teamId", nullable = false)
     private Team team;
 
+    // standard constructors / setters / getters / toString
+    public Trainers() {}
+
     public Trainers(User user, Team team) {
         this.user = user;
         this.team = team;
