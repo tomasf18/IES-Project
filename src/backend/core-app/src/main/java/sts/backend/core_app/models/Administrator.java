@@ -1,9 +1,9 @@
 package sts.backend.core_app.models;
 
-public class Admin {
+public class Administrator {
     private String name;
 
-    public Admin(String name) {
+    public Administrator(String name) {
         this.name = name;
     }
 }
