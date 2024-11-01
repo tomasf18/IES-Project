@@ -1,5 +1,7 @@
 package sts.backend.core_app.models;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +20,9 @@ public class Session {
     private Long sessionId;
 
     @NotBlank(message = "Session: start time is mandatory")
-    private String startTime;
+    private LocalDate startTime;
 
-    private String endTime;
+    private LocalDate endTime;
 
     @ManyToOne
     @JoinColumn(name = "trainerId", nullable = false)
