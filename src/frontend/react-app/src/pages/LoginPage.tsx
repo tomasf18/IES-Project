@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Image from "../assets/login_signup.png";
+import { LoginSignUpImage } from "../assets";
 import { LoginForms } from "../components";
 
 export default function LoginPage() {
@@ -7,7 +7,7 @@ export default function LoginPage() {
     <div className="flex h-screen">
       {/* Left side with image */}
       <div className="flex-none h-full w-auto hidden xl:block">
-        <img src={Image} alt="Login" className="h-full object-cover" />
+        <img src={LoginSignUpImage} alt="Login" className="h-full object-cover" />
       </div>
       {/* Right side with form */}
       <div className="flex-grow flex flex-col items-start justify-center px-8 bg-gray-100">
