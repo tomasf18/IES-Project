@@ -1,5 +1,7 @@
 package sts.backend.core_app.models;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Entity(name = "sessions")
 public class Session {
@@ -18,9 +19,9 @@ public class Session {
     private Long sessionId;
 
     @NotBlank(message = "Session: start time is mandatory")
-    private String startTime;
+    private LocalDate startTime;
 
-    private String endTime;
+    private LocalDate endTime;
 
     @ManyToOne
     @JoinColumn(name = "trainerId", nullable = false)
@@ -33,7 +34,7 @@ public class Session {
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(String startTime, String endTime, Trainer player, Match match) {
+    public Session(LocalDate startTime, LocalDate endTime, Trainer player, Match match) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.player = player;
@@ -48,19 +49,19 @@ public class Session {
         this.sessionId = sessionId;
     }
 
-    public String getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public String getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 
@@ -78,6 +79,17 @@ public class Session {
 
     public void setMatch(Match match) {
         this.match = match;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "sessionId=" + sessionId +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", player=" + player +
+                ", match=" + match +
+                '}';
     }
 
 }
