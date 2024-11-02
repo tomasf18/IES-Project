@@ -65,7 +65,7 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getTeamById(teamId);
     }
 
-    public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) {
+    public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException {
         return relationalQueries.getSessionsInfoByTeam(team);
     }
 

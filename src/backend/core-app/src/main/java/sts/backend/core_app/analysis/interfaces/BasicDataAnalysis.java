@@ -27,6 +27,6 @@ public interface BasicDataAnalysis {
     public Team getTeamById(Long teamId) throws ResourceNotFoundException;
     
     // --- Get methods ---
-    public Set<SessionInfoView> getSessionsInfoByTeamId(Team team);
+    public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
 }
