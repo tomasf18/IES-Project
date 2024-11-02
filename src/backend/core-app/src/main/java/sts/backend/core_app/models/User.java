@@ -5,11 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     
     @Id
@@ -38,19 +41,15 @@ public class User {
     @Size(max = 255, message = "User: profilePictureUrl must be at most 255 characters")
     private String profilePictureUrl;
 
-    @NotBlank(message = "User: userTypeId is mandatory")
-    private Long userTypeId;
-
     // standard constructors / setters / getters / toString
     public User() {}
 
-    public User(String name, String username, String email, String password, String profilePictureUrl, Long userTypeId) {
+    public User(String name, String username, String email, String password, String profilePictureUrl) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
         this.profilePictureUrl = profilePictureUrl;
-        this.userTypeId = userTypeId;
     }
 
     public Long getUserId() {
@@ -101,14 +100,6 @@ public class User {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    public Long getUserTypeId() {
-        return userTypeId;
-    }
-
-    public void setUserTypeId(Long userTypeId) {
-        this.userTypeId = userTypeId;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -117,7 +108,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
-                ", userTypeId=" + userTypeId +
                 '}';
     }
     
