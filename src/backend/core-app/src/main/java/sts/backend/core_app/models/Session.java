@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity(name = "sessions")
 public class Session {
@@ -18,24 +19,29 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sessionId;
 
+    @NotBlank(message = "Session: name is mandatory")
+    @Size(max = 50, message = "Session: name must be at most 50 characters")
+    private String name;
+
     @NotBlank(message = "Session: start time is mandatory")
     private LocalDate startTime;
 
     private LocalDate endTime;
 
     @ManyToOne
-    @JoinColumn(name = "trainerId", nullable = false)
+    @JoinColumn(name = "TRAINER_FK", nullable = false)
     private Trainer trainer;
 
     @OneToOne
-    @JoinColumn(name = "matchId", nullable = true)
+    @JoinColumn(name = "MATCH_FK", nullable = true)
     private Match match;
 
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(LocalDate startTime, LocalDate endTime, Trainer trainer, Match match) {
+    public Session(LocalDate startTime, String name, LocalDate endTime, Trainer trainer, Match match) {
         this.startTime = startTime;
+        this.name = name;
         this.endTime = endTime;
         this.trainer = trainer;
         this.match = match;
@@ -47,6 +53,14 @@ public class Session {
 
     public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getStartTime() {

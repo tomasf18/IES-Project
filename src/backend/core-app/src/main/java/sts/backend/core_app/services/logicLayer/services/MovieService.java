@@ -1,20 +1,20 @@
-package ies.lab.quotes.quotes.services;
+// package ies.lab.quotes.quotes.services;
 
-import java.util.Set;
+// import java.util.Set;
 
-import ies.lab.quotes.quotes.entities.Movie;
-import ies.lab.quotes.quotes.exceptions.ResourceNotFoundException;
+// import ies.lab.quotes.quotes.entities.Movie;
+// import ies.lab.quotes.quotes.exceptions.ResourceNotFoundException;
 
-public interface MovieService {
+// public interface MovieService {
 
-    Movie createMovie(Movie movie);
+//     Movie createMovie(Movie movie);
     
-    Movie updateMovie(Movie movie);
+//     Movie updateMovie(Movie movie);
     
-    void deleteMovie(Long movieId);
+//     void deleteMovie(Long movieId);
     
-    Movie getMovieById(Long movieId) throws ResourceNotFoundException;
+//     Movie getMovieById(Long movieId) throws ResourceNotFoundException;
     
-    Set<Movie> getAllMovies();
+//     Set<Movie> getAllMovies();
 
-}
+// }

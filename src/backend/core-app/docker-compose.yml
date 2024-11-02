@@ -11,13 +11,13 @@ services:
       - "${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}"
     restart: always
 
-  quotes:
+  core-app:
     depends_on: 
       - postgres
     build: .
     env_file: ./.env
     ports:
-      - "${QUOTES_LOCAL_PORT}:${QUOTES_DOCKER_PORT}"
+      - "${CORE_APP_LOCAL_PORT}:${CORE_APP_DOCKER_PORT}"
     environment:
       SPRING_APPLICATION_JSON: >-
         {

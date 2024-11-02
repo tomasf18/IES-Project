@@ -19,12 +19,12 @@ public class Player {
 
     @OneToOne
     @NotBlank(message = "Player: user is mandatory")
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "USER_FK")
     private User user;
 
     @ManyToOne
     @NotBlank(message = "Player: team is mandatory")
-    @JoinColumn(name = "teamId")
+    @JoinColumn(name = "TEAM_FK")
     private Team team;
     
     @Column(unique=true)

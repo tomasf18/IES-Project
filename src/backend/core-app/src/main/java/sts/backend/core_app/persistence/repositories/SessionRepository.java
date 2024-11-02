@@ -3,13 +3,34 @@ package sts.backend.core_app.persistence.repositories;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import sts.backend.core_app.models.Session;
+import sts.backend.core_app.models.Team;
 import sts.backend.core_app.dto.SessionInfoView;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
-    Set<SessionInfoView> findByTrainer_TeamId(Long teamId);
+    @Query("""
+            SELECT  s.id AS sessionId, 
+                    s.startTime as startTime,
+                    (
+                        SELECT COUNT(ps)
+                        FROM playerSessions ps
+                        WHERE ps.session = s
+                    ) As numParticipants,
+                    CASE
+                        WHEN s.endTime IS NULL THEN 'Open'
+                        ELSE 'Closed'
+                    END AS state,
+                    s.match as match
+            FROM sessions s
+            JOIN s.trainer t
+            JOIN t.team team
+            WHERE t.team = :team
+            """)
+    Set<SessionInfoView> findSessionInfoByTeam(@Param("team") Team team);
 }
     

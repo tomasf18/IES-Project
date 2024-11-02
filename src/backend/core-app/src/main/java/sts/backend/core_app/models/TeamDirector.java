@@ -8,7 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
-@Entity(name = "trainers")
+@Entity(name = "teamDirectors")
 public class TeamDirector {
 
     @Id
@@ -16,11 +16,11 @@ public class TeamDirector {
     private Long directorId;
 
     @OneToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "USER_FK", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "teamId", nullable = false)
+    @JoinColumn(name = "TEAM_FK", nullable = false)
     private Team team;
 
     // standard constructors / setters / getters / toString

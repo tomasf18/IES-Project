@@ -17,9 +17,9 @@ import sts.backend.core_app.services.logicLayer.SessionService;
 
 @RestController
 @RequestMapping("/api/v1")
-public class SessionController {
+public class UserController {
     
-    private final SessionService sessionService;
+    private final UserService userService;
 
     public SessionController(SessionService sessionService) {
         this.sessionService = sessionService;
