@@ -1,4 +1,4 @@
-package sts.backend.core_app.persistence;
+package sts.backend.core_app.persistence.interfaces;
 
 import java.util.Set;
 

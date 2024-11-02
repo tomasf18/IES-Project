@@ -1,10 +1,10 @@
-package sts.backend.core_app.persistence.interfaces;
+package sts.backend.core_app.persistence;
 
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.persistence.RelationalQueries;
+import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.persistence.repositories.MatchRepository;
 import sts.backend.core_app.persistence.repositories.PlayerRepository;
 import sts.backend.core_app.persistence.repositories.PlayerSessionRepository;
