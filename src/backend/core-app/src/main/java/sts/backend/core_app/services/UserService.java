@@ -2,12 +2,18 @@ package sts.backend.core_app.services;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Service;
+
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.analysis.BasicDataAnalysisImpl;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.TeamDirector;
+import sts.backend.core_app.models.Trainer;
 
+@Service
 public class UserService {
     
     private final TeamService teamService;
@@ -18,7 +24,7 @@ public class UserService {
         this.basicDataAnalysis = basicDataAnalysis;
     }
 
-    public void signUp(UserSignUp userSignUp) throws ResourceNotFoundException {
+    public User createUser(UserSignUp userSignUp) throws ResourceNotFoundException {
         RegistrationCode code = teamService.getRegistrationCode(userSignUp.getCode()); // if not found: ResourceNotFoundException
         
         if (code.isUsed()) {
@@ -29,28 +35,48 @@ public class UserService {
         }
 
         // create user
-        User user = new User();
-        user.setName(code.getName());
-        user.setUsername(userSignUp.getUsername());
-        user.setEmail(userSignUp.getEmail());
-        user.setPassword(userSignUp.getPassword());
-        user.setProfilePictureUrl(code.getProfilePictureUrl());
-        user.setUserTypeId(code.getUserTypeId());
-
-        basicDataAnalysis.createUser(user);
-
-        // create type of user
-
+        User user;
+        
         if (code.getUserTypeId() == 1) {
             // create player
+            user = new Player();
+            ((Player) user).setTeam(code.getTeam());
+            ((Player) user).setActiveSensorId(null);
+
         } else if (code.getUserTypeId() == 2) {
-            // create trainer
+            // create team director
+            user = new TeamDirector();
+            ((TeamDirector) user).setTeam(code.getTeam());
+
         } else if (code.getUserTypeId() == 3) {
-            // create manager
+            // create trainer
+            user = new Trainer();
+            ((Trainer) user).setTeam(code.getTeam());
+
         } else {
             throw new ResourceNotFoundException("User type not found");
         }
+        
+        user.setName(code.getName());
+        user.setProfilePictureUrl(code.getProfilePictureUrl());
+        user.setUsername(userSignUp.getUsername());
+        user.setEmail(userSignUp.getEmail());
+        user.setPassword(userSignUp.getPassword());
 
+        if (code.getUserTypeId() == 1) {
+            // create player
+            return basicDataAnalysis.createPlayer((Player) user);
+
+        } else if (code.getUserTypeId() == 2) {
+            // create team director
+            return basicDataAnalysis.createTeamDirector((TeamDirector) user);
+
+        } else if (code.getUserTypeId() == 3) {
+            // create trainer
+            return basicDataAnalysis.createTrainer((Trainer) user);
+        }
+        
+        return null;
     }
 
 }

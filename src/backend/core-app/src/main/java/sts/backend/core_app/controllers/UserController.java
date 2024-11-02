@@ -1,19 +1,14 @@
 package sts.backend.core_app.controllers;
 
-import java.util.Set;
-
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import sts.backend.core_app.dto.SessionInfoView;
-import sts.backend.core_app.dto.SessionRequest;
+import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
-import sts.backend.core_app.models.Session;
-import sts.backend.core_app.services.SessionService;
+import sts.backend.core_app.models.User;
+import sts.backend.core_app.services.UserService;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -21,18 +16,13 @@ public class UserController {
     
     private final UserService userService;
 
-    public SessionController(SessionService sessionService) {
-        this.sessionService = sessionService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/sessions")
-    public Set<SessionInfoView> api_list_sessions(@RequestParam(value="team", required=true) Long teamId) throws ResourceNotFoundException {
-        return sessionService.getSessionsInfoByTeamId(teamId);
-    }
-
-    @PostMapping("/sessions")
-    public Session api_create_session(@RequestBody SessionRequest sessionRequest) throws ResourceNotFoundException {
-        return sessionService.createSession(sessionRequest);
+    @PostMapping("/users")
+    public User api_create_user(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
+        return userService.createUser(userSignUp);
     }
 
 }

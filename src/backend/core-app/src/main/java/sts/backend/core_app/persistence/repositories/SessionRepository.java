@@ -25,7 +25,7 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
                         WHEN s.endTime IS NULL THEN 'Open'
                         ELSE 'Closed'
                     END AS state,
-                    s.match as match
+                    (s.opponentTeam IS NOT NULL) AS isMatch
             FROM sessions s
             JOIN s.trainer t
             JOIN t.team team

@@ -34,7 +34,6 @@ public class SessionService {
         session.setStartTime(LocalDate.now());
         session.setEndTime(null);
         session.setTrainer(basicDataAnalysis.getTrainerById(sessionRequest.getTrainerId()));
-        session.setMatch(null);
         return basicDataAnalysis.createSession(session);
     }
 
@@ -45,14 +44,12 @@ public class SessionService {
         match.setLocation(matchRequest.getLocation());
         match.setWeather(matchRequest.getWeather());
 
-        Session session = new Session();
-        session.setName(matchRequest.getName());
-        session.setStartTime(LocalDate.now());
-        session.setEndTime(null);
-        session.setTrainer(basicDataAnalysis.getTrainerById(matchRequest.getTrainerId()));
-        // only set the match if it is created successfully (in basicDataAnalysis logic layer)
+        match.setName(matchRequest.getName());
+        match.setStartTime(LocalDate.now());
+        match.setEndTime(null);
+        match.setTrainer(basicDataAnalysis.getTrainerById(matchRequest.getTrainerId()));
 
-        return basicDataAnalysis.createMatch(match, session);
+        return basicDataAnalysis.createMatch(match);
     }
 
 }

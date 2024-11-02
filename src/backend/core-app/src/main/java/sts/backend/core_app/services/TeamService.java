@@ -6,10 +6,16 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
 import sts.backend.core_app.analysis.BasicDataAnalysisImpl;
+=======
+import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.dto.TeamCreation;
+>>>>>>> feature/backend/relationalQueries
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Team;
 
 @Service
 public class TeamService {
@@ -18,6 +24,12 @@ public class TeamService {
 
     public TeamService(BasicDataAnalysisImpl basicDataAnalysis) {
         this.basicDataAnalysis = basicDataAnalysis;
+    }
+
+    public Team createTeam(TeamCreation teamCreation) throws ResourceNotFoundException {
+        Team team = new Team();
+        team.setName(teamCreation.getName());
+        return basicDataAnalysis.createTeam(team);
     }
 
     public RegistrationCode generateNewRegistrationCode(TeamMemberRegistration teamMemberRegistration) throws ResourceNotFoundException {
@@ -30,11 +42,11 @@ public class TeamService {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MINUTE, 15); // 15 minutes to expire
         registrationCode.setExpirationTime(LocalDate.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()));
-
+        
         return basicDataAnalysis.createRegistrationCode(registrationCode);
-    } 
-
-    public RegistrationCode getRegistrationCode(String code) {
+    }
+    
+    public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return basicDataAnalysis.getRegistrationCode(code);
     }
 

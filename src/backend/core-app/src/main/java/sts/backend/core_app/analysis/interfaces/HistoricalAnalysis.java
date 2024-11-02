@@ -1,5 +1,5 @@
 package sts.backend.core_app.analysis.interfaces;
 
-public interface HystoricalAnalysis {
+public interface HistoricalAnalysis {
     
 }
