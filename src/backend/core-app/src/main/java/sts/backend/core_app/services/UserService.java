@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.models.User;
-import sts.backend.core_app.analysis.BasicDataAnalysisImpl;
+import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
@@ -17,9 +17,9 @@ import sts.backend.core_app.models.Trainer;
 public class UserService {
     
     private final TeamService teamService;
-    private final BasicDataAnalysisImpl basicDataAnalysis;
+    private final BasicDataAnalysis basicDataAnalysis;
     
-    public UserService(TeamService teamService, BasicDataAnalysisImpl basicDataAnalysis) {
+    public UserService(TeamService teamService, BasicDataAnalysis basicDataAnalysis) {
         this.teamService = teamService;
         this.basicDataAnalysis = basicDataAnalysis;
     }
