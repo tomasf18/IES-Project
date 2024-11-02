@@ -3,7 +3,7 @@ package sts.backend.core_app.services;
 import java.time.LocalDate;
 
 import sts.backend.core_app.models.User;
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.BasicDataAnalysisImpl;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
@@ -11,9 +11,9 @@ import sts.backend.core_app.models.RegistrationCode;
 public class UserService {
     
     private final TeamService teamService;
-    private final BasicDataAnalysis basicDataAnalysis;
+    private final BasicDataAnalysisImpl basicDataAnalysis;
     
-    public UserService(TeamService teamService, BasicDataAnalysis basicDataAnalysis) {
+    public UserService(TeamService teamService, BasicDataAnalysisImpl basicDataAnalysis) {
         this.teamService = teamService;
         this.basicDataAnalysis = basicDataAnalysis;
     }

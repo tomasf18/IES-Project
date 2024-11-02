@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.BasicDataAnalysisImpl;
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
@@ -14,9 +14,9 @@ import sts.backend.core_app.models.RegistrationCode;
 @Service
 public class TeamService {
     
-    private final BasicDataAnalysis basicDataAnalysis;
+    private final BasicDataAnalysisImpl basicDataAnalysis;
 
-    public TeamService(BasicDataAnalysis basicDataAnalysis) {
+    public TeamService(BasicDataAnalysisImpl basicDataAnalysis) {
         this.basicDataAnalysis = basicDataAnalysis;
     }
 

@@ -11,14 +11,14 @@ import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.Trainer;
-import sts.backend.core_app.persistence.RelationalQueries;
+import sts.backend.core_app.persistence.RelationalQueriesImpl;
 
 @Service
-public class BasicDataAnalysis {
+public class BasicDataAnalysisImpl {
     
-    private final RelationalQueries relationalQueries;
+    private final RelationalQueriesImpl relationalQueries;
 
-    public BasicDataAnalysis(RelationalQueries relationalQueries) {
+    public BasicDataAnalysisImpl(RelationalQueriesImpl relationalQueries) {
         this.relationalQueries = relationalQueries;
     }
 
@@ -48,7 +48,7 @@ public class BasicDataAnalysis {
         return relationalQueries.createRegistrationCode(registrationCode);
     }
 
-    public RegistrationCode getRegistrationCode(String code) {
+    public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return relationalQueries.getRegistrationCode(code);
     }
 

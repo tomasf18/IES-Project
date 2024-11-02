@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.BasicDataAnalysisImpl;
 import sts.backend.core_app.dto.MatchRequest;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.dto.SessionRequest;
@@ -17,9 +17,9 @@ import sts.backend.core_app.models.Team;
 @Service
 public class SessionService {
 
-    private final BasicDataAnalysis basicDataAnalysis;
+    private final BasicDataAnalysisImpl basicDataAnalysis;
 
-    public SessionService(BasicDataAnalysis basicDataAnalysis) {
+    public SessionService(BasicDataAnalysisImpl basicDataAnalysis) {
         this.basicDataAnalysis = basicDataAnalysis;
     }
 
