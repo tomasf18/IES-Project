@@ -6,13 +6,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity(name = "sessions")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Session {
     
     @Id
@@ -32,19 +34,14 @@ public class Session {
     @JoinColumn(name = "TRAINER_FK", nullable = false)
     private Trainer trainer;
 
-    @OneToOne
-    @JoinColumn(name = "MATCH_FK", nullable = true)
-    private Match match;
-
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(LocalDate startTime, String name, LocalDate endTime, Trainer trainer, Match match) {
+    public Session(String name, LocalDate startTime, LocalDate endTime, Trainer trainer) {
         this.startTime = startTime;
         this.name = name;
         this.endTime = endTime;
         this.trainer = trainer;
-        this.match = match;
     }
 
     public Long getSessionId() {
@@ -87,14 +84,6 @@ public class Session {
         this.trainer = trainer;
     }
 
-    public Match getMatch() {
-        return match;
-    }
-
-    public void setMatch(Match match) {
-        this.match = match;
-    }
-
     @Override
     public String toString() {
         return "Session{" +
@@ -102,7 +91,6 @@ public class Session {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", trainer=" + trainer +
-                ", match=" + match +
                 '}';
     }
 
