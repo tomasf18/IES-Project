@@ -6,17 +6,24 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity(name = "sessions")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Session {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sessionId;
+
+    @NotBlank(message = "Session: name is mandatory")
+    @Size(max = 50, message = "Session: name must be at most 50 characters")
+    private String name;
 
     @NotBlank(message = "Session: start time is mandatory")
     private LocalDate startTime;
@@ -24,21 +31,17 @@ public class Session {
     private LocalDate endTime;
 
     @ManyToOne
-    @JoinColumn(name = "trainerId", nullable = false)
-    private Trainer player;
-
-    @OneToOne
-    @JoinColumn(name = "matchId", nullable = true)
-    private Match match;
+    @JoinColumn(name = "TRAINER_FK", nullable = false)
+    private Trainer trainer;
 
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(LocalDate startTime, LocalDate endTime, Trainer player, Match match) {
+    public Session(String name, LocalDate startTime, LocalDate endTime, Trainer trainer) {
         this.startTime = startTime;
+        this.name = name;
         this.endTime = endTime;
-        this.player = player;
-        this.match = match;
+        this.trainer = trainer;
     }
 
     public Long getSessionId() {
@@ -47,6 +50,14 @@ public class Session {
 
     public void setSessionId(Long sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getStartTime() {
@@ -65,20 +76,12 @@ public class Session {
         this.endTime = endTime;
     }
 
-    public Trainer getPlayer() {
-        return player;
+    public Trainer getTrainer() {
+        return trainer;
     }
 
-    public void setPlayer(Trainer player) {
-        this.player = player;
-    }
-
-    public Match getMatch() {
-        return match;
-    }
-
-    public void setMatch(Match match) {
-        this.match = match;
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     @Override
@@ -87,8 +90,7 @@ public class Session {
                 "sessionId=" + sessionId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", player=" + player +
-                ", match=" + match +
+                ", trainer=" + trainer +
                 '}';
     }
 

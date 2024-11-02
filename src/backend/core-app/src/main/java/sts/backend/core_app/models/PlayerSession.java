@@ -1,5 +1,6 @@
 package sts.backend.core_app.models;
 
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -8,12 +9,15 @@ import jakarta.persistence.ManyToOne;
 @Entity(name = "playerSessions")
 public class PlayerSession {
     
+    @EmbeddedId
+    private PlayerSessionId id;
+
     @ManyToOne
-    @JoinColumn(name = "playerId", nullable = false)
+    @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
     private Player player;
 
     @ManyToOne
-    @JoinColumn(name = "sessionId", nullable = false)
+    @JoinColumn(name = "SESSION_FK", nullable = false)
     private Session session;
 
     private Long sensorId;

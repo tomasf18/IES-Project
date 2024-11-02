@@ -2,29 +2,16 @@ package sts.backend.core_app.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity(name = "players")
-public class Player {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long playerId;
-
-    @OneToOne
-    @NotBlank(message = "Player: user is mandatory")
-    @JoinColumn(name = "userId")
-    private User user;
+public class Player extends User {
 
     @ManyToOne
     @NotBlank(message = "Player: team is mandatory")
-    @JoinColumn(name = "teamId")
+    @JoinColumn(name = "TEAM_FK")
     private Team team;
     
     @Column(unique=true)
@@ -33,26 +20,10 @@ public class Player {
     // standard constructors / setters / getters / toString
     public Player() {}
 
-    public Player(User user, Team team, Long activeSensorId) {
-        this.user = user;
+    public Player(String name, String username, String email, String password, String profilePictureUrl, Team team, Long activeSensorId) {
+        super(name, username, email, password, profilePictureUrl);
         this.team = team;
         this.activeSensorId = activeSensorId;
-    }
-
-    public Long getPlayerId() {
-        return playerId;
-    }
-
-    public void setPlayerId(Long playerId) {
-        this.playerId = playerId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Team getTeam() {
@@ -74,8 +45,6 @@ public class Player {
     @Override
     public String toString() {
         return "Player{" +
-                "playerId=" + playerId +
-                ", user=" + user +
                 ", team=" + team +
                 ", activeSensorId=" + activeSensorId +
                 '}';

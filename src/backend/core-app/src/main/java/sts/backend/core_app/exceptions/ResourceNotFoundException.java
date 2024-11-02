@@ -1,4 +1,4 @@
-package ies.lab.quotes.quotes.exceptions;
+package sts.backend.core_app.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
