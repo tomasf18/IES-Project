@@ -1,5 +1,9 @@
 package sts.backend.core_app.persistence;
 
+import java.util.Set;
+
+import org.springframework.stereotype.Service;
+
 import sts.backend.core_app.persistence.repositories.MatchRepository;
 import sts.backend.core_app.persistence.repositories.PlayerRepository;
 import sts.backend.core_app.persistence.repositories.PlayerSessionRepository;
@@ -9,6 +13,9 @@ import sts.backend.core_app.persistence.repositories.TeamRepository;
 import sts.backend.core_app.persistence.repositories.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.UserRepository;
 
+import sts.backend.core_app.dto.SessionInfoView;
+
+@Service
 public class RelationalQueries {
     
     private final UserRepository userRepository;
@@ -31,8 +38,8 @@ public class RelationalQueries {
         this.playerSessionRepository = playerSessionRepository;
     }
 
-    public SessionsInfoRecord getSessionsInfoByTeamId(Long teamId) {
-        return sessionRepository.getSessionsInfoByTeamId(teamId);
+    public Set<SessionInfoView> getSessionsInfoByTeamId(Long teamId) {
+        return sessionRepository.findByTrainer_TeamId(teamId);
     }
 
 }
