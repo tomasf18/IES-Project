@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.models.User;
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;

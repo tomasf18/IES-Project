@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.TeamCreation;
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.MatchRequest;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.dto.SessionRequest;
