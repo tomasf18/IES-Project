@@ -25,7 +25,7 @@ public class Session {
 
     @ManyToOne
     @JoinColumn(name = "trainerId", nullable = false)
-    private Trainer player;
+    private Trainer trainer;
 
     @OneToOne
     @JoinColumn(name = "matchId", nullable = true)
@@ -34,10 +34,10 @@ public class Session {
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(LocalDate startTime, LocalDate endTime, Trainer player, Match match) {
+    public Session(LocalDate startTime, LocalDate endTime, Trainer trainer, Match match) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.player = player;
+        this.trainer = trainer;
         this.match = match;
     }
 
@@ -65,12 +65,12 @@ public class Session {
         this.endTime = endTime;
     }
 
-    public Trainer getPlayer() {
-        return player;
+    public Trainer getTrainer() {
+        return trainer;
     }
 
-    public void setPlayer(Trainer player) {
-        this.player = player;
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     public Match getMatch() {
@@ -87,7 +87,7 @@ public class Session {
                 "sessionId=" + sessionId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", player=" + player +
+                ", trainer=" + trainer +
                 ", match=" + match +
                 '}';
     }
