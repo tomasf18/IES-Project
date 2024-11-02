@@ -1,4 +1,4 @@
-package sts.backend.core_app.services.logicLayer;
+package sts.backend.core_app.services;
 
 import java.time.LocalDate;
 

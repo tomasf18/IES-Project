@@ -13,7 +13,7 @@ import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.dto.SessionRequest;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Session;
-import sts.backend.core_app.services.logicLayer.SessionService;
+import sts.backend.core_app.services.SessionService;
 
 @RestController
 @RequestMapping("/api/v1")
