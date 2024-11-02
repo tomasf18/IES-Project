@@ -40,7 +40,7 @@ public class RegistrationCode {
     
     private boolean isUsed = false;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private LocalDate expirationTime;
 
     // standard constructors, getters, setters, etc.

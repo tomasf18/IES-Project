@@ -4,7 +4,7 @@ public class TeamMemberRegistration {
     private Long teamId;
     private String name;
     private String profilePictureUrl;
-    private int userTypeId;
+    private Long userTypeId;
 
     public Long getTeamId() {
         return teamId;
@@ -30,11 +30,11 @@ public class TeamMemberRegistration {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    public int getUserTypeId() {
+    public Long getUserTypeId() {
         return userTypeId;
     }
 
-    public void setUserTypeId(int userTypeId) {
+    public void setUserTypeId(Long userTypeId) {
         this.userTypeId = userTypeId;
     }
 }

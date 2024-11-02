@@ -17,10 +17,15 @@ import sts.backend.core_app.persistence.repositories.UserRepository;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
+import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSession;
+import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
+import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Trainer;
+import sts.backend.core_app.models.User;
 
 @Service
 public class RelationalQueries {
@@ -47,21 +52,49 @@ public class RelationalQueries {
         this.registrationCodeRepository = registrationCodeRepository;
     }
 
-    public Set<SessionInfoView> getSessionsInfoByTeam(Team team) {
-        return sessionRepository.findSessionInfoByTeam(team);
+    // --- Create methods ---
+
+    public User createUser(User user) {
+        return userRepository.save(user);
     }
 
-    public Session createSession(Session result) {
-        return sessionRepository.save(result);
+    public Team createTeam(Team team) {
+        return teamRepository.save(team);
+    }
+
+    public Trainer createTrainer(Trainer trainer) {
+        return trainerRepository.save(trainer);
     }
 
     public Match createMatch(Match match) {
         return matchRepository.save(match);
     }
 
-    public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException {
-        return trainerRepository.findById(trainerId)
-            .orElseThrow(() -> new ResourceNotFoundException("Trainer with ID " + trainerId + " not found"));
+    public Session createSession(Session session) {
+        return sessionRepository.save(session);
+    }
+
+    public RegistrationCode createRegistrationCode(RegistrationCode registrationCode) {
+        return registrationCodeRepository.save(registrationCode);
+    }
+
+    public Player createPlayer(Player player) {
+        return playerRepository.save(player);
+    }
+
+    public TeamDirector createTeamDirector(TeamDirector teamDirector) {
+        return teamDirectorRepository.save(teamDirector);
+    }
+
+    public PlayerSession createPlayerSession(PlayerSession playerSession) {
+        return playerSessionRepository.save(playerSession);
+    }
+
+    // --- Get By ID methods ---
+
+    public User getUserById(Long userId) throws ResourceNotFoundException {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User with ID " + userId + " not found"));
     }
 
     public Team getTeamById(Long teamId) throws ResourceNotFoundException {
@@ -69,8 +102,40 @@ public class RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Team with ID " + teamId + " not found"));
     }
 
-    public RegistrationCode createRegistrationCode(RegistrationCode registrationCode) {
-        return registrationCodeRepository.save(registrationCode);
+    public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException {
+        return trainerRepository.findById(trainerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Trainer with ID " + trainerId + " not found"));
+    }
+
+    public Match getMatchById(Long matchId) throws ResourceNotFoundException {
+        return matchRepository.findById(matchId)
+            .orElseThrow(() -> new ResourceNotFoundException("Match with ID " + matchId + " not found"));
+    }
+
+    public Session getSessionById(Long sessionId) throws ResourceNotFoundException {
+        return sessionRepository.findById(sessionId)
+            .orElseThrow(() -> new ResourceNotFoundException("Session with ID " + sessionId + " not found"));
+    }
+
+    public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
+        return playerRepository.findById(playerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Player with ID " + playerId + " not found"));
+    }
+
+    public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException {
+        return teamDirectorRepository.findById(teamDirectorId)
+            .orElseThrow(() -> new ResourceNotFoundException("TeamDirector with ID " + teamDirectorId + " not found"));
+    }
+
+    public PlayerSession getPlayerSessionById(PlayerSessionId playerSessionId) throws ResourceNotFoundException {
+        return playerSessionRepository.findById(playerSessionId)
+            .orElseThrow(() -> new ResourceNotFoundException("PlayerSession with ID " + playerSessionId + " not found"));
+    }
+
+    // --- Get By other methods ---
+
+    public Set<SessionInfoView> getSessionsInfoByTeam(Team team) {
+        return sessionRepository.findSessionInfoByTeam(team);
     }
 
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
