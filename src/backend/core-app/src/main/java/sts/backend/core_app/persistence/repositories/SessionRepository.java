@@ -1,5 +1,6 @@
 package sts.backend.core_app.persistence.repositories;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -31,6 +32,6 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             JOIN t.team team
             WHERE t.team = :team
             """)
-    Set<SessionInfoView> findSessionInfoByTeam(@Param("team") Team team);
+    Optional<Set<SessionInfoView>> findSessionInfoByTeam(@Param("team") Team team);
 }
     

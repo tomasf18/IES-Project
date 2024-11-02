@@ -14,7 +14,7 @@ import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Trainer;
-import sts.backend.core_app.persistence.RelationalQueriesImpl;
+import sts.backend.core_app.persistence.interfaces.RelationalQueriesImpl;
 
 @Service
 public class BasicDataAnalysisImpl implements BasicDataAnalysis{
