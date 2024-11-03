@@ -1,12 +1,11 @@
 package sts.backend.core_app.services;
 
-import java.time.LocalDate;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.BasicDataAnalysis;
+import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.TeamCreation;
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -15,7 +14,8 @@ import sts.backend.core_app.models.Team;
 
 @Service
 public class TeamService {
-    
+    public static final int REGISTRATION_CODE_EXPIRATION_MINUTES = 15;
+
     private final BasicDataAnalysis basicDataAnalysis;
 
     public TeamService(BasicDataAnalysis basicDataAnalysis) {
@@ -31,19 +31,33 @@ public class TeamService {
     public RegistrationCode generateNewRegistrationCode(TeamMemberRegistration teamMemberRegistration) throws ResourceNotFoundException {
         RegistrationCode registrationCode = new RegistrationCode();
         registrationCode.setTeam(basicDataAnalysis.getTeamById(teamMemberRegistration.getTeamId()));
+        registrationCode.setName(teamMemberRegistration.getName());
         registrationCode.setCode(UUID.randomUUID().toString());
         registrationCode.setUserTypeId(teamMemberRegistration.getUserTypeId());
         registrationCode.setProfilePictureUrl(teamMemberRegistration.getProfilePictureUrl());
         
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MINUTE, 15); // 15 minutes to expire
-        registrationCode.setExpirationTime(LocalDate.ofInstant(calendar.toInstant(), calendar.getTimeZone().toZoneId()));
+        registrationCode.setExpirationTime(LocalDateTime.now().plusMinutes(REGISTRATION_CODE_EXPIRATION_MINUTES));
         
         return basicDataAnalysis.createRegistrationCode(registrationCode);
     }
+
+    public RegistrationCode refreshRegistrationCode(RegistrationCode code) throws ResourceNotFoundException {
+        RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code.getCode());
+        registrationCode.setCode(UUID.randomUUID().toString());
+        registrationCode.setExpirationTime(LocalDateTime.now().plusMinutes(REGISTRATION_CODE_EXPIRATION_MINUTES));
+        return basicDataAnalysis.createRegistrationCode(registrationCode);
+    }
     
-    public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
-        return basicDataAnalysis.getRegistrationCode(code);
+    public RegistrationCode claimRegistrationCode(String code) throws ResourceNotFoundException {
+        RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code);
+
+        if (registrationCode.getExpirationTime().isBefore(LocalDateTime.now())) {
+            throw new ResourceNotFoundException("Registration code expired");
+        }
+        
+        basicDataAnalysis.deleteRegistrationCode(registrationCode);
+
+        return registrationCode;
     }
 
 }

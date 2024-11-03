@@ -1,19 +1,10 @@
 package sts.backend.core_app.dto;
 
-import java.time.LocalDate;
-
-import sts.backend.core_app.models.Match;
+import java.time.LocalDateTime;
 
 public interface SessionInfoView {
-
     Long getSessionId();
-
-    LocalDate getStartTime();
-
+    LocalDateTime getStartTime();
     int getNumParticipants();
-
     String getState();
-
-    Match getMatch();
-
 }

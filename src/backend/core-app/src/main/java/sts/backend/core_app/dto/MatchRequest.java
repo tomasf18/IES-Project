@@ -1,6 +1,6 @@
 package sts.backend.core_app.dto;
 
-public class MatchRequest extends SessionRequest{
+public class MatchRequest extends SessionRequest {
     private String opponentTeam;
     private String type;
     private String location;

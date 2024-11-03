@@ -1,9 +1,14 @@
 package sts.backend.core_app.persistence;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.Set;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.persistence.repositories.MatchRepository;
 import sts.backend.core_app.persistence.repositories.PlayerRepository;
 import sts.backend.core_app.persistence.repositories.PlayerSessionRepository;
@@ -28,7 +33,7 @@ import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 
 @Service
-public class RelationalQueries {
+public class RelationalQueriesImpl implements RelationalQueries {
     
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
@@ -40,7 +45,7 @@ public class RelationalQueries {
     private final PlayerSessionRepository playerSessionRepository;
     private final RegistrationCodeRepository registrationCodeRepository;
 
-    public RelationalQueries(UserRepository userRepository, TeamRepository teamRepository, PlayerRepository playerRepository, TeamDirectorRepository teamDirectorRepository, TrainerRepository trainerRepository, MatchRepository matchRepository, SessionRepository sessionRepository, PlayerSessionRepository playerSessionRepository, RegistrationCodeRepository registrationCodeRepository) {
+    public RelationalQueriesImpl(UserRepository userRepository, TeamRepository teamRepository, PlayerRepository playerRepository, TeamDirectorRepository teamDirectorRepository, TrainerRepository trainerRepository, MatchRepository matchRepository, SessionRepository sessionRepository, PlayerSessionRepository playerSessionRepository, RegistrationCodeRepository registrationCodeRepository) {
         this.userRepository = userRepository;
         this.teamRepository = teamRepository;
         this.playerRepository = playerRepository;
@@ -63,6 +68,8 @@ public class RelationalQueries {
     }
 
     public Trainer createTrainer(Trainer trainer) {
+        System.out.println("trainer: " + trainer);
+        System.out.println("id: " + trainer.getUserId());
         return trainerRepository.save(trainer);
     }
 
@@ -90,6 +97,10 @@ public class RelationalQueries {
         return playerSessionRepository.save(playerSession);
     }
 
+    public User createAdministrator(User user) {
+        return userRepository.save(user);
+    }
+
     // --- Get By ID methods ---
 
     public User getUserById(Long userId) throws ResourceNotFoundException {
@@ -103,7 +114,8 @@ public class RelationalQueries {
     }
 
     public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException {
-        return trainerRepository.findById(trainerId)
+        System.out.println("trainerId: " + userRepository.findTrainerByUserId(trainerId));
+        return userRepository.findTrainerByUserId(trainerId)
             .orElseThrow(() -> new ResourceNotFoundException("Trainer with ID " + trainerId + " not found"));
     }
 
@@ -134,13 +146,19 @@ public class RelationalQueries {
 
     // --- Get By other methods ---
 
-    public Set<SessionInfoView> getSessionsInfoByTeam(Team team) {
-        return sessionRepository.findSessionInfoByTeam(team);
+    public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException {
+        return sessionRepository.findSessionInfoByTeam(team)
+            .orElseThrow(() -> new ResourceNotFoundException("Sessions for team " + team.getName() + " not found"));
     }
 
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return registrationCodeRepository.findByCode(code)
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));
+    }
+
+    // --- Delete methods ---
+    public void deleteRegistrationCode(RegistrationCode registrationCode) {
+        registrationCodeRepository.delete(registrationCode);
     }
 
 }

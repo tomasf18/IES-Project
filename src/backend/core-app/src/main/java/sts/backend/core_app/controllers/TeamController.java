@@ -1,12 +1,16 @@
 package sts.backend.core_app.controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.dto.TeamCreation;
+import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.TeamService;
 
@@ -23,6 +27,18 @@ public class TeamController {
     @PostMapping("/team")
     public Team api_create_team(@RequestBody TeamCreation teamCreation) throws ResourceNotFoundException {
         return teamService.createTeam(teamCreation);
+    }
+
+    @GetMapping("/team/registration-code")
+    public RegistrationCode api_generate_new_registration_code(@RequestBody TeamMemberRegistration teamDirectorInfo) throws ResourceNotFoundException {
+        // generate
+        return teamService.generateNewRegistrationCode(teamDirectorInfo);
+    }
+
+    @PutMapping("/team/registration-code/refresh")
+    public RegistrationCode api_refresh_registration_code(@RequestBody RegistrationCode code) throws ResourceNotFoundException {
+        // refresh
+        return teamService.refreshRegistrationCode(code);
     }
 
 }

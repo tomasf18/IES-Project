@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sts.backend.core_app.dto.UserCreationInfo;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
-import sts.backend.core_app.models.User;
 import sts.backend.core_app.services.UserService;
 
 @RestController
@@ -21,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public User api_create_user(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
+    public UserCreationInfo api_create_player(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
         return userService.createUser(userSignUp);
     }
 
