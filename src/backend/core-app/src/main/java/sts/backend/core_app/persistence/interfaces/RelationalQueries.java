@@ -26,6 +26,7 @@ public interface RelationalQueries {
     public Player createPlayer(Player player);
     public TeamDirector createTeamDirector(TeamDirector teamDirector);
     public PlayerSession createPlayerSession(PlayerSession playerSession);
+    public User createAdministrator(User user);
 
     // -- Get by Id methods ---
     public User getUserById(Long userId) throws ResourceNotFoundException;
@@ -40,4 +41,7 @@ public interface RelationalQueries {
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
+
+    // --- Delete methods ---
+    public void deleteRegistrationCode(RegistrationCode registrationCode);
 }

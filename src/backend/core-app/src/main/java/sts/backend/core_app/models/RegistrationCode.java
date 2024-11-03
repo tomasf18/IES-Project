@@ -1,6 +1,6 @@
 package sts.backend.core_app.models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,27 +32,22 @@ public class RegistrationCode {
     @JoinColumn(name = "TEAM_FK", nullable = false)
     private Team team;
 
-    @NotBlank(message = "RegistrationCode: userTypeId is mandatory")
     private Long userTypeId;
 
     @Size(max = 255, message = "RegistrationCode: profilePicUrl must be at most 255 characters")
     private String profilePictureUrl;
     
-    private boolean isUsed = false;
-
-    @Temporal(TemporalType.DATE)
-    private LocalDate expirationTime;
+    private LocalDateTime expirationTime;
 
     // standard constructors, getters, setters, etc.
     public RegistrationCode() {}
 
-    public RegistrationCode(String code, String name, Team team, Long userTypeId, String profilePictureUrl, boolean isUsed, LocalDate expirationTime) {
+    public RegistrationCode(String code, String name, Team team, Long userTypeId, String profilePictureUrl, LocalDateTime expirationTime) {
         this.code = code;
         this.name = name;
         this.team = team;
         this.userTypeId = userTypeId;
         this.profilePictureUrl = profilePictureUrl;
-        this.isUsed = isUsed;
         this.expirationTime = expirationTime;
     }
 
@@ -104,19 +99,11 @@ public class RegistrationCode {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    public boolean isUsed() {
-        return isUsed;
-    }
-
-    public void setUsed(boolean isUsed) {
-        this.isUsed = isUsed;
-    }
-
-    public LocalDate getExpirationTime() {
+    public LocalDateTime getExpirationTime() {
         return expirationTime;
     }
 
-    public void setExpirationTime(LocalDate expirationTime) {
+    public void setExpirationTime(LocalDateTime expirationTime) {
         this.expirationTime = expirationTime;
     }
 

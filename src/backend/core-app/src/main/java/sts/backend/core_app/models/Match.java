@@ -1,6 +1,6 @@
 package sts.backend.core_app.models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Size;
@@ -23,7 +23,7 @@ public class Match extends Session {
     // standard constructors / setters / getters / toString
     public Match() {}
 
-    public Match(String name, LocalDate startTime, LocalDate endTime, Trainer trainer, String opponentTeam, String type, String location, String weather) {
+    public Match(String name, LocalDateTime startTime, LocalDateTime endTime, Trainer trainer, String opponentTeam, String type, String location, String weather) {
         super(name, startTime, endTime, trainer);
         this.opponentTeam = opponentTeam;
         this.type = type;

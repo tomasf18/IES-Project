@@ -1,6 +1,6 @@
 package sts.backend.core_app.models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,9 +26,9 @@ public class Session {
     private String name;
 
     @NotBlank(message = "Session: start time is mandatory")
-    private LocalDate startTime;
+    private LocalDateTime startTime;
 
-    private LocalDate endTime;
+    private LocalDateTime endTime;
 
     @ManyToOne
     @JoinColumn(name = "TRAINER_FK", nullable = false)
@@ -37,7 +37,7 @@ public class Session {
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(String name, LocalDate startTime, LocalDate endTime, Trainer trainer) {
+    public Session(String name, LocalDateTime startTime, LocalDateTime endTime, Trainer trainer) {
         this.startTime = startTime;
         this.name = name;
         this.endTime = endTime;
@@ -60,19 +60,19 @@ public class Session {
         this.name = name;
     }
 
-    public LocalDate getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDate startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDate getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDate endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 

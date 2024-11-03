@@ -20,9 +20,24 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public User api_create_user(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
-        return userService.createUser(userSignUp);
+    @PostMapping("/users/administrator")
+    public User api_create_administrator(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
+        return userService.createAdministrator(userSignUp);
+    }
+
+    @PostMapping("/users/player")
+    public User api_create_player(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
+        return userService.createPlayer(userSignUp);
+    }
+
+    @PostMapping("/users/team-director")
+    public User api_create_team_director(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
+        return userService.createTeamDirector(userSignUp);
+    }
+
+    @PostMapping("/users/trainer")
+    public User api_create_trainer(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
+        return userService.createTrainer(userSignUp);
     }
 
 }

@@ -14,14 +14,15 @@ import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Trainer;
-import sts.backend.core_app.persistence.RelationalQueriesImpl;
+import sts.backend.core_app.models.User;
+import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 
 @Service
 public class BasicDataAnalysisImpl implements BasicDataAnalysis{
     
-    private final RelationalQueriesImpl relationalQueries;
+    private final RelationalQueries relationalQueries;
 
-    public BasicDataAnalysisImpl(RelationalQueriesImpl relationalQueries) {
+    public BasicDataAnalysisImpl(RelationalQueries relationalQueries) {
         this.relationalQueries = relationalQueries;
     }
 
@@ -55,6 +56,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.createMatch(match);
     }
 
+    public User createAdministrator(User user) {
+        return relationalQueries.createAdministrator(user);
+    }
+
     // --- Get by Id methods ---
 
     public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException {
@@ -71,6 +76,11 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return relationalQueries.getRegistrationCode(code);
+    }
+
+    // --- Delete methods ---
+    public void deleteRegistrationCode(RegistrationCode registrationCode) {
+        relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
 }

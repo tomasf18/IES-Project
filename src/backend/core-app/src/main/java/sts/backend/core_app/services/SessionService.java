@@ -1,6 +1,6 @@
 package sts.backend.core_app.services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class SessionService {
     public Session createSession(SessionRequest sessionRequest) throws ResourceNotFoundException {
         Session session = new Session();
         session.setName(sessionRequest.getName());
-        session.setStartTime(LocalDate.now());
+        session.setStartTime(LocalDateTime.now());
         session.setEndTime(null);
         session.setTrainer(basicDataAnalysis.getTrainerById(sessionRequest.getTrainerId()));
         return basicDataAnalysis.createSession(session);
@@ -45,7 +45,7 @@ public class SessionService {
         match.setWeather(matchRequest.getWeather());
 
         match.setName(matchRequest.getName());
-        match.setStartTime(LocalDate.now());
+        match.setStartTime(LocalDateTime.now());
         match.setEndTime(null);
         match.setTrainer(basicDataAnalysis.getTrainerById(matchRequest.getTrainerId()));
 

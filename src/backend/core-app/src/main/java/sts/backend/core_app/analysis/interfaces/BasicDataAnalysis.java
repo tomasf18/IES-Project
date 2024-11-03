@@ -9,6 +9,7 @@ import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.Trainer;
+import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 
@@ -21,6 +22,7 @@ public interface BasicDataAnalysis {
     public Session createSession(Session session);
     public RegistrationCode createRegistrationCode(RegistrationCode registrationCode);
     public Match createMatch(Match match);
+    public User createAdministrator(User user);
 
     // --- Get by Id methods ---
     public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException;
@@ -29,4 +31,8 @@ public interface BasicDataAnalysis {
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
+
+    // --- Delete methods ---
+    public void deleteRegistrationCode(RegistrationCode registrationCode);
+
 }

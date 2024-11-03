@@ -1,7 +1,11 @@
 package sts.backend.core_app.persistence;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.Set;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
@@ -91,6 +95,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return playerSessionRepository.save(playerSession);
     }
 
+    public User createAdministrator(User user) {
+        return userRepository.save(user);
+    }
+
     // --- Get By ID methods ---
 
     public User getUserById(Long userId) throws ResourceNotFoundException {
@@ -143,6 +151,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return registrationCodeRepository.findByCode(code)
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));
+    }
+
+    // --- Delete methods ---
+    public void deleteRegistrationCode(RegistrationCode registrationCode) {
+        registrationCodeRepository.delete(registrationCode);
     }
 
 }
