@@ -9,16 +9,15 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
-import sts.backend.core_app.persistence.repositories.MatchRepository;
-import sts.backend.core_app.persistence.repositories.PlayerRepository;
-import sts.backend.core_app.persistence.repositories.PlayerSessionRepository;
-import sts.backend.core_app.persistence.repositories.RegistrationCodeRepository;
-import sts.backend.core_app.persistence.repositories.SessionRepository;
-import sts.backend.core_app.persistence.repositories.TeamDirectorRepository;
-import sts.backend.core_app.persistence.repositories.TeamRepository;
-import sts.backend.core_app.persistence.repositories.TrainerRepository;
-import sts.backend.core_app.persistence.repositories.UserRepository;
-
+import sts.backend.core_app.persistence.repositories.postgreDB.MatchRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.PlayerRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.PlayerSessionRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.RegistrationCodeRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.SessionRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.TeamDirectorRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;

@@ -1,4 +1,4 @@
-package sts.backend.core_app.persistence.repositories;
+package sts.backend.core_app.persistence.repositories.postgreDB;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import sts.backend.core_app.models.Player;
