@@ -11,6 +11,7 @@ import sts.backend.core_app.controllers.TeamInfoResponse;
 import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
+import sts.backend.core_app.dto.team.SensorsResponse;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -94,6 +95,21 @@ public class TeamService {
     public TeamMembersResponse getTeamDirectors(IdLong teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getTeamDirectors'");
+    }
+
+    public SensorsResponse getSensors(IdLong teamId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSensors'");
+    }
+
+    public void deleteSensors(IdLong sensorId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteSensors'");
+    }
+
+    public TeamMembersResponse getPlayersWithoutSensors(IdLong teamId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
     }
 
 }

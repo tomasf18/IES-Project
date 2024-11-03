@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
+import sts.backend.core_app.dto.team.SensorsResponse;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
@@ -65,17 +66,45 @@ public class TeamController {
 
     @GetMapping("/team/team-members")
     public TeamMembersResponse api_get_team_members(@RequestBody IdLong teamId) throws ResourceNotFoundException {
-        return teamService.getTeamMembers(teamId);
+        return teamService.getTeamMembers(teamId); // TODO: implement
     }
 
     @GetMapping("/team/teams-info")
     public TeamsInfoResponse api_get_teams_info() throws ResourceNotFoundException {
-        return teamService.getTeamsInfo();
+        return teamService.getTeamsInfo(); // TODO: implement
     }
 
     @GetMapping("/team/team-directors")
     public TeamMembersResponse api_get_team_directors(@RequestBody IdLong teamId) throws ResourceNotFoundException {
-        return teamService.getTeamDirectors(teamId);
+        return teamService.getTeamDirectors(teamId); // TODO: implement
+    }
+
+    @GetMapping("/team/sensors")
+    public SensorsResponse api_get_sensors(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+        return teamService.getSensors(teamId); // TODO: implement
+    }
+
+    // TODO: Sensors is not implemented yet
+    // @PostMapping("/team/sensors")
+    // public Sensor api_set_sensors(@RequestBody IdLong sensorId) throws ResourceNotFoundException {
+    //     return teamService.setSensors(sensorId); // TODO: implement
+    // }
+
+    @DeleteMapping("/team/sensors")
+    public ResponseEntity<?> api_delete_sensors(@RequestBody IdLong sensorId) throws ResourceNotFoundException {
+        teamService.deleteSensors(sensorId); // TODO: implement
+        return ResponseEntity.ok().build();
+    }
+
+    // TODO: Sensors is not implemented yet
+    // @PostMapping("/team/sensors/assign-player")
+    // public Sensor api_assign_player_to_sensor(@RequestBody SensorAssignment sensorAssignment) throws ResourceNotFoundException {
+    //     return teamService.assignPlayerToSensor(sensorAssignment); // TODO: implement
+    // }
+
+    @GetMapping("/team/players-without-sensors")
+    public TeamMembersResponse api_get_players_without_sensors(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+        return teamService.getPlayersWithoutSensors(teamId); // TODO: implement
     }
 
 
