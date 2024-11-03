@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.dto.SessionRequest;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -25,18 +26,18 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    @GetMapping("/sessions")
-    public Set<SessionInfoView> api_list_sessions(@RequestParam(value="team", required=true) Long teamId) throws ResourceNotFoundException {
-        return sessionService.getSessionsInfoByTeamId(teamId);
-    }
-
     @PostMapping("/sessions")
     public Session api_create_session(@RequestBody SessionRequest sessionRequest) throws ResourceNotFoundException {
         return sessionService.createSession(sessionRequest);
     }
 
+    @GetMapping("/sessions/team")
+    public Set<SessionInfoView> api_list_sessions(@RequestParam(value="team", required=true) Long teamId) throws ResourceNotFoundException {
+        return sessionService.getSessionsInfoByTeamId(teamId);
+    }
+
     @PostMapping("/sessions/end")
-    public Session api_end_session(@RequestBody Long sessionId) throws ResourceNotFoundException {
+    public Session api_end_session(@RequestBody IdLong sessionId) throws ResourceNotFoundException {
         return sessionService.endSession(sessionId);
     }
 

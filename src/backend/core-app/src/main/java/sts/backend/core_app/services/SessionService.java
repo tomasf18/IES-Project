@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
+import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.MatchRequest;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.dto.SessionRequest;
@@ -52,8 +53,8 @@ public class SessionService {
         return basicDataAnalysis.createMatch(match);
     }
 
-    public Session endSession(Long sessionId) throws ResourceNotFoundException {
-        Session session = basicDataAnalysis.getSessionById(sessionId);
+    public Session endSession(IdLong sessionId) throws ResourceNotFoundException {
+        Session session = basicDataAnalysis.getSessionById(sessionId.getId());
         session.setEndTime(LocalDateTime.now());
         return basicDataAnalysis.createSession(session);
     }
