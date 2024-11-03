@@ -2,8 +2,8 @@ package sts.backend.core_app.services.business;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.UserCreationInfo;
-import sts.backend.core_app.dto.UserSignUp;
+import sts.backend.core_app.dto.user.UserCreationInfo;
+import sts.backend.core_app.dto.user.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.RegistrationCode;

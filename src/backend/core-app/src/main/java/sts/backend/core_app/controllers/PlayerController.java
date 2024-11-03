@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.dto.IdLong;
-import sts.backend.core_app.dto.OverviewStressRequest;
 import sts.backend.core_app.dto.player.OverviewStressResponse;
 import sts.backend.core_app.dto.player.PlayerIdWithTimeOption;
 import sts.backend.core_app.dto.player.RecoveryStrainResponse;
