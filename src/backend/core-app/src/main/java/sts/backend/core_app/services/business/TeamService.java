@@ -5,6 +5,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
+import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.TeamsInfoResponse;
+import sts.backend.core_app.controllers.TeamInfoResponse;
+import sts.backend.core_app.dto.IdLong;
+import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
@@ -59,6 +64,36 @@ public class TeamService {
         basicDataAnalysis.deleteRegistrationCode(registrationCode);
 
         return registrationCode;
+    }
+
+    public void deleteTeam(IdLong teamId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteTeam'");
+    }
+
+    public RealTimeInfo getPlayersAvailableRealTimeInfo(IdLong teamId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayersAvailableRealTimeInfo'");
+    }
+
+    public void deleteRegistrationCode(RegistrationCodeString code) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteRegistrationCode'");
+    }
+
+    public TeamMembersResponse getTeamMembers(IdLong teamId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTeamMembers'");
+    }
+
+    public TeamsInfoResponse getTeamsInfo() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTeamInfo'");
+    }
+
+    public TeamMembersResponse getTeamDirectors(IdLong teamId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTeamDirectors'");
     }
 
 }

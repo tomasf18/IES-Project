@@ -30,7 +30,7 @@ public class UserController {
 
     @DeleteMapping("/users")
     public ResponseEntity<?> api_delete_player(@RequestBody IdLong userId) throws ResourceNotFoundException {
-        userService.deleteUser(userId);
+        userService.deleteUser(userId); // TODO: implement
         return ResponseEntity.ok().build();
     }
 

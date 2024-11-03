@@ -1,5 +1,7 @@
 package sts.backend.core_app.controllers;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -7,9 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sts.backend.core_app.dto.IdLong;
+import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.TeamsInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
@@ -30,16 +36,47 @@ public class TeamController {
         return teamService.createTeam(teamCreation);
     }
 
+    @DeleteMapping("/team")
+    public ResponseEntity<?> api_delete_team(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+        teamService.deleteTeam(teamId); // TODO: implement
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/team/players-available/real-time-info")
+    public RealTimeInfo api_get_players_available_real_time_info(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+        return teamService.getPlayersAvailableRealTimeInfo(teamId);
+    }
+
     @GetMapping("/team/registration-code")
     public RegistrationCode api_generate_new_registration_code(@RequestBody TeamMemberRegistration teamDirectorInfo) throws ResourceNotFoundException {
-        // generate
         return teamService.generateNewRegistrationCode(teamDirectorInfo);
     }
 
     @PutMapping("/team/registration-code/refresh")
     public RegistrationCode api_refresh_registration_code(@RequestBody RegistrationCodeString code) throws ResourceNotFoundException {
-        // refresh
         return teamService.refreshRegistrationCode(code);
     }
+
+    @DeleteMapping("/team/registration-code")
+    public ResponseEntity<?> api_delete_registration_code(@RequestBody RegistrationCodeString code) throws ResourceNotFoundException {
+        teamService.deleteRegistrationCode(code); // TODO: implement
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/team/team-members")
+    public TeamMembersResponse api_get_team_members(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+        return teamService.getTeamMembers(teamId);
+    }
+
+    @GetMapping("/team/teams-info")
+    public TeamsInfoResponse api_get_teams_info() throws ResourceNotFoundException {
+        return teamService.getTeamsInfo();
+    }
+
+    @GetMapping("/team/team-directors")
+    public TeamMembersResponse api_get_team_directors(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+        return teamService.getTeamDirectors(teamId);
+    }
+
 
 }
