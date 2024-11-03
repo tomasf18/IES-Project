@@ -167,14 +167,14 @@ public class RelationalQueriesImpl implements RelationalQueries {
             throw new ResourceNotFoundException("User not found");
         }
     
-        // delete related entities
-        playerRepository.findById(userId).ifPresent(player -> {
-            playerSessionRepository.deleteByPlayerId(player.getUserId());
-            // playerSensorRepository.deleteByPlayerId(player.getId());
-            playerRepository.delete(player);
-        });
+        // TODO: verify if is necessary to delete related entities
+        // playerRepository.findById(userId).ifPresent(player -> {
+        //     playerSessionRepository.deleteByPlayerId(player.getUserId());
+        //     // playerSensorRepository.deleteByPlayerId(player.getId());
+        //     playerRepository.delete(player);
+        // });
     
-        userRepository.deleteById(userId);
+        userRepository.deleteById(userId); 
     }
 
 }
