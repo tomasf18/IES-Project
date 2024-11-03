@@ -1,17 +1,17 @@
-package sts.backend.core_app.services;
+package sts.backend.core_app.services.business;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.RegistrationCodeString;
 import sts.backend.core_app.dto.TeamCreation;
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
+import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
 @Service
 public class TeamService {

@@ -1,10 +1,9 @@
-package sts.backend.core_app.analysis;
+package sts.backend.core_app.services.analysis;
 
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.SessionInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -16,6 +15,7 @@ import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
+import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
 @Service
 public class BasicDataAnalysisImpl implements BasicDataAnalysis{

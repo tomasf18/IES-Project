@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sts.backend.core_app.dto.UserCreationInfo;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
-import sts.backend.core_app.services.UserService;
+import sts.backend.core_app.services.business.UserService;
 
 @RestController
 @RequestMapping("/api/v1")

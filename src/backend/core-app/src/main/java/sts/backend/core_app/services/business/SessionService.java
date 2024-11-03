@@ -1,11 +1,10 @@
-package sts.backend.core_app.services;
+package sts.backend.core_app.services.business;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.MatchRequest;
 import sts.backend.core_app.dto.SessionInfoView;
@@ -14,6 +13,7 @@ import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
+import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
 @Service
 public class SessionService {
