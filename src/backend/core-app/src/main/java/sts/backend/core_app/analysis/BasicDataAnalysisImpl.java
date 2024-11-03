@@ -88,4 +88,9 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
+    @Override
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        relationalQueries.deleteUser(userId);
+    }
+
 }

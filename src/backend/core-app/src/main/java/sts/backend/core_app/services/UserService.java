@@ -58,6 +58,10 @@ public class UserService {
         return userCreationInfo;
     }
 
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        basicDataAnalysis.deleteUser(userId);
+    }
+
     public Player createPlayer(UserSignUp userSignUp, RegistrationCode code) throws ResourceNotFoundException {
         Player player = new Player();
         player.setTeam(code.getTeam());
@@ -92,3 +96,5 @@ public class UserService {
         return basicDataAnalysis.createTrainer(trainer);
     }
 }
+
+

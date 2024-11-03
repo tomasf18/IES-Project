@@ -161,4 +161,20 @@ public class RelationalQueriesImpl implements RelationalQueries {
         registrationCodeRepository.delete(registrationCode);
     }
 
+    @Override
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("User not found");
+        }
+    
+        // delete related entities
+        playerRepository.findById(userId).ifPresent(player -> {
+            playerSessionRepository.deleteByPlayerId(player.getUserId());
+            // playerSensorRepository.deleteByPlayerId(player.getId());
+            playerRepository.delete(player);
+        });
+    
+        userRepository.deleteById(userId);
+    }
+
 }

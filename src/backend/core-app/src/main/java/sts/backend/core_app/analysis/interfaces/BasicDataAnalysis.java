@@ -35,5 +35,6 @@ public interface BasicDataAnalysis {
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
+    public void deleteUser(Long userId) throws ResourceNotFoundException;
 
 }
