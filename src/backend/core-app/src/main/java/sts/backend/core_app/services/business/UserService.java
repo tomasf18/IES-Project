@@ -1,8 +1,7 @@
-package sts.backend.core_app.services;
+package sts.backend.core_app.services.business;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
 import sts.backend.core_app.dto.UserCreationInfo;
 import sts.backend.core_app.dto.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -11,6 +10,7 @@ import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
+import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
 @Service
 public class UserService {

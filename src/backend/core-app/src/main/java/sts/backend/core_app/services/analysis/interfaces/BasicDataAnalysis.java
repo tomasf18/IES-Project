@@ -1,4 +1,4 @@
-package sts.backend.core_app.analysis.interfaces;
+package sts.backend.core_app.services.analysis.interfaces;
 
 import java.util.Set;
 

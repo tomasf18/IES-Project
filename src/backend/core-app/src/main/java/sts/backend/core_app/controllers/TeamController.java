@@ -13,7 +13,7 @@ import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
-import sts.backend.core_app.services.TeamService;
+import sts.backend.core_app.services.business.TeamService;
 
 @RestController
 @RequestMapping("/api/v1")
