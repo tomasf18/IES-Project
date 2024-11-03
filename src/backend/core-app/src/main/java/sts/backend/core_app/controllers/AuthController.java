@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import sts.backend.core_app.dto.AuthRequest;
-import sts.backend.core_app.dto.AuthResponse;
+import sts.backend.core_app.dto.auth.AuthRequest;
+import sts.backend.core_app.dto.auth.AuthResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.services.business.AuthService;
 
