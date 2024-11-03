@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sts.backend.core_app.dto.RegistrationCodeString;
 import sts.backend.core_app.dto.TeamCreation;
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -36,7 +37,7 @@ public class TeamController {
     }
 
     @PutMapping("/team/registration-code/refresh")
-    public RegistrationCode api_refresh_registration_code(@RequestBody RegistrationCode code) throws ResourceNotFoundException {
+    public RegistrationCode api_refresh_registration_code(@RequestBody RegistrationCodeString code) throws ResourceNotFoundException {
         // refresh
         return teamService.refreshRegistrationCode(code);
     }
