@@ -3,7 +3,7 @@ package sts.backend.core_app.persistence.interfaces;
 import java.util.Set;
 
 import sts.backend.core_app.models.User;
-import sts.backend.core_app.dto.SessionInfoView;
+import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;

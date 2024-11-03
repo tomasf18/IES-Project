@@ -1,4 +1,4 @@
-package sts.backend.core_app.dto;
+package sts.backend.core_app.dto.session;
 
 public class SessionRequest {
     private String name;

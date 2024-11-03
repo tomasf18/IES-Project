@@ -1,5 +1,7 @@
 package sts.backend.core_app.dto;
 
+import sts.backend.core_app.dto.session.SessionRequest;
+
 public class MatchRequest extends SessionRequest {
     private String opponentTeam;
     private String type;
