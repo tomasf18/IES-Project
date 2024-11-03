@@ -25,7 +25,6 @@ public class Session {
     @Size(max = 50, message = "Session: name must be at most 50 characters")
     private String name;
 
-    @NotBlank(message = "Session: start time is mandatory")
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;

@@ -68,6 +68,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     public Trainer createTrainer(Trainer trainer) {
+        System.out.println("trainer: " + trainer);
+        System.out.println("id: " + trainer.getUserId());
         return trainerRepository.save(trainer);
     }
 
@@ -112,7 +114,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException {
-        return trainerRepository.findById(trainerId)
+        System.out.println("trainerId: " + userRepository.findTrainerByUserId(trainerId));
+        return userRepository.findTrainerByUserId(trainerId)
             .orElseThrow(() -> new ResourceNotFoundException("Trainer with ID " + trainerId + " not found"));
     }
 

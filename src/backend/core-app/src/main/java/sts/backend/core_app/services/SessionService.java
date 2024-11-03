@@ -52,4 +52,10 @@ public class SessionService {
         return basicDataAnalysis.createMatch(match);
     }
 
+    public Session endSession(Long sessionId) throws ResourceNotFoundException {
+        Session session = basicDataAnalysis.getSessionById(sessionId);
+        session.setEndTime(LocalDateTime.now());
+        return basicDataAnalysis.createSession(session);
+    }
+
 }

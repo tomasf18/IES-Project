@@ -35,4 +35,9 @@ public class SessionController {
         return sessionService.createSession(sessionRequest);
     }
 
+    @PostMapping("/sessions/end")
+    public Session api_end_session(@RequestBody Long sessionId) throws ResourceNotFoundException {
+        return sessionService.endSession(sessionId);
+    }
+
 }
