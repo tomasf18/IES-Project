@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayerSessionRepository extends JpaRepository<PlayerSession, PlayerSessionId> {
-
+    void deleteByPlayerId(Long userId);
 }
     
