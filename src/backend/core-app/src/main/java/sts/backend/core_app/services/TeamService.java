@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.analysis.interfaces.BasicDataAnalysis;
+import sts.backend.core_app.dto.RegistrationCodeString;
 import sts.backend.core_app.dto.TeamCreation;
 import sts.backend.core_app.dto.TeamMemberRegistration;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -41,7 +42,7 @@ public class TeamService {
         return basicDataAnalysis.createRegistrationCode(registrationCode);
     }
 
-    public RegistrationCode refreshRegistrationCode(RegistrationCode code) throws ResourceNotFoundException {
+    public RegistrationCode refreshRegistrationCode(RegistrationCodeString code) throws ResourceNotFoundException {
         RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code.getCode());
         registrationCode.setCode(UUID.randomUUID().toString());
         registrationCode.setExpirationTime(LocalDateTime.now().plusMinutes(REGISTRATION_CODE_EXPIRATION_MINUTES));
