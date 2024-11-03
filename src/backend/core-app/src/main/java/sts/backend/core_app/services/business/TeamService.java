@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoResponse;
-import sts.backend.core_app.controllers.TeamInfoResponse;
 import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
