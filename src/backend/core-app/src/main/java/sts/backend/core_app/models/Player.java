@@ -4,13 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity(name = "players")
 public class Player extends User {
 
     @ManyToOne
-    @NotBlank(message = "Player: team is mandatory")
     @JoinColumn(name = "TEAM_FK")
     private Team team;
     

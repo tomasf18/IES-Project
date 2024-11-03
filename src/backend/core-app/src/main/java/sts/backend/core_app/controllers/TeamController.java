@@ -1,12 +1,10 @@
 package sts.backend.core_app.controllers;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.dto.TeamCreation;
@@ -38,7 +36,7 @@ public class TeamController {
     }
 
     @PutMapping("/team/registration-code/refresh")
-    public RegistrationCode api_refresh_registration_code(@RequestBody String code) throws ResourceNotFoundException {
+    public RegistrationCode api_refresh_registration_code(@RequestBody RegistrationCode code) throws ResourceNotFoundException {
         // refresh
         return teamService.refreshRegistrationCode(code);
     }

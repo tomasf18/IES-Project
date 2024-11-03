@@ -41,8 +41,8 @@ public class TeamService {
         return basicDataAnalysis.createRegistrationCode(registrationCode);
     }
 
-    public RegistrationCode refreshRegistrationCode(String code) throws ResourceNotFoundException {
-        RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code);
+    public RegistrationCode refreshRegistrationCode(RegistrationCode code) throws ResourceNotFoundException {
+        RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code.getCode());
         registrationCode.setCode(UUID.randomUUID().toString());
         registrationCode.setExpirationTime(LocalDateTime.now().plusMinutes(REGISTRATION_CODE_EXPIRATION_MINUTES));
         return basicDataAnalysis.createRegistrationCode(registrationCode);
@@ -50,7 +50,7 @@ public class TeamService {
     
     public RegistrationCode claimRegistrationCode(String code) throws ResourceNotFoundException {
         RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code);
-        
+
         if (registrationCode.getExpirationTime().isBefore(LocalDateTime.now())) {
             throw new ResourceNotFoundException("Registration code expired");
         }
