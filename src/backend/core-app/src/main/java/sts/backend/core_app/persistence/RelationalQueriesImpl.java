@@ -174,19 +174,19 @@ public class RelationalQueriesImpl implements RelationalQueries {
         // Get players
         List<Player> players = playerRepository.findPlayersByTeamTeamId(teamId);
         teamMembers.addAll(players.stream()
-            .map(player -> new TeamMembersResponse(player.getName(), player.getProfilePictureUrl()))
+            .map(player -> new TeamMembersResponse(player.getName(), player.getProfilePictureUrl(), (long) 2))
             .collect(Collectors.toList()));
 
         // Get Coaches
         List<Trainer> coaches = trainerRepository.findByTeamTeamIdAndIsCoachTrue(teamId);
         teamMembers.addAll(coaches.stream()
-            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl()))
+            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl(), (long) 3))
             .collect(Collectors.toList()));
 
         // Get Personal Trainers
         List<Trainer> personal_trainers = trainerRepository.findByTeamTeamIdAndIsCoachFalse(teamId);
         teamMembers.addAll(personal_trainers.stream()
-            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl()))
+            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl(), (long) 4))
             .collect(Collectors.toList()));    
 
 

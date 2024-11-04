@@ -4,14 +4,15 @@ public class TeamMembersResponse {
 
     private String name;
     private String profilePictureUrl;
-    // private Long userTypeId;
+    private Long userTypeId;
 
     public TeamMembersResponse() {
     }
 
-    public TeamMembersResponse(String name, String profilePictureUrl) {
+    public TeamMembersResponse(String name, String profilePictureUrl, Long userTypeId) {
         this.name = name;
         this.profilePictureUrl = profilePictureUrl;
+        this.userTypeId = userTypeId;
     }
 
     public String getName() {
@@ -30,11 +31,11 @@ public class TeamMembersResponse {
         this.profilePictureUrl = profilePictureUrl;
     }
 
-    // public Long getUserTypeId() {
-    //     return userTypeId;
-    // }
+    public Long getUserTypeId() {
+        return userTypeId;
+    }
 
-    // public void setUserTypeId(Long userTypeId) {
-    //     this.userTypeId = userTypeId;
-    // }
+    public void setUserTypeId(Long userTypeId) {
+        this.userTypeId = userTypeId;
+    }
 }
