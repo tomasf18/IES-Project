@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
+import { Checkbox, Label, TextInput } from "flowbite-react";
+import { Button } from "../../components";
 import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import CustomSignUpTheme from "../Login/CustomLoginButtonTheme";
 
 export default function Component() {
   const [showPassword, setShowPassword] = useState(false);
@@ -66,14 +66,9 @@ export default function Component() {
           Privacy Policy
         </span>
       </p>
-      <Button
-        type="submit"
-        className="w-1/2"
-        theme={CustomSignUpTheme}
-        color="custom"
-      >
-        Create an account
-      </Button>
+      <div className="w-1/2">
+        <Button color="gray">Create an account</Button>
+      </div>
       <p className="text-gray-500">
         Already have an account?{" "}
         <Link

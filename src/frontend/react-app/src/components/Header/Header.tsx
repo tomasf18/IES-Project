@@ -1,8 +1,7 @@
-import { Button, Navbar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { Button } from "../../components";
 import customHeaderTheme from "./CustomHeaderTheme";
-import customLoginTheme from "./CustomLoginTheme";
-import customSignUpTheme from "./CustomSignUpTheme";
 
 export default function Header() {
   return (
@@ -15,12 +14,12 @@ export default function Header() {
       </Navbar.Brand>
       <div className="flex md:order-2 space-x-2">
         <Link to="/login">
-          <Button theme={customLoginTheme} color="custom">
+          <Button color="secondary">
             Login
           </Button>
         </Link>
         <Link to="/signup">
-          <Button theme={customSignUpTheme} color="custom">
+          <Button color="primary">
             Sign Up
           </Button>
         </Link>

@@ -1,11 +1,7 @@
 package sts.backend.core_app.persistence;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
 import java.util.Set;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
@@ -18,7 +14,8 @@ import sts.backend.core_app.persistence.repositories.postgreDB.TeamDirectorRepos
 import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
-import sts.backend.core_app.dto.SessionInfoView;
+import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
@@ -153,6 +150,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return registrationCodeRepository.findByCode(code)
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));
+    }
+
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
+        return teamRepository.findAllTeamsInfo()
+            .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
 
     // --- Delete methods ---
