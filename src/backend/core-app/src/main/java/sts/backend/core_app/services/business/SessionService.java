@@ -66,9 +66,11 @@ public class SessionService {
         return basicDataAnalysis.createSession(session);
     }
 
-    public PlayerSession assignPlayer(AssignSessionPlayer assignSessionPlayer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'assignPlayer'");
+    public PlayerSession assignPlayer(AssignSessionPlayer assignSessionPlayer) throws ResourceNotFoundException{
+        PlayerSession playerSession = new PlayerSession();
+        playerSession.setPlayer(basicDataAnalysis.getPlayerById(assignSessionPlayer.getPlayerId()));
+        playerSession.setSession(basicDataAnalysis.getSessionById(assignSessionPlayer.getSessionId()));
+        return basicDataAnalysis.createPlayerSession(playerSession);
     }
 
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {

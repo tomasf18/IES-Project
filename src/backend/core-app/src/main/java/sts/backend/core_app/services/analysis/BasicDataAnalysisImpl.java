@@ -9,6 +9,7 @@ import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
@@ -57,6 +58,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.createMatch(match);
     }
 
+    public PlayerSession createPlayerSession(PlayerSession playerSession) {
+        return relationalQueries.createPlayerSession(playerSession);
+    }
+
     public User createAdministrator(User user) {
         return relationalQueries.createAdministrator(user);
     }
@@ -73,6 +78,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException {
         return relationalQueries.getSessionById(sessionId);
+    }
+
+    public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
+        return relationalQueries.getPlayerById(playerId);
     }
 
     // --- Get methods ---
