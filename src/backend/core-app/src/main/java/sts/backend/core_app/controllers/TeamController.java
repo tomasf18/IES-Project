@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorsResponse;
@@ -106,7 +105,7 @@ public class TeamController {
     // }
 
     @GetMapping("/team/players-without-sensors")
-    public TeamMembersResponse api_get_players_without_sensors(@RequestBody IdLong teamId) throws ResourceNotFoundException {
+    public TeamMembersResponse api_get_players_without_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getPlayersWithoutSensors(teamId); // TODO: implement
     }
 

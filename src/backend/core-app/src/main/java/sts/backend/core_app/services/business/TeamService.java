@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.team.TeamsInfoView;
-import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorsResponse;
@@ -106,7 +105,7 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'deleteSensors'");
     }
 
-    public TeamMembersResponse getPlayersWithoutSensors(IdLong teamId) {
+    public TeamMembersResponse getPlayersWithoutSensors(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
     }
