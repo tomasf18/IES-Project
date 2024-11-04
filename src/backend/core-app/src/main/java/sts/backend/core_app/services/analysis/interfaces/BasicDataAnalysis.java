@@ -1,5 +1,6 @@
 package sts.backend.core_app.services.analysis.interfaces;
 
+import java.util.List;
 import java.util.Set;
 
 import sts.backend.core_app.models.Session;
@@ -11,6 +12,7 @@ import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 
@@ -37,5 +39,6 @@ public interface BasicDataAnalysis {
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
+    public List<TeamMembersResponse> getTeamMembers(Long teamId);
 
 }

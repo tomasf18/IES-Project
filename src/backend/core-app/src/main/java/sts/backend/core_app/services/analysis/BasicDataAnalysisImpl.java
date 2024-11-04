@@ -1,10 +1,12 @@
 package sts.backend.core_app.services.analysis;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -91,6 +93,11 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         relationalQueries.deleteRegistrationCode(registrationCode);
+    }
+
+    @Override
+    public List<TeamMembersResponse> getTeamMembers(Long teamId) {
+        return relationalQueries.getTeamMembers(teamId);
     }
 
 }

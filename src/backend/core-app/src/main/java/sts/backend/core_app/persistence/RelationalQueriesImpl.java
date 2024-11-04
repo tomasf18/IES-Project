@@ -1,6 +1,9 @@
 package sts.backend.core_app.persistence;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import sts.backend.core_app.persistence.repositories.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.UserRepository;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -161,6 +165,25 @@ public class RelationalQueriesImpl implements RelationalQueries {
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);
+    }
+
+    @Override
+    public List<TeamMembersResponse> getTeamMembers(Long teamId) {
+        List<TeamMembersResponse> teamMembers = new ArrayList<>();
+
+        // Get players
+        List<Player> players = playerRepository.findPlayersByTeamTeamId(teamId);
+        teamMembers.addAll(players.stream()
+            .map(player -> new TeamMembersResponse(player.getName(), player.getProfilePictureUrl()))
+            .collect(Collectors.toList()));
+
+        // Get trainers
+        List<Trainer> trainers = trainerRepository.findTrainersByTeamTeamId(teamId);
+        teamMembers.addAll(trainers.stream()
+            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl()))
+            .collect(Collectors.toList()));
+
+        return teamMembers;
     }
 
 }

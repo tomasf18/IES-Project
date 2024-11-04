@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.models.Team;
+import sts.backend.core_app.models.User;
 
 import org.springframework.stereotype.Repository;
 

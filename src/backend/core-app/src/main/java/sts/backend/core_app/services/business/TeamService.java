@@ -1,6 +1,7 @@
 package sts.backend.core_app.services.business;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -85,9 +86,8 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'deleteRegistrationCode'");
     }
 
-    public TeamMembersResponse getTeamMembers(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTeamMembers'");
+    public List<TeamMembersResponse> getTeamMembers(Long teamId) {
+        return basicDataAnalysis.getTeamMembers(teamId);
     }
 
     public TeamMembersResponse getTeamDirectors(Long teamId) {
