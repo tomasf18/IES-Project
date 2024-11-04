@@ -7,6 +7,7 @@ import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
@@ -23,15 +24,18 @@ public interface BasicDataAnalysis {
     public Session createSession(Session session);
     public RegistrationCode createRegistrationCode(RegistrationCode registrationCode);
     public Match createMatch(Match match);
+    public PlayerSession createPlayerSession(PlayerSession playerSession);
     public User createAdministrator(User user);
 
     // --- Get by Id methods ---
     public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException;
     public Team getTeamById(Long teamId) throws ResourceNotFoundException;
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException;
+    public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
     
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
     public List<User> getUsers() throws ResourceNotFoundException;
