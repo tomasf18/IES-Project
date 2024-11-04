@@ -15,12 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorAssignment;
-import sts.backend.core_app.dto.team.SensorsResponse;
+import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Team;
@@ -84,12 +85,12 @@ public class TeamController {
     }
 
     @GetMapping("/team/sensors")
-    public SensorsResponse api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
-        return teamService.getSensors(teamId); // TODO: implement
+    public Set<SensorPlayerInfo> api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
+        return teamService.getSensors(teamId);
     }
 
     @PostMapping("/team/sensors")
-    public Sensor api_set_sensors(@RequestBody Long sensorId) throws ResourceNotFoundException {
+    public PlayerSensor api_set_sensors(@RequestBody Long sensorId) throws ResourceNotFoundException {
         return teamService.setSensors(sensorId); // TODO: implement
     }
 

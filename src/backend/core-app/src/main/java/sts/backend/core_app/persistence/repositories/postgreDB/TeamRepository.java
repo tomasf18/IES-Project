@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.models.Team;
 
@@ -25,5 +26,14 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             GROUP BY t.teamId, t.name
             """)
     Optional<Set<TeamsInfoView>> findAllTeamsInfo();
+
+    @Query  ("""
+            SELECT s.sensorId as sensorId, p.name as name
+            FROM sensors s
+            LEFT JOIN playerSensors ps ON ps.sensor.sensorId = s.sensorId
+            LEFT JOIN players p ON ps.player.userId = p.userId
+            WHERE s.team.teamId = :teamId
+            """)
+    Optional<Set<SensorPlayerInfo>> findSensorsWithPlayersByTeamId(Long teamId);
 }
     

@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -86,6 +87,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
         return relationalQueries.getTeamsInfo();
+    }
+
+    public Set<SensorPlayerInfo> getSensors(Long teamId) throws ResourceNotFoundException {
+        return relationalQueries.getSensors(teamId);
     }
 
     // --- Delete methods ---
