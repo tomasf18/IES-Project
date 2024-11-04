@@ -23,9 +23,17 @@ public class PlayerSensor {
     // standard constructors / setters / getters / toString
     public PlayerSensor() {}
 
-    public PlayerSensor(Player player, Sensor sensor) {
+    public PlayerSensor(PlayerSensorId playerSensorId, Player player, Sensor sensor) {
         this.player = player;
         this.sensor = sensor;
+    }
+
+    public PlayerSensorId getId() {
+        return id;
+    }
+
+    public void setId(PlayerSensorId id) {
+        this.id = id;
     }
 
     public Player getPlayer() {

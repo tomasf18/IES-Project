@@ -12,6 +12,7 @@ import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.PlayerSensor;
+import sts.backend.core_app.models.PlayerSensorId;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Session;
@@ -107,6 +108,7 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
         PlayerSensor playerSensor = new PlayerSensor();
+        playerSensor.setId(new PlayerSensorId(sensorPlayerInfo.getPlayerId(), sensorPlayerInfo.getSensorId()));
         playerSensor.setPlayer(relationalQueries.getPlayerById(sensorPlayerInfo.getPlayerId()));
         playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
         relationalQueries.deletePlayerSensor(playerSensor);
@@ -122,6 +124,7 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
     
     public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
         PlayerSensor playerSensor = new PlayerSensor();
+        playerSensor.setId(new PlayerSensorId(sensorPlayerInfo.getPlayerId(), sensorPlayerInfo.getSensorId()));
         playerSensor.setPlayer(relationalQueries.getPlayerById(sensorPlayerInfo.getPlayerId()));
         playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
         return relationalQueries.createPlayerSensor(playerSensor);
