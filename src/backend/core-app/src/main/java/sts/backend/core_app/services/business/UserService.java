@@ -17,6 +17,7 @@ public class UserService {
     
     private final TeamService teamService;
     private final BasicDataAnalysis basicDataAnalysis;
+    Boolean isCoach = false;
     
     public UserService(TeamService teamService, BasicDataAnalysis basicDataAnalysis) {
         this.teamService = teamService;
@@ -26,6 +27,7 @@ public class UserService {
     public UserCreationInfo createUser(UserSignUp userSignUp) throws ResourceNotFoundException {
         RegistrationCode code = teamService.claimRegistrationCode(userSignUp.getCode()); // if not found -> ResourceNotFoundException
         UserCreationInfo userCreationInfo = new UserCreationInfo();
+        
         User user = null;
         
         switch (code.getUserTypeId().intValue()) {
@@ -40,12 +42,13 @@ public class UserService {
                 user = td;
                 break;
             case 3:
-                Trainer coach = createTrainer(userSignUp, code);
+                isCoach = true;
+                Trainer coach = createTrainer(userSignUp, code, isCoach);
                 userCreationInfo.setTeam(coach.getTeam());
                 user = coach;
                 break;
             case 4:
-                Trainer personalTrainer = createTrainer(userSignUp, code);
+                Trainer personalTrainer = createTrainer(userSignUp, code, isCoach);
                 userCreationInfo.setTeam(personalTrainer.getTeam());
                 user = personalTrainer;
                 break;    
@@ -86,7 +89,7 @@ public class UserService {
         return basicDataAnalysis.createTeamDirector(teamDirector);
     }
 
-    public Trainer createTrainer(UserSignUp userSignUp, RegistrationCode code) throws ResourceNotFoundException {
+    public Trainer createTrainer(UserSignUp userSignUp, RegistrationCode code, Boolean isCoach) throws ResourceNotFoundException {
         Trainer trainer = new Trainer();
         trainer.setTeam(code.getTeam());
         trainer.setName(code.getName());
@@ -94,6 +97,7 @@ public class UserService {
         trainer.setUsername(userSignUp.getUsername());
         trainer.setEmail(userSignUp.getEmail());
         trainer.setPassword(userSignUp.getPassword());
+        trainer.setIsCoach(isCoach);
         return basicDataAnalysis.createTrainer(trainer);
     }
 

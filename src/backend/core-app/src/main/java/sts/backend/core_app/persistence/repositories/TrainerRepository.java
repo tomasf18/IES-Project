@@ -12,6 +12,10 @@ import org.springframework.stereotype.Repository;
 public interface TrainerRepository extends JpaRepository<Trainer, Long> {
 
     List<Trainer> findTrainersByTeamTeamId(Long teamId);
+    
+    List<Trainer> findByTeamTeamIdAndIsCoachTrue(Long teamId);
+
+    List<Trainer> findByTeamTeamIdAndIsCoachFalse(Long teamId);
 
 }
     
