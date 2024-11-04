@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.user.UserCreationInfo;
 import sts.backend.core_app.dto.user.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity<?> api_delete_player(@RequestBody IdLong userId) throws ResourceNotFoundException {
+    public ResponseEntity<?> api_delete_player(@RequestParam Long userId) throws ResourceNotFoundException {
         userService.deleteUser(userId); // TODO: implement
         return ResponseEntity.ok().build();
     }

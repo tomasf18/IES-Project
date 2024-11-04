@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.team.TeamsInfoView;
-import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorsResponse;
@@ -71,12 +70,12 @@ public class TeamService {
         return basicDataAnalysis.getTeamsInfo();
     }
 
-    public void deleteTeam(IdLong teamId) {
+    public void deleteTeam(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteTeam'");
     }
 
-    public RealTimeInfo getPlayersAvailableRealTimeInfo(IdLong teamId) {
+    public RealTimeInfo getPlayersAvailableRealTimeInfo(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersAvailableRealTimeInfo'");
     }
@@ -86,27 +85,27 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'deleteRegistrationCode'");
     }
 
-    public TeamMembersResponse getTeamMembers(IdLong teamId) {
+    public TeamMembersResponse getTeamMembers(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getTeamMembers'");
     }
 
-    public TeamMembersResponse getTeamDirectors(IdLong teamId) {
+    public TeamMembersResponse getTeamDirectors(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getTeamDirectors'");
     }
 
-    public SensorsResponse getSensors(IdLong teamId) {
+    public SensorsResponse getSensors(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getSensors'");
     }
 
-    public void deleteSensors(IdLong sensorId) {
+    public void deleteSensors(Long sensorId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteSensors'");
     }
 
-    public TeamMembersResponse getPlayersWithoutSensors(IdLong teamId) {
+    public TeamMembersResponse getPlayersWithoutSensors(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
     }
