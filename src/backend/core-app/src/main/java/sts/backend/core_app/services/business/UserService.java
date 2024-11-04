@@ -2,7 +2,6 @@ package sts.backend.core_app.services.business;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.user.UserCreationInfo;
 import sts.backend.core_app.dto.user.UserSignUp;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -93,7 +92,7 @@ public class UserService {
         return basicDataAnalysis.createTrainer(trainer);
     }
 
-    public void deleteUser(IdLong userId) {
+    public void deleteUser(Long userId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
     }
