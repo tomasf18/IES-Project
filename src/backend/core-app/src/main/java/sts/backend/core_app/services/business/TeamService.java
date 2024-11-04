@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
+import sts.backend.core_app.dto.team.SensorAssignment;
 import sts.backend.core_app.dto.team.SensorsResponse;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
@@ -108,6 +110,16 @@ public class TeamService {
     public TeamMembersResponse getPlayersWithoutSensors(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
+    }
+
+    public Sensor setSensors(Long sensorId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setSensors'");
+    }
+
+    public Sensor assignPlayerToSensor(SensorAssignment sensorAssignment) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'assignPlayerToSensor'");
     }
 
 }
