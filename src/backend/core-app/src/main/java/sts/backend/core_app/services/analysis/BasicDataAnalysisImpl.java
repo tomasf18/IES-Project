@@ -1,5 +1,6 @@
 package sts.backend.core_app.services.analysis;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -88,9 +89,18 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getTeamsInfo();
     }
 
+    public List<User> getUsers() throws ResourceNotFoundException {
+        return relationalQueries.getUsers();
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         relationalQueries.deleteRegistrationCode(registrationCode);
+    }
+
+    @Override
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        relationalQueries.deleteUser(userId);
     }
 
     public void deleteTeam(Long teamId) {
