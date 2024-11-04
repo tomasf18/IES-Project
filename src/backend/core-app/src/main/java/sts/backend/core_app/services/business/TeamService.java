@@ -13,6 +13,7 @@ import sts.backend.core_app.dto.team.SensorsResponse;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
@@ -90,9 +91,8 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'getTeamMembers'");
     }
 
-    public TeamMembersResponse getTeamDirectors(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTeamDirectors'");
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getTeamDirectors(teamId);
     }
 
     public SensorsResponse getSensors(Long teamId) {

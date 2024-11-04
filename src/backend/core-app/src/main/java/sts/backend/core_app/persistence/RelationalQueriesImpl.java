@@ -16,6 +16,7 @@ import sts.backend.core_app.persistence.repositories.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.UserRepository;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -156,6 +157,22 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
         return teamRepository.findAllTeamsInfo()
             .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
+    }
+
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException {
+        Set<TeamDirectorsView> officialDirectors = teamDirectorRepository.findTeamDirectorsByTeamId(teamId)
+            .orElseThrow(() -> new ResourceNotFoundException("No official team directors found for team with ID " + teamId));
+
+        Set<TeamDirectorsView> pendingDirectors = teamDirectorRepository.findPendingTeamDirectorsByTeamId(teamId)
+            .orElse(Set.of());
+
+        officialDirectors.addAll(pendingDirectors);
+
+        if (officialDirectors.isEmpty()) {
+            throw new ResourceNotFoundException("No team directors found for team with ID " + teamId);
+        }
+
+        return officialDirectors;
     }
 
     // --- Delete methods ---
