@@ -105,6 +105,13 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteSensor(sensorId);
     }
 
+    public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        PlayerSensor playerSensor = new PlayerSensor();
+        playerSensor.setPlayer(relationalQueries.getPlayerById(sensorPlayerInfo.getPlayerId()));
+        playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
+        relationalQueries.deletePlayerSensor(playerSensor);
+    }
+
     // --- Assign methods ---
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
         Sensor sensor = new Sensor();

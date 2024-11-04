@@ -193,4 +193,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
         sensorRepository.deleteById(sensorId);
     }
 
+    public void deletePlayerSensor(PlayerSensor playerSensor) {
+        playerSensorRepository.delete(playerSensor);
+    }
+
 }

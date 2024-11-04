@@ -105,6 +105,12 @@ public class TeamController {
         return teamService.assignPlayerToSensor(sensorPlayerInfo);
     }
 
+    @DeleteMapping("/team/sensors/assign-player")
+    public ResponseEntity<?> api_unassign_player_from_sensor(@RequestBody SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        teamService.unassignPlayerFromSensor(sensorPlayerInfo);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/team/players-without-sensors")
     public TeamMembersResponse api_get_players_without_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getPlayersWithoutSensors(teamId); // TODO: implement

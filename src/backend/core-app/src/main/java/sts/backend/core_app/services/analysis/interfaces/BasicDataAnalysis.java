@@ -43,6 +43,7 @@ public interface BasicDataAnalysis {
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
     public void deleteSensor(Long sensorId);
+    public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
     
     // --- Assign methods ---
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;

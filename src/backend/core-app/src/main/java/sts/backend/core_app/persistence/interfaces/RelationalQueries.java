@@ -53,6 +53,7 @@ public interface RelationalQueries {
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
-    public void deleteSensor(Long sensorId);    
+    public void deleteSensor(Long sensorId);
+    public void deletePlayerSensor(PlayerSensor playerSensor);    
     
 }

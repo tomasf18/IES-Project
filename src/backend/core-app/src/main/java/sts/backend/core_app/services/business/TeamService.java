@@ -121,4 +121,8 @@ public class TeamService {
         return basicDataAnalysis.assignPlayerToSensor(sensorPlayerInfo);
     }
 
+    public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        basicDataAnalysis.unassignPlayerFromSensor(sensorPlayerInfo);
+    }
+
 }
