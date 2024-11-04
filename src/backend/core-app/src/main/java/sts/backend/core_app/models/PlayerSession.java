@@ -17,7 +17,7 @@ public class PlayerSession {
     private Player player;
 
     @ManyToOne
-    @JoinColumn(name = "SESSION_FK", nullable = false)
+    @JoinColumn(name = "SESSION_FK", insertable = false, updatable = false)
     private Session session;
 
     private Long sensorId;
