@@ -5,14 +5,14 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "sensor_data")
-@IdClass(SensorDataId.class) // Specify the composite key class (ID is a composite key, so we need to create a class for it)
-public class SensorData {
+@IdClass(SensorTimeSeriesDataId.class) // Specify the composite key class (ID is a composite key, so we need to create a class for it)
+public class SensorTimeSeriesData {
 
     @Id
     private Instant timestamp;
 
     @Id
-    private Integer sensorId;
+    private Long playerId;
 
     @Id
     private String metric;
@@ -20,13 +20,12 @@ public class SensorData {
     @Column(nullable = false)
     private Double value;
 
-    // Constructors, getters, and setters
+    // standard constructors / setters / getters / toString
+    public SensorTimeSeriesData() {}
 
-    public SensorData() {}
-
-    public SensorData(Instant timestamp, Integer sensorId, String metric, Double value) {
+    public SensorTimeSeriesData(Instant timestamp, Long playerId, String metric, Double value) {
         this.timestamp = timestamp;
-        this.sensorId = sensorId;
+        this.playerId = playerId;
         this.metric = metric;
         this.value = value;
     }
@@ -39,12 +38,12 @@ public class SensorData {
         this.timestamp = timestamp;
     }
 
-    public Integer getSensorId() {
-        return sensorId;
+    public Long getPlayerId() {
+        return playerId;
     }
 
-    public void setSensorId(Integer sensorId) {
-        this.sensorId = sensorId;
+    public void setSensorId(Long playerId) {
+        this.playerId = playerId;
     }
 
     public String getMetric() {

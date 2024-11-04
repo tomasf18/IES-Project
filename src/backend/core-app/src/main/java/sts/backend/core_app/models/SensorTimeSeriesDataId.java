@@ -4,21 +4,24 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-public class SensorDataId implements Serializable {
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public class SensorTimeSeriesDataId implements Serializable {
 
     private Instant timestamp;
     private Integer sensorId;
     private String metric;
 
-    public SensorDataId() {}
+    // standard constructors / setters / getters / toString
+    public SensorTimeSeriesDataId() {}
 
-    public SensorDataId(Instant timestamp, Integer sensorId, String metric) {
+    public SensorTimeSeriesDataId(Instant timestamp, Integer sensorId, String metric) {
         this.timestamp = timestamp;
         this.sensorId = sensorId;
         this.metric = metric;
     }
 
-    // Getters, setters, equals, and hashCode
     public Instant getTimestamp() {
         return timestamp;
     }
@@ -48,7 +51,7 @@ public class SensorDataId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SensorDataId that = (SensorDataId) o;
+        SensorTimeSeriesDataId that = (SensorTimeSeriesDataId) o;
         return Objects.equals(timestamp, that.timestamp) &&
                Objects.equals(sensorId, that.sensorId) &&
                Objects.equals(metric, that.metric);

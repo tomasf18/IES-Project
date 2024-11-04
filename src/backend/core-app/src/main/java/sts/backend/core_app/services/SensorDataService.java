@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import sts.backend.core_app.models.SensorData; // Add this import statement
+import sts.backend.core_app.models.SensorTimeSeriesData; // Add this import statement
 
 // Used for directly access to the TimescaleDB database
 @Service
@@ -19,7 +19,7 @@ public class SensorDataService {
         this.timescaleDataSource = timescaleDataSource;
     }
 
-    public void saveSensorData(SensorData sensorData) {
+    public void saveSensorData(SensorTimeSeriesData sensorData) {
         try (Connection connection = timescaleDataSource.getConnection()) {
             // Implement logic for saving sensor data to TimescaleDB using JDBC or a JPA repository.
         } catch (SQLException e) {

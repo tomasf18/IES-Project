@@ -2,10 +2,10 @@ package sts.backend.core_app.persistence.repositories.timescaleDB;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import sts.backend.core_app.models.SensorData;
-import sts.backend.core_app.models.SensorDataId;
+import sts.backend.core_app.models.SensorTimeSeriesData;
+import sts.backend.core_app.models.SensorTimeSeriesDataId;
 
 @Repository
-public interface SensorDataRepository extends JpaRepository<SensorData, SensorDataId> {
+public interface SensorDataRepository extends JpaRepository<SensorTimeSeriesData, SensorTimeSeriesDataId> {
 
 }
