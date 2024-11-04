@@ -80,6 +80,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getSessionsInfoByTeam(team);
     }
 
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return relationalQueries.getSessionsInfoByPlayerId(playerId);
+    }
+
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return relationalQueries.getRegistrationCode(code);
     }
