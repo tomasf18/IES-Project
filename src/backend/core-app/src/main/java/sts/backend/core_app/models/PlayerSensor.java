@@ -13,7 +13,7 @@ public class PlayerSensor {
     private PlayerSensorId id;
 
     @OneToOne
-    @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
+    @JoinColumn(name = "PLAYER_FK", nullable = false)
     private Player player;
 
     @OneToOne
