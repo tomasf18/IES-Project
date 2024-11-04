@@ -1,10 +1,12 @@
 package sts.backend.core_app.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.GenerationType;
 
 @Entity(name = "sensors")
@@ -17,6 +19,9 @@ public class Sensor {
     @ManyToOne
     @JoinColumn(name = "TEAM_FK", nullable = false)
     private Team team;
+
+    @OneToOne(mappedBy = "sensor", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private PlayerSensor playerSensor;
 
     // standard constructors, getters, setters, etc.
     public Sensor() {}

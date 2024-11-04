@@ -61,7 +61,6 @@ public class UserService {
     public Player createPlayer(UserSignUp userSignUp, RegistrationCode code) throws ResourceNotFoundException {
         Player player = new Player();
         player.setTeam(code.getTeam());
-        player.setActiveSensorId(null);
         player.setName(code.getName());
         player.setProfilePictureUrl(code.getProfilePictureUrl());
         player.setUsername(userSignUp.getUsername());

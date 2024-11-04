@@ -1,21 +1,17 @@
 package sts.backend.core_app.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "sensor_data")
-@IdClass(SensorTimeSeriesDataId.class) // Specify the composite key class (ID is a composite key, so we need to create a class for it)
+@Table(name = "sensorTimeSeriesData")
 public class SensorTimeSeriesData {
 
-    @Id
-    private LocalDateTime timestamp;
+    @EmbeddedId
+    private SensorTimeSeriesDataId id;
 
-    @Id
-    private Long playerId;
-
-    @Id
-    private String metric;
+    @ManyToOne
+    @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
+    private Player player;
 
     @Column(nullable = false)
     private Double value;
@@ -23,35 +19,26 @@ public class SensorTimeSeriesData {
     // standard constructors / setters / getters / toString
     public SensorTimeSeriesData() {}
 
-    public SensorTimeSeriesData(LocalDateTime timestamp, Long playerId, String metric, Double value) {
-        this.timestamp = timestamp;
-        this.playerId = playerId;
-        this.metric = metric;
+    public SensorTimeSeriesData(SensorTimeSeriesDataId id, Player player, Double value) {
+        this.id = id;
+        this.player = player;
         this.value = value;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public SensorTimeSeriesDataId getId() {
+        return id;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setId(SensorTimeSeriesDataId id) {
+        this.id = id;
     }
 
-    public Long getPlayerId() {
-        return playerId;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setSensorId(Long playerId) {
-        this.playerId = playerId;
-    }
-
-    public String getMetric() {
-        return metric;
-    }
-
-    public void setMetric(String metric) {
-        this.metric = metric;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public Double getValue() {
@@ -64,10 +51,9 @@ public class SensorTimeSeriesData {
 
     @Override
     public String toString() {
-        return "SensorData{" +
-                "timestamp=" + timestamp +
-                ", playerId=" + playerId +
-                ", metric='" + metric + '\'' +
+        return "SensorTimeSeriesData{" +
+                "id=" + id +
+                ", player=" + player +
                 ", value=" + value +
                 '}';
     }

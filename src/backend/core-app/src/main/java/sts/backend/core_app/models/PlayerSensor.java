@@ -3,21 +3,21 @@ package sts.backend.core_app.models;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 
 @Entity(name = "playerSensors")
 public class PlayerSensor {
     
     @EmbeddedId
-    private PlayerSessionId id;
+    private PlayerSensorId id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
     private Player player;
 
-    @ManyToOne
-    @JoinColumn(name = "SESSION_FK", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "SENSOR_FK", nullable = false)
     private Sensor sensor;
     
     // standard constructors / setters / getters / toString
