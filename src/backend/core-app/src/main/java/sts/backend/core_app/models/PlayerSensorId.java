@@ -5,18 +5,18 @@ import java.io.Serializable;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class PlayerSessionId implements Serializable {
-    // Composite key for PlayerSession
+public class PlayerSensorId implements Serializable {
+    // Composite key for PlayerSensor
     
     private Long playerId;
-    private Long sessionId;
+    private Long sensorId;
 
     // standard constructors / setters / getters / toString
-    public PlayerSessionId() {}
+    public PlayerSensorId() {}
 
-    public PlayerSessionId(Long playerId, Long sessionId) {
+    public PlayerSensorId(Long playerId, Long sensorId) {
         this.playerId = playerId;
-        this.sessionId = sessionId;
+        this.sensorId = sensorId;
     }
 
     public Long getPlayerId() {
@@ -27,11 +27,11 @@ public class PlayerSessionId implements Serializable {
         this.playerId = playerId;
     }
 
-    public Long getSessionId() {
-        return sessionId;
+    public Long getSensorId() {
+        return sensorId;
     }
 
-    public void setSessionId(Long sessionId) {
-        this.sessionId = sessionId;
+    public void setSensorId(Long sensorId) {
+        this.sensorId = sensorId;
     }
 }

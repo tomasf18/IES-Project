@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "players")
 public class Player extends User {
@@ -16,6 +17,12 @@ public class Player extends User {
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PlayerSession> playerSessions;
+
+    @OneToOne(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private PlayerSensor playerSensor;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<SensorTimeSeriesData> sensorTimeSeriesData;
 
     // standard constructors / setters / getters / toString
     public Player() {}

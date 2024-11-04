@@ -30,6 +30,9 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<TeamDirector> directors;
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Sensor> sensors;
+
     // standard constructors / setters / getters / toString
     public Team() {}
 
