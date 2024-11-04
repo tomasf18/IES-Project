@@ -71,8 +71,7 @@ public class TeamService {
     }
 
     public void deleteTeam(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTeam'");
+        basicDataAnalysis.deleteTeam(teamId);
     }
 
     public RealTimeInfo getPlayersAvailableRealTimeInfo(Long teamId) {
