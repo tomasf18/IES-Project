@@ -41,7 +41,7 @@ public class TeamController {
 
     @DeleteMapping("/team")
     public ResponseEntity<?> api_delete_team(@RequestParam Long teamId) throws ResourceNotFoundException {
-        teamService.deleteTeam(teamId); // TODO: implement
+        teamService.deleteTeam(teamId); 
         return ResponseEntity.ok().build();
     }
 

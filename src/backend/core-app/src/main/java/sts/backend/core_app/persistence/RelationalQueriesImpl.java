@@ -162,4 +162,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
         registrationCodeRepository.delete(registrationCode);
     }
 
+    public void deleteTeam(Long teamId) {
+        teamRepository.deleteById(teamId);
+    }
+
 }

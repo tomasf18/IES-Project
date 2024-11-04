@@ -93,4 +93,8 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
+    public void deleteTeam(Long teamId) {
+        relationalQueries.deleteTeam(teamId);
+    }
+
 }
