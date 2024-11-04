@@ -1,6 +1,5 @@
 package sts.backend.core_app.persistence;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ import sts.backend.core_app.persistence.repositories.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.UserRepository;
 
 import sts.backend.core_app.dto.SessionInfoView;
-import sts.backend.core_app.dto.TeamsInfoResponse;
+import sts.backend.core_app.dto.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
@@ -154,8 +153,9 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));
     }
 
-    public List<TeamsInfoResponse> getTeamsInfo() {
-        return teamRepository.findAllTeamsInfo();
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
+        return teamRepository.findAllTeamsInfo()
+            .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
 
     // --- Delete methods ---

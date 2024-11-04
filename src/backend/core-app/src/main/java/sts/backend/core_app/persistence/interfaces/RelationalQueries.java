@@ -1,11 +1,10 @@
 package sts.backend.core_app.persistence.interfaces;
 
-import java.util.List;
 import java.util.Set;
 
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.dto.SessionInfoView;
-import sts.backend.core_app.dto.TeamsInfoResponse;
+import sts.backend.core_app.dto.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
@@ -43,7 +42,7 @@ public interface RelationalQueries {
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
-    public List<TeamsInfoResponse> getTeamsInfo() throws ResourceNotFoundException;
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

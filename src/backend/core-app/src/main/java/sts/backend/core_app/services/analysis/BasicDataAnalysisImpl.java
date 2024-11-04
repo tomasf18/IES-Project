@@ -1,12 +1,11 @@
 package sts.backend.core_app.services.analysis;
 
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.SessionInfoView;
-import sts.backend.core_app.dto.TeamsInfoResponse;
+import sts.backend.core_app.dto.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
@@ -85,7 +84,7 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getRegistrationCode(code);
     }
 
-    public List<TeamsInfoResponse> getTeamsInfo() throws ResourceNotFoundException {
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
         return relationalQueries.getTeamsInfo();
     }
 
