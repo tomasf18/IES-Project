@@ -2,6 +2,7 @@ package sts.backend.core_app.models;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import jakarta.persistence.Embeddable;
@@ -9,8 +10,8 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class SensorTimeSeriesDataId implements Serializable {
 
-    private Instant timestamp;
-    private Integer sensorId;
+    private LocalDateTime timestamp;
+    private Long sensorId;
     private String metric;
 
     // standard constructors / setters / getters / toString

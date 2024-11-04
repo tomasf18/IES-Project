@@ -66,7 +66,7 @@ public class SensorTimeSeriesData {
     public String toString() {
         return "SensorData{" +
                 "timestamp=" + timestamp +
-                ", sensorId=" + sensorId +
+                ", playerId=" + playerId +
                 ", metric='" + metric + '\'' +
                 ", value=" + value +
                 '}';
