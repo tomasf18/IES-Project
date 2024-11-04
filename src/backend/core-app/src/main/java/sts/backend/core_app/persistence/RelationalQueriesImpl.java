@@ -1,5 +1,6 @@
 package sts.backend.core_app.persistence;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -157,6 +158,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
 
+    public List<User> getUsers() throws ResourceNotFoundException {
+        return userRepository.findAll();
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);
@@ -167,14 +172,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
         if (!userRepository.existsById(userId)) {
             throw new ResourceNotFoundException("User not found");
         }
-    
-        // TODO: verify if is necessary to delete related entities
-        // playerRepository.findById(userId).ifPresent(player -> {
-        //     playerSessionRepository.deleteByPlayerId(player.getUserId());
-        //     // playerSensorRepository.deleteByPlayerId(player.getId());
-        //     playerRepository.delete(player);
-        // });
-    
+        
+        playerRepository.deleteById(userId);
+        teamDirectorRepository.deleteById(userId);
+        trainerRepository.deleteById(userId);
         userRepository.deleteById(userId); 
     }
 

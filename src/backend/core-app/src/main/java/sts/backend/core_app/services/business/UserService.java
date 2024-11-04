@@ -1,5 +1,7 @@
 package sts.backend.core_app.services.business;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.user.UserCreationInfo;
@@ -58,10 +60,6 @@ public class UserService {
         return userCreationInfo;
     }
 
-    public void deleteUser(Long userId) throws ResourceNotFoundException {
-        basicDataAnalysis.deleteUser(userId);
-    }
-
     public Player createPlayer(UserSignUp userSignUp, RegistrationCode code) throws ResourceNotFoundException {
         Player player = new Player();
         player.setTeam(code.getTeam());
@@ -95,10 +93,14 @@ public class UserService {
         return basicDataAnalysis.createTrainer(trainer);
     }
 
-    public void deleteUser(Long userId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+    public List<User> getUsers() throws ResourceNotFoundException {
+        return basicDataAnalysis.getUsers();
     }
+
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        basicDataAnalysis.deleteUser(userId);
+    }
+
 }
 
 

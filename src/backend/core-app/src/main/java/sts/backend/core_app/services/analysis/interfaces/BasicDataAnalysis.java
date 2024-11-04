@@ -1,7 +1,7 @@
 package sts.backend.core_app.services.analysis.interfaces;
 
+import java.util.List;
 import java.util.Set;
-
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
@@ -34,6 +34,7 @@ public interface BasicDataAnalysis {
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
+    public List<User> getUsers() throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

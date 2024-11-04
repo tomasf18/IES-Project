@@ -1,7 +1,7 @@
 package sts.backend.core_app.persistence.interfaces;
 
+import java.util.List;
 import java.util.Set;
-
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
@@ -43,6 +43,7 @@ public interface RelationalQueries {
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
+    public List<User> getUsers() throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
