@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "timescaledb.datasource.url",
+  "type": "java.lang.String",
+  "description": "Used to generate timescaledb datasource url'"
+}]}
