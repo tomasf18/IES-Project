@@ -1,7 +1,7 @@
 package sts.backend.core_app.models;
 
 import jakarta.persistence.*;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "sensor_data")
@@ -9,7 +9,7 @@ import java.time.Instant;
 public class SensorTimeSeriesData {
 
     @Id
-    private Instant timestamp;
+    private LocalDateTime timestamp;
 
     @Id
     private Long playerId;
@@ -23,18 +23,18 @@ public class SensorTimeSeriesData {
     // standard constructors / setters / getters / toString
     public SensorTimeSeriesData() {}
 
-    public SensorTimeSeriesData(Instant timestamp, Long playerId, String metric, Double value) {
+    public SensorTimeSeriesData(LocalDateTime timestamp, Long playerId, String metric, Double value) {
         this.timestamp = timestamp;
         this.playerId = playerId;
         this.metric = metric;
         this.value = value;
     }
 
-    public Instant getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Instant timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

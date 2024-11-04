@@ -19,8 +19,6 @@ public class PlayerSessionId implements Serializable {
         this.sessionId = sessionId;
     }
 
-    // Getters and setters
-
     public Long getPlayerId() {
         return playerId;
     }
