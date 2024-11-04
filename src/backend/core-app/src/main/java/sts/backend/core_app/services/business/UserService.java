@@ -40,10 +40,15 @@ public class UserService {
                 user = td;
                 break;
             case 3:
-                Trainer t = createTrainer(userSignUp, code);
-                userCreationInfo.setTeam(t.getTeam());
-                user = t;
+                Trainer coach = createTrainer(userSignUp, code);
+                userCreationInfo.setTeam(coach.getTeam());
+                user = coach;
                 break;
+            case 4:
+                Trainer personalTrainer = createTrainer(userSignUp, code);
+                userCreationInfo.setTeam(personalTrainer.getTeam());
+                user = personalTrainer;
+                break;    
             default:
                 throw new ResourceNotFoundException("Invalid user type");
         }
