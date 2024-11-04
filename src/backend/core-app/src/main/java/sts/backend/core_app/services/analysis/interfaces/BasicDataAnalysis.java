@@ -7,11 +7,14 @@ import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 
@@ -39,5 +42,10 @@ public interface BasicDataAnalysis {
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
+    
+    // --- Assign methods ---
+    public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;
+    public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
+    
 
 }

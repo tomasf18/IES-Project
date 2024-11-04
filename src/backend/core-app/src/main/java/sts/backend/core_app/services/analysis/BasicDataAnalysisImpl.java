@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
@@ -98,4 +101,18 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
+    // --- Assign methods ---
+    public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
+        Sensor sensor = new Sensor();
+        sensor.setTeam(relationalQueries.getTeamById(sensorTeamInfo.getTeamId()));
+        sensor.setSensorId(sensorTeamInfo.getSensorId());
+        return relationalQueries.createSensor(sensor);
+    }
+    
+    public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        PlayerSensor playerSensor = new PlayerSensor();
+        playerSensor.setPlayer(relationalQueries.getPlayerById(sensorPlayerInfo.getPlayerId()));
+        playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
+        return relationalQueries.createPlayerSensor(playerSensor);
+    }
 }

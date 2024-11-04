@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
-import sts.backend.core_app.dto.team.SensorAssignment;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
@@ -90,8 +90,8 @@ public class TeamController {
     }
 
     @PostMapping("/team/sensors")
-    public PlayerSensor api_set_sensors(@RequestBody Long sensorId) throws ResourceNotFoundException {
-        return teamService.setSensors(sensorId); // TODO: implement
+    public Sensor api_assign_sensor(@RequestBody SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
+        return teamService.assignSensor(sensorTeamInfo);
     }
 
     @DeleteMapping("/team/sensors")
@@ -101,8 +101,8 @@ public class TeamController {
     }
 
     @PostMapping("/team/sensors/assign-player")
-    public Sensor api_assign_player_to_sensor(@RequestBody SensorAssignment sensorAssignment) throws ResourceNotFoundException {
-        return teamService.assignPlayerToSensor(sensorAssignment); // TODO: implement
+    public PlayerSensor api_assign_player_to_sensor(@RequestBody SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        return teamService.assignPlayerToSensor(sensorPlayerInfo);
     }
 
     @GetMapping("/team/players-without-sensors")

@@ -11,6 +11,7 @@ import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorAssignment;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
@@ -113,14 +114,12 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
     }
 
-    public PlayerSensor setSensors(Long sensorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setSensors'");
+    public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
+        return basicDataAnalysis.assignSensor(sensorTeamInfo);
     }
 
-    public Sensor assignPlayerToSensor(SensorAssignment sensorAssignment) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'assignPlayerToSensor'");
+    public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        return basicDataAnalysis.assignPlayerToSensor(sensorPlayerInfo);
     }
 
 }

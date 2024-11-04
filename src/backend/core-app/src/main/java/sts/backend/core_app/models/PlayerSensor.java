@@ -36,11 +36,11 @@ public class PlayerSensor {
         this.player = player;
     }
 
-    public Sensor getSensorId() {
+    public Sensor getSensor() {
         return sensor;
     }
 
-    public void setSensorId(Sensor sensor) {
+    public void setSensor(Sensor sensor) {
         this.sensor = sensor;
     }
 

@@ -9,9 +9,11 @@ import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
@@ -29,6 +31,8 @@ public interface RelationalQueries {
     public TeamDirector createTeamDirector(TeamDirector teamDirector);
     public PlayerSession createPlayerSession(PlayerSession playerSession);
     public User createAdministrator(User user);
+    public Sensor createSensor(Sensor sensor);
+    public PlayerSensor createPlayerSensor(PlayerSensor playerSensor);
 
     // -- Get by Id methods ---
     public User getUserById(Long userId) throws ResourceNotFoundException;
@@ -39,6 +43,7 @@ public interface RelationalQueries {
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
     public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException;
     public PlayerSession getPlayerSessionById(PlayerSessionId playerSessionId) throws ResourceNotFoundException;
+    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException;
 
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
@@ -47,6 +52,6 @@ public interface RelationalQueries {
     public Set<SensorPlayerInfo> getSensors(Long teamId) throws ResourceNotFoundException;
 
     // --- Delete methods ---
-    public void deleteRegistrationCode(RegistrationCode registrationCode);
+    public void deleteRegistrationCode(RegistrationCode registrationCode);    
     
 }
