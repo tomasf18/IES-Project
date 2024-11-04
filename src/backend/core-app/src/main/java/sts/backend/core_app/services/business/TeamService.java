@@ -1,18 +1,19 @@
 package sts.backend.core_app.services.business;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.team.TeamMembersResponse;
-import sts.backend.core_app.dto.team.TeamsInfoResponse;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.dto.IdLong;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorsResponse;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
@@ -66,6 +67,10 @@ public class TeamService {
         return registrationCode;
     }
 
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
+        return basicDataAnalysis.getTeamsInfo();
+    }
+
     public void deleteTeam(IdLong teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteTeam'");
@@ -84,11 +89,6 @@ public class TeamService {
     public TeamMembersResponse getTeamMembers(IdLong teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getTeamMembers'");
-    }
-
-    public TeamsInfoResponse getTeamsInfo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTeamInfo'");
     }
 
     public TeamMembersResponse getTeamDirectors(IdLong teamId) {

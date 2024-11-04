@@ -11,6 +11,7 @@ import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 
 public interface BasicDataAnalysis {
@@ -32,6 +33,7 @@ public interface BasicDataAnalysis {
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

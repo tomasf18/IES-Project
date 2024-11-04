@@ -14,7 +14,9 @@ import sts.backend.core_app.persistence.repositories.TeamDirectorRepository;
 import sts.backend.core_app.persistence.repositories.TeamRepository;
 import sts.backend.core_app.persistence.repositories.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.UserRepository;
+
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
@@ -149,6 +151,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return registrationCodeRepository.findByCode(code)
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));
+    }
+
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException {
+        return teamRepository.findAllTeamsInfo()
+            .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
 
     // --- Delete methods ---

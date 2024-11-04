@@ -4,6 +4,7 @@ import java.util.Set;
 
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
@@ -41,6 +42,7 @@ public interface RelationalQueries {
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
+    public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

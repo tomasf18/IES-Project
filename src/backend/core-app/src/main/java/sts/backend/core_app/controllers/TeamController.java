@@ -1,5 +1,7 @@
 package sts.backend.core_app.controllers;
 
+import java.util.Set;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,7 @@ import sts.backend.core_app.dto.team.SensorsResponse;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
-import sts.backend.core_app.dto.team.TeamsInfoResponse;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
@@ -70,8 +72,8 @@ public class TeamController {
     }
 
     @GetMapping("/team/teams-info")
-    public TeamsInfoResponse api_get_teams_info() throws ResourceNotFoundException {
-        return teamService.getTeamsInfo(); // TODO: implement
+    public Set<TeamsInfoView> api_get_teams_info() throws ResourceNotFoundException {
+        return teamService.getTeamsInfo();
     }
 
     @GetMapping("/team/team-directors")
