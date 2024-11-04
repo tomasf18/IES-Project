@@ -25,10 +25,19 @@ public class PlayerSession {
     // standard constructors / setters / getters / toString
     public PlayerSession() {}
 
-    public PlayerSession(Player player, Session session, Long sensorId) {
+    public PlayerSession(Player player, Session session, Long sensorId, PlayerSessionId id) {
         this.player = player;
         this.session = session;
         this.sensorId = sensorId;
+        this.id = id;
+    }
+
+    public PlayerSessionId getId() {
+        return id;
+    }
+
+    public void setId(PlayerSessionId id) {
+        this.id = id;
     }
 
     public Player getPlayer() {

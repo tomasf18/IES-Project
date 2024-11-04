@@ -35,9 +35,9 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     Optional<Set<SessionInfoView>> findSessionInfoByTeam(@Param("team") Team team);
 
     @Query("""
-            SELECT s.id AS sessionId,
-                   s.startTime as startTime,
-                   (
+            SELECT  s.id AS sessionId,
+                    s.startTime as startTime,
+                    (
                        SELECT COUNT(ps)
                        FROM playerSessions ps
                        WHERE ps.session = s
