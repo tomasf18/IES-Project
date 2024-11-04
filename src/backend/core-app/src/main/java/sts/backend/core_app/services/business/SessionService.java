@@ -6,9 +6,9 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.IdLong;
-import sts.backend.core_app.dto.MatchRequest;
-import sts.backend.core_app.dto.SessionInfoView;
-import sts.backend.core_app.dto.SessionRequest;
+import sts.backend.core_app.dto.session.MatchRequest;
+import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.session.SessionRequest;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Session;
@@ -24,8 +24,8 @@ public class SessionService {
         this.basicDataAnalysis = basicDataAnalysis;
     }
 
-    public Set<SessionInfoView> getSessionsInfoByTeamId(Long teamId) throws ResourceNotFoundException {
-        Team team = basicDataAnalysis.getTeamById(teamId);
+    public Set<SessionInfoView> getSessionsInfoByTeamId(IdLong teamId) throws ResourceNotFoundException {
+        Team team = basicDataAnalysis.getTeamById(teamId.getId());
         return basicDataAnalysis.getSessionsInfoByTeamId(team);
     }
 

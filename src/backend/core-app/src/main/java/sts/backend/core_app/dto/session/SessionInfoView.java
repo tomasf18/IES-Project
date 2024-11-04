@@ -1,4 +1,4 @@
-package sts.backend.core_app.dto;
+package sts.backend.core_app.dto.session;
 
 import java.time.LocalDateTime;
 

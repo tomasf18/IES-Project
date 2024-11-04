@@ -1,4 +1,4 @@
-package sts.backend.core_app.dto;
+package sts.backend.core_app.dto.user;
 
 import sts.backend.core_app.models.Team;
 

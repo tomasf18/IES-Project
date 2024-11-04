@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import sts.backend.core_app.dto.TeamsInfoView;
+import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.models.Team;
 
 import org.springframework.stereotype.Repository;

@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
-import sts.backend.core_app.dto.SessionInfoView;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
