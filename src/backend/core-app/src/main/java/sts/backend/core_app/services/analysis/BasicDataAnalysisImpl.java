@@ -101,6 +101,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
+    public void deleteSensor(Long sensorId) {
+        relationalQueries.deleteSensor(sensorId);
+    }
+
     // --- Assign methods ---
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
         Sensor sensor = new Sensor();

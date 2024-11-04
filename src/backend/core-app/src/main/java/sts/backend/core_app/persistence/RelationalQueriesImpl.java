@@ -189,4 +189,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
         registrationCodeRepository.delete(registrationCode);
     }
 
+    public void deleteSensor(Long sensorId) {
+        sensorRepository.deleteById(sensorId);
+    }
+
 }

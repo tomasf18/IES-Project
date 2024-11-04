@@ -105,8 +105,7 @@ public class TeamService {
     }
 
     public void deleteSensors(Long sensorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteSensors'");
+        basicDataAnalysis.deleteSensor(sensorId);
     }
 
     public TeamMembersResponse getPlayersWithoutSensors(Long teamId) {

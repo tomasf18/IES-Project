@@ -96,7 +96,7 @@ public class TeamController {
 
     @DeleteMapping("/team/sensors")
     public ResponseEntity<?> api_delete_sensors(@RequestParam Long sensorId) throws ResourceNotFoundException {
-        teamService.deleteSensors(sensorId); // TODO: implement
+        teamService.deleteSensors(sensorId);
         return ResponseEntity.ok().build();
     }
 

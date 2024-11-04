@@ -52,6 +52,7 @@ public interface RelationalQueries {
     public Set<SensorPlayerInfo> getSensors(Long teamId) throws ResourceNotFoundException;
 
     // --- Delete methods ---
-    public void deleteRegistrationCode(RegistrationCode registrationCode);    
+    public void deleteRegistrationCode(RegistrationCode registrationCode);
+    public void deleteSensor(Long sensorId);    
     
 }
