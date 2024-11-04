@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
-import sts.backend.core_app.dto.team.SensorAssignment;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.SensorTeamInfo;
-import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
@@ -100,7 +99,7 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'getTeamDirectors'");
     }
 
-    public Set<SensorPlayerInfo> getSensors(Long teamId) throws ResourceNotFoundException {
+    public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
         return basicDataAnalysis.getSensors(teamId);
     }
 

@@ -17,7 +17,7 @@ import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.dto.session.SessionInfoView;
-import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -179,7 +179,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
 
-    public Set<SensorPlayerInfo> getSensors(Long teamId) throws ResourceNotFoundException {
+    public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
         return teamRepository.findSensorsWithPlayersByTeamId(teamId)
             .orElseThrow(() -> new ResourceNotFoundException("Sensors for team with ID " + teamId + " not found"));
     }

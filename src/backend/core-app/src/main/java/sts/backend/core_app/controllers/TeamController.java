@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
@@ -85,7 +86,7 @@ public class TeamController {
     }
 
     @GetMapping("/team/sensors")
-    public Set<SensorPlayerInfo> api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
+    public Set<SensorPlayerView> api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getSensors(teamId);
     }
 
