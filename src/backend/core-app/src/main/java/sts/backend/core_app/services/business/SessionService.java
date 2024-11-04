@@ -72,8 +72,7 @@ public class SessionService {
     }
 
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSessionsInfoByPlayerId'");
+        return basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
     }
 
     public PlayerStrainResponse getPlayerStrain(Long playerId, Long sessionId) {
