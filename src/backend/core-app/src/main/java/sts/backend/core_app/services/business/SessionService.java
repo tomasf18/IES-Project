@@ -71,7 +71,7 @@ public class SessionService {
         throw new UnsupportedOperationException("Unimplemented method 'assignPlayer'");
     }
 
-    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) {
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
         return basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
     }
 
