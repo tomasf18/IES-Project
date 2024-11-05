@@ -13,12 +13,10 @@ public class Trainer extends User {
     @JoinColumn(name = "TEAM_FK", nullable = false)
     private Team team;
 
-<<<<<<< HEAD
     private Boolean isCoach;
-=======
+    
     @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Session> sessions;
->>>>>>> dev
 
     // standard constructors / setters / getters / toString
     public Trainer() {}
