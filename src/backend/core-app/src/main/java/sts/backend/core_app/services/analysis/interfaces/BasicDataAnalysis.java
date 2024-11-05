@@ -45,6 +45,8 @@ public interface BasicDataAnalysis {
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
+    public List<User> getUsers() throws ResourceNotFoundException;
+    public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException; 
     public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException;
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
 
@@ -59,6 +61,5 @@ public interface BasicDataAnalysis {
     // --- Assign methods ---
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;
     public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
-    public List<User> getUsers() throws ResourceNotFoundException;    
 
 }
