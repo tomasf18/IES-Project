@@ -13,11 +13,11 @@ public class PlayerSession {
     private PlayerSessionId id;
 
     @ManyToOne
-    @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
+    @JoinColumn(name = "PLAYER_FK", nullable = false)
     private Player player;
 
     @ManyToOne
-    @JoinColumn(name = "SESSION_FK", insertable = false, updatable = false)
+    @JoinColumn(name = "SESSION_FK", nullable = false)
     private Session session;
 
     private Long sensorId;
