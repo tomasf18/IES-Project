@@ -1,4 +1,4 @@
-package sts.backend.core_app.persistence.repositories;
+package sts.backend.core_app.persistence.repositories.postgreDB;
 
 import java.util.Optional;
 

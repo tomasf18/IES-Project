@@ -4,6 +4,7 @@ import sts.backend.core_app.dto.player.RecoveryStrainResponse;
 
 import org.springframework.stereotype.Service;
 
+import sts.backend.core_app.dto.player.FatigueResponse;
 import sts.backend.core_app.dto.player.OverviewStressResponse;
 import sts.backend.core_app.dto.player.SleepResponse;
 
@@ -23,6 +24,11 @@ public class PlayerService {
     public RecoveryStrainResponse getRecoveryStrain(Long playerId, String timeOption) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getRecoveryStrain'");
+    }
+
+    public FatigueResponse getPlayerFatigueAllDaysOfYear(Long playerId, Long year) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayerFatigueAllDaysOfYear'");
     }
     
 }

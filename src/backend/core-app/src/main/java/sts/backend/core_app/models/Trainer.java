@@ -1,8 +1,10 @@
 package sts.backend.core_app.models;
-
+import java.util.List;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "trainers")
 public class Trainer extends User {
@@ -10,6 +12,9 @@ public class Trainer extends User {
     @ManyToOne
     @JoinColumn(name = "TEAM_FK", nullable = false)
     private Team team;
+
+    @OneToMany(mappedBy = "trainer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Session> sessions;
 
     // standard constructors / setters / getters / toString
     public Trainer() {}

@@ -5,11 +5,20 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import sts.backend.core_app.dto.session.AssignSessionPlayer;
+import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
+import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.MatchRequest;
+import sts.backend.core_app.dto.session.NotificationResponse;
+import sts.backend.core_app.dto.session.PlayerStrainResponse;
+import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
+import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.session.SessionRequest;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
+import sts.backend.core_app.models.PlayerSession;
+import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
@@ -56,6 +65,50 @@ public class SessionService {
         Session session = basicDataAnalysis.getSessionById(sessionId);
         session.setEndTime(LocalDateTime.now());
         return basicDataAnalysis.createSession(session);
+    }
+
+    public PlayerSession assignPlayer(AssignSessionPlayer assignSessionPlayer) throws ResourceNotFoundException{
+        PlayerSession playerSession = new PlayerSession();
+        Long playerId = assignSessionPlayer.getPlayerId();
+        Long sessionId = assignSessionPlayer.getSessionId();
+        playerSession.setPlayer(basicDataAnalysis.getPlayerById(playerId));
+        playerSession.setSession(basicDataAnalysis.getSessionById(sessionId));
+        playerSession.setId(new PlayerSessionId(playerId, sessionId));
+        return basicDataAnalysis.createPlayerSession(playerSession);
+    }
+
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
+    }
+
+    public PlayerStrainResponse getPlayerStrain(Long playerId, Long sessionId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPlayerStrain'");
+    }
+
+    public RealTimeInfoResponse getRealTimeInfo(Long sessionId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRealTimeInfo'");
+    }
+
+    public RealTimeExtraDetailsResponse getRealTimeExtraDetails(Long sessionId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRealTimeExtraDetails'");
+    }
+
+    public Set<NotificationResponse> getNotifications(Long sessionId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getNotifications'");
+    }
+
+    public HistoricalExtraDetailsResponse getHistoricalExtraDetails(Long sessionId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHistoricalExtraDetails'");
+    }
+
+    public HistoricalInfoResponse getHistoricalInfo(Long sessionId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getHistoricalInfo'");
     }
 
 }

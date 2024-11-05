@@ -1,9 +1,12 @@
 package sts.backend.core_app.models;
 
-import jakarta.persistence.Column;
+import java.util.List;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "players")
 public class Player extends User {
@@ -11,17 +14,22 @@ public class Player extends User {
     @ManyToOne
     @JoinColumn(name = "TEAM_FK")
     private Team team;
-    
-    @Column(unique=true)
-    private Long activeSensorId;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PlayerSession> playerSessions;
+
+    @OneToOne(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private PlayerSensor playerSensor;
+
+    @OneToMany(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<SensorTimeSeriesData> sensorTimeSeriesData;
 
     // standard constructors / setters / getters / toString
     public Player() {}
 
-    public Player(String name, String username, String email, String password, String profilePictureUrl, Team team, Long activeSensorId) {
+    public Player(String name, String username, String email, String password, String profilePictureUrl, Team team) {
         super(name, username, email, password, profilePictureUrl);
         this.team = team;
-        this.activeSensorId = activeSensorId;
     }
 
     public Team getTeam() {
@@ -32,19 +40,10 @@ public class Player extends User {
         this.team = team;
     }
 
-    public Long getActiveSensorId() {
-        return activeSensorId;
-    }
-
-    public void setActiveSensorId(Long activeSensorId) {
-        this.activeSensorId = activeSensorId;
-    }
-
     @Override
     public String toString() {
         return "Player{" +
                 ", team=" + team +
-                ", activeSensorId=" + activeSensorId +
                 '}';
     }
 
