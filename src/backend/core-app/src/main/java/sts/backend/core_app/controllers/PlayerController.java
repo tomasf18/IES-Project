@@ -41,4 +41,9 @@ public class PlayerController {
         return playerService.getPlayerFatigueAllDaysOfYear(playerId, year); // TODO: implement
     }
 
+    @PostMapping("/player/add-metric-value")
+    public void api_add_metric_value(@RequestParam Long playerId, @RequestParam String metricName, @RequestParam String value) {
+        playerService.addMetricValue(playerId, metricName, value); // TODO: implement
+    }
+
 }
