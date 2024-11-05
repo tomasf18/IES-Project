@@ -1,6 +1,7 @@
 package sts.backend.core_app.services.business;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
@@ -104,9 +106,8 @@ public class TeamService {
         throw new UnsupportedOperationException("Unimplemented method 'deleteSensors'");
     }
 
-    public TeamMembersResponse getPlayersWithoutSensors(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
+    public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getPlayersWithoutSensorsByTeamId(teamId);
     }
 
 }

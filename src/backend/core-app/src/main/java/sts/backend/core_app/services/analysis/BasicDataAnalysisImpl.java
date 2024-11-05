@@ -106,6 +106,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getUsers();
     }
 
+    public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException {
+        return relationalQueries.getPlayersWithoutSensorsByTeamId(teamId);
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         relationalQueries.deleteRegistrationCode(registrationCode);

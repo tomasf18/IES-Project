@@ -45,6 +45,7 @@ public interface RelationalQueries {
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
     public List<User> getUsers() throws ResourceNotFoundException;
+    public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

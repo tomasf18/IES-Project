@@ -167,6 +167,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return userRepository.findAll();
     }
 
+    public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException {
+        return playerRepository.findPlayersWithoutSensorsByTeamId(teamId);
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);

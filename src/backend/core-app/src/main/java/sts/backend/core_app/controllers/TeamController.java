@@ -1,7 +1,12 @@
 package sts.backend.core_app.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +25,7 @@ import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.business.TeamService;
@@ -105,9 +111,17 @@ public class TeamController {
     // }
 
     @GetMapping("/team/players-without-sensors")
-    public TeamMembersResponse api_get_players_without_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
-        return teamService.getPlayersWithoutSensors(teamId); // TODO: implement
+    public ResponseEntity<?> getPlayersWithoutSensors(@RequestParam Long teamId) throws ResourceNotFoundException {
+        List<Player> players = teamService.getPlayersWithoutSensorsByTeamId(teamId);
+
+        // Transform the player data to only include name and playerId, as requested
+        List<Map<String, Object>> response = players.stream().map(player -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("playerId", player.getUserId());
+            map.put("name", player.getName());
+            return map;
+        }).collect(Collectors.toList());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }
