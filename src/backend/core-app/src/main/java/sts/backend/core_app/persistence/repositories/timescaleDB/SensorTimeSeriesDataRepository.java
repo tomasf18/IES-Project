@@ -6,6 +6,6 @@ import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.models.SensorTimeSeriesDataId;
 
 @Repository
-public interface SensorDataRepository extends JpaRepository<SensorTimeSeriesData, SensorTimeSeriesDataId> {
+public interface SensorTimeSeriesDataRepository extends JpaRepository<SensorTimeSeriesData, SensorTimeSeriesDataId> {
 
 }

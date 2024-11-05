@@ -19,14 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
-import sts.backend.core_app.dto.team.SensorsResponse;
+import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorPlayerView;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.business.TeamService;
 
@@ -73,7 +78,7 @@ public class TeamController {
     }
 
     @GetMapping("/team/team-members")
-    public TeamMembersResponse api_get_team_members(@RequestParam Long teamId) throws ResourceNotFoundException {
+    public List<TeamMembersResponse> api_get_team_members(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getTeamMembers(teamId); // TODO: implement
     }
 
@@ -83,32 +88,36 @@ public class TeamController {
     }
 
     @GetMapping("/team/team-directors")
-    public TeamMembersResponse api_get_team_directors(@RequestParam Long teamId) throws ResourceNotFoundException {
-        return teamService.getTeamDirectors(teamId); // TODO: implement
+    public Set<TeamDirectorsView> api_get_team_directors(@RequestParam Long teamId) throws ResourceNotFoundException {
+        return teamService.getTeamDirectors(teamId);
     }
 
     @GetMapping("/team/sensors")
-    public SensorsResponse api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
-        return teamService.getSensors(teamId); // TODO: implement
+    public Set<SensorPlayerView> api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
+        return teamService.getSensors(teamId);
     }
 
-    // TODO: Sensors is not implemented yet
-    // @PostMapping("/team/sensors")
-    // public Sensor api_set_sensors(@RequestBody Long sensorId) throws ResourceNotFoundException {
-    //     return teamService.setSensors(sensorId); // TODO: implement
-    // }
+    @PostMapping("/team/sensors")
+    public Sensor api_assign_sensor(@RequestBody SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
+        return teamService.assignSensor(sensorTeamInfo);
+    }
 
     @DeleteMapping("/team/sensors")
     public ResponseEntity<?> api_delete_sensors(@RequestParam Long sensorId) throws ResourceNotFoundException {
-        teamService.deleteSensors(sensorId); // TODO: implement
+        teamService.deleteSensors(sensorId);
         return ResponseEntity.ok().build();
     }
 
-    // TODO: Sensors is not implemented yet
-    // @PostMapping("/team/sensors/assign-player")
-    // public Sensor api_assign_player_to_sensor(@RequestBody SensorAssignment sensorAssignment) throws ResourceNotFoundException {
-    //     return teamService.assignPlayerToSensor(sensorAssignment); // TODO: implement
-    // }
+    @PostMapping("/team/sensors/assign-player")
+    public PlayerSensor api_assign_player_to_sensor(@RequestBody SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        return teamService.assignPlayerToSensor(sensorPlayerInfo);
+    }
+
+    @DeleteMapping("/team/sensors/assign-player")
+    public ResponseEntity<?> api_unassign_player_from_sensor(@RequestBody SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        teamService.unassignPlayerFromSensor(sensorPlayerInfo);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/team/players-without-sensors")
     public ResponseEntity<?> getPlayersWithoutSensors(@RequestParam Long teamId) throws ResourceNotFoundException {

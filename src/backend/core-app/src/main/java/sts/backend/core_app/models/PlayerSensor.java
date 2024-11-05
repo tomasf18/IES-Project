@@ -13,7 +13,7 @@ public class PlayerSensor {
     private PlayerSensorId id;
 
     @OneToOne
-    @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
+    @JoinColumn(name = "PLAYER_FK", nullable = false)
     private Player player;
 
     @OneToOne
@@ -23,9 +23,17 @@ public class PlayerSensor {
     // standard constructors / setters / getters / toString
     public PlayerSensor() {}
 
-    public PlayerSensor(Player player, Sensor sensor) {
+    public PlayerSensor(PlayerSensorId playerSensorId, Player player, Sensor sensor) {
         this.player = player;
         this.sensor = sensor;
+    }
+
+    public PlayerSensorId getId() {
+        return id;
+    }
+
+    public void setId(PlayerSensorId id) {
+        this.id = id;
     }
 
     public Player getPlayer() {
@@ -36,11 +44,11 @@ public class PlayerSensor {
         this.player = player;
     }
 
-    public Sensor getSensorId() {
+    public Sensor getSensor() {
         return sensor;
     }
 
-    public void setSensorId(Sensor sensor) {
+    public void setSensor(Sensor sensor) {
         this.sensor = sensor;
     }
 

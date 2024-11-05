@@ -34,4 +34,30 @@ public class PlayerSensorId implements Serializable {
     public void setSensorId(Long sensorId) {
         this.sensorId = sensorId;
     }
+
+    @Override
+    public String toString() {
+        return "PlayerSensorId{" +
+                "playerId=" + playerId +
+                ", sensorId=" + sensorId +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlayerSensorId that = (PlayerSensorId) o;
+
+        if (!playerId.equals(that.playerId)) return false;
+        return sensorId.equals(that.sensorId);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = playerId.hashCode();
+        result = 31 * result + sensorId.hashCode();
+        return result;
+    }
 }

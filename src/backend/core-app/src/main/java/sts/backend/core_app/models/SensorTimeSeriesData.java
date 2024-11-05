@@ -10,7 +10,7 @@ public class SensorTimeSeriesData {
     private SensorTimeSeriesDataId id;
 
     @ManyToOne
-    @JoinColumn(name = "PLAYER_FK", insertable = false, updatable = false)
+    @JoinColumn(name = "PLAYER_FK", nullable = false)
     private Player player;
 
     @Column(nullable = false)

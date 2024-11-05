@@ -6,12 +6,20 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorPlayerView;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamsInfoView;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSensor;
+import sts.backend.core_app.models.PlayerSensorId;
 import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
@@ -102,6 +110,14 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getTeamsInfo();
     }
 
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException {
+        return relationalQueries.getTeamDirectors(teamId);
+    }    
+
+    public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
+        return relationalQueries.getSensors(teamId);
+    }
+    
     public List<User> getUsers() throws ResourceNotFoundException {
         return relationalQueries.getUsers();
     }
@@ -115,6 +131,39 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
+    @Override
+    public List<TeamMembersResponse> getTeamMembers(Long teamId) {
+        return relationalQueries.getTeamMembers(teamId);
+    }
+        
+    public void deleteSensor(Long sensorId) {
+        relationalQueries.deleteSensor(sensorId);
+    }
+
+    public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        PlayerSensor playerSensor = new PlayerSensor();
+        playerSensor.setId(new PlayerSensorId(sensorPlayerInfo.getPlayerId(), sensorPlayerInfo.getSensorId()));
+        playerSensor.setPlayer(relationalQueries.getPlayerById(sensorPlayerInfo.getPlayerId()));
+        playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
+        relationalQueries.deletePlayerSensor(playerSensor);
+    }
+
+    // --- Assign methods ---
+    public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
+        Sensor sensor = new Sensor();
+        sensor.setTeam(relationalQueries.getTeamById(sensorTeamInfo.getTeamId()));
+        sensor.setSensorId(sensorTeamInfo.getSensorId());
+        return relationalQueries.createSensor(sensor);
+    }
+    
+    public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        PlayerSensor playerSensor = new PlayerSensor();
+        playerSensor.setId(new PlayerSensorId(sensorPlayerInfo.getPlayerId(), sensorPlayerInfo.getSensorId()));
+        playerSensor.setPlayer(relationalQueries.getPlayerById(sensorPlayerInfo.getPlayerId()));
+        playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
+        return relationalQueries.createPlayerSensor(playerSensor);
+    }
+    
     @Override
     public void deleteUser(Long userId) throws ResourceNotFoundException {
         relationalQueries.deleteUser(userId);
