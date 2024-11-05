@@ -174,7 +174,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
         // Get players
         List<Player> players = playerRepository.findPlayersByTeamTeamId(teamId);
         teamMembers.addAll(players.stream()
-            .map(player -> new TeamMembersResponse(player.getUserId(), player.getName(), player.getProfilePictureUrl(), 2L, null))
+            .map(player -> new TeamMembersResponse(player.getUserId(), player.getName(), player.getProfilePictureUrl(), 1L, null))
             .collect(Collectors.toList()));    
 
         // Get Coaches
@@ -191,7 +191,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
         // Pending
 
-        List<TeamMembersResponse> teamMembersResponses = teamRepository.findPendingUsersByTypeId(teamId, Set.of(1L,2L,3L));
+        List<TeamMembersResponse> teamMembersResponses = teamRepository.findPendingUsersByTypeId(teamId, Set.of(1L,3L,4L));
         teamMembers.addAll(teamMembersResponses);
 
 

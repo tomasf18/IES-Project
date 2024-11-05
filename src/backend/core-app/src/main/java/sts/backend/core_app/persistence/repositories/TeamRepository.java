@@ -11,7 +11,6 @@ import org.springframework.data.repository.query.Param;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.models.Team;
-import sts.backend.core_app.models.User;
 
 import org.springframework.stereotype.Repository;
 
