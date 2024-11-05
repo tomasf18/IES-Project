@@ -1,9 +1,6 @@
 package sts.backend.core_app.persistence;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
-=======
->>>>>>> dev
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,12 +20,9 @@ import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.dto.session.SessionInfoView;
-<<<<<<< HEAD
 import sts.backend.core_app.dto.team.TeamMembersResponse;
-=======
 import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.SensorPlayerView;
->>>>>>> dev
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
@@ -225,7 +219,6 @@ public class RelationalQueriesImpl implements RelationalQueries {
         registrationCodeRepository.delete(registrationCode);
     }
 
-<<<<<<< HEAD
     @Override
     public List<TeamMembersResponse> getTeamMembers(Long teamId) {
         List<TeamMembersResponse> teamMembers = new ArrayList<>();
@@ -255,7 +248,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
 
         return teamMembers;
-=======
+    } 
+
     public void deleteSensor(Long sensorId) {
         sensorRepository.deleteById(sensorId);
     }
@@ -278,7 +272,6 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
     public void deleteTeam(Long teamId) {
         teamRepository.deleteById(teamId);
->>>>>>> dev
     }
 
 }

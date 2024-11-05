@@ -14,13 +14,10 @@ import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.dto.session.SessionInfoView;
-<<<<<<< HEAD
 import sts.backend.core_app.dto.team.TeamMembersResponse;
-=======
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.SensorTeamInfo;
->>>>>>> dev
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -53,9 +50,7 @@ public interface BasicDataAnalysis {
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
-<<<<<<< HEAD
     public List<TeamMembersResponse> getTeamMembers(Long teamId);
-=======
     public void deleteSensor(Long sensorId);
     public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
     public void deleteUser(Long userId) throws ResourceNotFoundException;
@@ -65,6 +60,5 @@ public interface BasicDataAnalysis {
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;
     public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
     public List<User> getUsers() throws ResourceNotFoundException;    
->>>>>>> dev
 
 }

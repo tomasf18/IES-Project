@@ -6,13 +6,10 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
-<<<<<<< HEAD
 import sts.backend.core_app.dto.team.TeamMembersResponse;
-=======
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.SensorTeamInfo;
->>>>>>> dev
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
