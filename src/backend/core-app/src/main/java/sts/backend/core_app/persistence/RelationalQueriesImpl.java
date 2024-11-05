@@ -18,6 +18,7 @@ import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -184,6 +185,22 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return teamRepository.findAllTeamsInfo()
             .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
+
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException {
+        Set<TeamDirectorsView> officialDirectors = teamDirectorRepository.findTeamDirectorsByTeamId(teamId)
+            .orElseThrow(() -> new ResourceNotFoundException("No official team directors found for team with ID " + teamId));
+
+        Set<TeamDirectorsView> pendingDirectors = teamDirectorRepository.findPendingTeamDirectorsByTeamId(teamId)
+            .orElse(Set.of());
+
+        officialDirectors.addAll(pendingDirectors);
+
+        if (officialDirectors.isEmpty()) {
+            throw new ResourceNotFoundException("No team directors found for team with ID " + teamId);
+        }
+
+        return officialDirectors;
+    }    
 
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
         return teamRepository.findSensorsWithPlayersByTeamId(teamId)

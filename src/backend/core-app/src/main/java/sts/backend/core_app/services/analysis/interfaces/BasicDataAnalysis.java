@@ -18,6 +18,7 @@ import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamsInfoView;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 
 public interface BasicDataAnalysis {
@@ -43,6 +44,7 @@ public interface BasicDataAnalysis {
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException;
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
 
     // --- Delete methods ---

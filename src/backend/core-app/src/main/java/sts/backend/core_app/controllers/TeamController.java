@@ -20,6 +20,7 @@ import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.PlayerSensor;
@@ -81,8 +82,8 @@ public class TeamController {
     }
 
     @GetMapping("/team/team-directors")
-    public TeamMembersResponse api_get_team_directors(@RequestParam Long teamId) throws ResourceNotFoundException {
-        return teamService.getTeamDirectors(teamId); // TODO: implement
+    public Set<TeamDirectorsView> api_get_team_directors(@RequestParam Long teamId) throws ResourceNotFoundException {
+        return teamService.getTeamDirectors(teamId);
     }
 
     @GetMapping("/team/sensors")
