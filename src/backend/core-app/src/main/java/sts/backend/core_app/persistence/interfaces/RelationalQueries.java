@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.Set;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.dto.session.SessionInfoView;
-<<<<<<< HEAD
 import sts.backend.core_app.dto.team.TeamDirectorsView;
-=======
 import sts.backend.core_app.dto.team.SensorPlayerView;
->>>>>>> dev
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
