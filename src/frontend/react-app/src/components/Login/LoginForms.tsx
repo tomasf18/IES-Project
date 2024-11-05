@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { Link } from "react-router-dom";
-import GoogleIcon from "../../assets/google_icon.svg";
-import CustomLoginButtonTheme from "./CustomLoginButtonTheme";
-import CustomSignUpGoogleTheme from "./CustomSignUpButtonTheme";
+import { Checkbox, Label, TextInput } from "flowbite-react";
+import { Button } from "../../components";
+import { Google } from "../../assets";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function Component() {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,14 +13,17 @@ export default function Component() {
       <h1 className="text-3xl font-semibold text-center text-gray-600 mb-4">
         Log In
       </h1>
-      <Button theme={CustomSignUpGoogleTheme} color="custom" className="group">
-        <img
-          src={GoogleIcon}
-          alt="Google"
-          className="w-5 h-5 mr-3 transition duration-400 group-hover:invert"
-        />
-        Continue with Google
-      </Button>
+      <div>
+        <Button color="white" className="w-full">
+          <img
+            src={Google}
+            alt="Google"
+            className="w-5 h-5 mr-3 transition duration-400 group-hover:invert"
+          />
+          Continue with Google
+        </Button>
+      </div>
+
       <div className="flex items-center my-6">
         <hr className="flex-grow border-2 border-gray-300" />
         <span className="mx-4 text-gray-500">OR</span>
@@ -54,19 +56,13 @@ export default function Component() {
         <Checkbox id="remember" className="text-gray-800 focus:ring-gray-600" />
         <Label htmlFor="remember">Remember me</Label>
       </div>
-      <Button theme={CustomLoginButtonTheme} color="custom" type="submit">
-        Login
-      </Button>
+      <Button color="gray">Login</Button>
       <hr className="my-6 border-2 border-gray-300" />
       <h1 className="text-xl font-semibold text-center text-gray-600 mb-4">
         Don't have an account?
       </h1>
       <Link to="/signup">
-        <Button
-          theme={CustomSignUpGoogleTheme}
-          color="custom"
-          className="w-full"
-        >
+        <Button color="white" className="w-full">
           Sign Up
         </Button>
       </Link>

@@ -1,44 +1,51 @@
 package sts.backend.core_app.models;
 
-import java.time.LocalDate;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity(name = "sessions")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Session {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sessionId;
 
-    @NotBlank(message = "Session: start time is mandatory")
-    private LocalDate startTime;
+    @NotBlank(message = "Session: name is mandatory")
+    @Size(max = 50, message = "Session: name must be at most 50 characters")
+    private String name;
 
-    private LocalDate endTime;
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
+
+    @OneToMany(mappedBy = "session", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<PlayerSession> playerSessions;
 
     @ManyToOne
-    @JoinColumn(name = "trainerId", nullable = false)
-    private Trainer player;
-
-    @OneToOne
-    @JoinColumn(name = "matchId", nullable = true)
-    private Match match;
+    @JoinColumn(name = "TRAINER_FK", nullable = false)
+    private Trainer trainer;
 
     // standard constructors / setters / getters / toString
     public Session() {}
 
-    public Session(LocalDate startTime, LocalDate endTime, Trainer player, Match match) {
+    public Session(String name, LocalDateTime startTime, LocalDateTime endTime, Trainer trainer) {
         this.startTime = startTime;
+        this.name = name;
         this.endTime = endTime;
-        this.player = player;
-        this.match = match;
+        this.trainer = trainer;
     }
 
     public Long getSessionId() {
@@ -49,36 +56,36 @@ public class Session {
         this.sessionId = sessionId;
     }
 
-    public LocalDate getStartTime() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDate startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDate getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDate endTime) {
+    public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public Trainer getPlayer() {
-        return player;
+    public Trainer getTrainer() {
+        return trainer;
     }
 
-    public void setPlayer(Trainer player) {
-        this.player = player;
-    }
-
-    public Match getMatch() {
-        return match;
-    }
-
-    public void setMatch(Match match) {
-        this.match = match;
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     @Override
@@ -87,8 +94,7 @@ public class Session {
                 "sessionId=" + sessionId +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", player=" + player +
-                ", match=" + match +
+                ", trainer=" + trainer +
                 '}';
     }
 

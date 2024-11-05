@@ -11,13 +11,25 @@ services:
       - "${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}"
     restart: always
 
-  quotes:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg16
+    container_name: timescaledb
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${TIMESCALEDB_LOCAL_PORT}:${TIMESCALEDB_DOCKER_PORT}"
+    restart: always
+
+  core-app:
     depends_on: 
       - postgres
     build: .
     env_file: ./.env
     ports:
-      - "${QUOTES_LOCAL_PORT}:${QUOTES_DOCKER_PORT}"
+      - "${CORE_APP_LOCAL_PORT}:${CORE_APP_DOCKER_PORT}"
     environment:
       SPRING_APPLICATION_JSON: >-
         {

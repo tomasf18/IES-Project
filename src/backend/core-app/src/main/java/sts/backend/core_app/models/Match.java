@@ -1,17 +1,12 @@
 package sts.backend.core_app.models;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 @Entity(name = "matches")
-public class Match {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long matchId;
+public class Match extends Session {
 
     @Size(max = 50, message = "Match: opponent team must be at most 50 characters")
     private String opponentTeam;
@@ -28,19 +23,12 @@ public class Match {
     // standard constructors / setters / getters / toString
     public Match() {}
 
-    public Match(String opponentTeam, String type, String location, String weather) {
+    public Match(String name, LocalDateTime startTime, LocalDateTime endTime, Trainer trainer, String opponentTeam, String type, String location, String weather) {
+        super(name, startTime, endTime, trainer);
         this.opponentTeam = opponentTeam;
         this.type = type;
         this.location = location;
         this.weather = weather;
-    }
-
-    public Long getMatchId() {
-        return matchId;
-    }
-
-    public void setMatchId(Long matchId) {
-        this.matchId = matchId;
     }
 
     public String getOpponentTeam() {
