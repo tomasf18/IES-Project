@@ -1,5 +1,6 @@
 package sts.backend.core_app.services.analysis;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.PlayerSensorId;
+import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Session;
@@ -63,6 +65,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.createMatch(match);
     }
 
+    public PlayerSession createPlayerSession(PlayerSession playerSession) {
+        return relationalQueries.createPlayerSession(playerSession);
+    }
+
     public User createAdministrator(User user) {
         return relationalQueries.createAdministrator(user);
     }
@@ -81,9 +87,17 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getSessionById(sessionId);
     }
 
+    public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
+        return relationalQueries.getPlayerById(playerId);
+    }
+
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException {
         return relationalQueries.getSessionsInfoByTeam(team);
+    }
+
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return relationalQueries.getSessionsInfoByPlayerId(playerId);
     }
 
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
@@ -96,6 +110,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
         return relationalQueries.getSensors(teamId);
+    }
+    
+    public List<User> getUsers() throws ResourceNotFoundException {
+        return relationalQueries.getUsers();
     }
 
     // --- Delete methods ---
@@ -130,4 +148,13 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         playerSensor.setSensor(relationalQueries.getSensorById(sensorPlayerInfo.getSensorId()));
         return relationalQueries.createPlayerSensor(playerSensor);
     }
+    @Override
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        relationalQueries.deleteUser(userId);
+    }
+
+    public void deleteTeam(Long teamId) {
+        relationalQueries.deleteTeam(teamId);
+    }
+
 }

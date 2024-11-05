@@ -1,5 +1,6 @@
 package sts.backend.core_app.persistence;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -169,6 +170,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Sessions for team " + team.getName() + " not found"));
     }
 
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return sessionRepository.findSessionInfoByPlayerId(playerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Sessions for player with ID " + playerId + " not found"));
+    }
+
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return registrationCodeRepository.findByCode(code)
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));
@@ -183,6 +189,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return teamRepository.findSensorsWithPlayersByTeamId(teamId)
             .orElseThrow(() -> new ResourceNotFoundException("Sensors for team with ID " + teamId + " not found"));
     }
+    
+            public List<User> getUsers() throws ResourceNotFoundException {
+        return userRepository.findAll();
+    }
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
@@ -195,6 +205,22 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
     public void deletePlayerSensor(PlayerSensor playerSensor) {
         playerSensorRepository.delete(playerSensor);
+    }
+    
+    @Override
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        
+        playerRepository.deleteById(userId);
+        teamDirectorRepository.deleteById(userId);
+        trainerRepository.deleteById(userId);
+        userRepository.deleteById(userId); 
+    }
+
+    public void deleteTeam(Long teamId) {
+        teamRepository.deleteById(teamId);
     }
 
 }

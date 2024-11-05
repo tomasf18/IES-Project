@@ -1,7 +1,7 @@
 package sts.backend.core_app.persistence.interfaces;
 
+import java.util.List;
 import java.util.Set;
-
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.team.SensorPlayerView;
@@ -43,17 +43,21 @@ public interface RelationalQueries {
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
     public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException;
     public PlayerSession getPlayerSessionById(PlayerSessionId playerSessionId) throws ResourceNotFoundException;
-    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException;
+    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException; 
 
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
+    public List<User> getUsers() throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
     public void deleteSensor(Long sensorId);
     public void deletePlayerSensor(PlayerSensor playerSensor);    
+    public void deleteUser(Long userId) throws ResourceNotFoundException;
+    public void deleteTeam(Long teamId);
     
 }
