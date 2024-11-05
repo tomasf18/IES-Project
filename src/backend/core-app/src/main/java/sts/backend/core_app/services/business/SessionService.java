@@ -18,6 +18,7 @@ import sts.backend.core_app.dto.session.SessionRequest;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.PlayerSession;
+import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
@@ -66,14 +67,18 @@ public class SessionService {
         return basicDataAnalysis.createSession(session);
     }
 
-    public PlayerSession assignPlayer(AssignSessionPlayer assignSessionPlayer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'assignPlayer'");
+    public PlayerSession assignPlayer(AssignSessionPlayer assignSessionPlayer) throws ResourceNotFoundException{
+        PlayerSession playerSession = new PlayerSession();
+        Long playerId = assignSessionPlayer.getPlayerId();
+        Long sessionId = assignSessionPlayer.getSessionId();
+        playerSession.setPlayer(basicDataAnalysis.getPlayerById(playerId));
+        playerSession.setSession(basicDataAnalysis.getSessionById(sessionId));
+        playerSession.setId(new PlayerSessionId(playerId, sessionId));
+        return basicDataAnalysis.createPlayerSession(playerSession);
     }
 
-    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSessionsInfoByPlayerId'");
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
     }
 
     public PlayerStrainResponse getPlayerStrain(Long playerId, Long sessionId) {

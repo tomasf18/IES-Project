@@ -1,6 +1,7 @@
 package sts.backend.core_app.dto.team;
 
 public class TeamMembersResponse {
+<<<<<<< HEAD
 
     private Long id;
     private String name;
@@ -60,4 +61,7 @@ public class TeamMembersResponse {
     public void setRegistrationCode(String registrationCode) {
         this.registrationCode = registrationCode;
     }
+=======
+        
+>>>>>>> dev
 }

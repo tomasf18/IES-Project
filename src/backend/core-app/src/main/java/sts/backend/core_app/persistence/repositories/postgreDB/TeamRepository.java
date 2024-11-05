@@ -1,4 +1,4 @@
-package sts.backend.core_app.persistence.repositories;
+package sts.backend.core_app.persistence.repositories.postgreDB;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+<<<<<<< HEAD:src/backend/core-app/src/main/java/sts/backend/core_app/persistence/repositories/TeamRepository.java
 import sts.backend.core_app.dto.team.TeamMembersResponse;
+=======
+import sts.backend.core_app.dto.team.SensorPlayerView;
+>>>>>>> dev:src/backend/core-app/src/main/java/sts/backend/core_app/persistence/repositories/postgreDB/TeamRepository.java
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.models.Team;
 
@@ -29,6 +33,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             """)
     Optional<Set<TeamsInfoView>> findAllTeamsInfo();
 
+<<<<<<< HEAD:src/backend/core-app/src/main/java/sts/backend/core_app/persistence/repositories/TeamRepository.java
         @Query("""
         SELECT NEW sts.backend.core_app.dto.team.TeamMembersResponse(
             rc.id AS id,
@@ -41,5 +46,15 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
         WHERE rc.team.teamId = :teamId AND rc.userTypeId IN :userTypeId
     """)
     List<TeamMembersResponse> findPendingUsersByTypeId(@Param("teamId") Long teamId, @Param("userTypeId") Set<Long> userTypeId);
+=======
+    @Query  ("""
+            SELECT s.sensorId as sensorId, p.name as name
+            FROM sensors s
+            LEFT JOIN playerSensors ps ON ps.sensor.sensorId = s.sensorId
+            LEFT JOIN players p ON ps.player.userId = p.userId
+            WHERE s.team.teamId = :teamId
+            """)
+    Optional<Set<SensorPlayerView>> findSensorsWithPlayersByTeamId(Long teamId);
+>>>>>>> dev:src/backend/core-app/src/main/java/sts/backend/core_app/persistence/repositories/postgreDB/TeamRepository.java
 }
     

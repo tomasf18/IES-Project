@@ -10,12 +10,17 @@ import org.springframework.stereotype.Service;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.dto.team.RealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
-import sts.backend.core_app.dto.team.SensorsResponse;
+import sts.backend.core_app.dto.team.SensorPlayerInfo;
+import sts.backend.core_app.dto.team.SensorPlayerView;
+import sts.backend.core_app.dto.team.SensorTeamInfo;
 import sts.backend.core_app.dto.team.TeamCreation;
 import sts.backend.core_app.dto.team.TeamMemberRegistration;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
+import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
@@ -72,8 +77,7 @@ public class TeamService {
     }
 
     public void deleteTeam(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTeam'");
+        basicDataAnalysis.deleteTeam(teamId);
     }
 
     public RealTimeInfo getPlayersAvailableRealTimeInfo(Long teamId) {
@@ -90,24 +94,33 @@ public class TeamService {
         return basicDataAnalysis.getTeamMembers(teamId);
     }
 
-    public TeamMembersResponse getTeamDirectors(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTeamDirectors'");
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getTeamDirectors(teamId);
     }
 
-    public SensorsResponse getSensors(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSensors'");
+    public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getSensors(teamId);
     }
 
     public void deleteSensors(Long sensorId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteSensors'");
+        basicDataAnalysis.deleteSensor(sensorId);
     }
 
     public TeamMembersResponse getPlayersWithoutSensors(Long teamId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayersWithoutSensors'");
+    }
+
+    public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException {
+        return basicDataAnalysis.assignSensor(sensorTeamInfo);
+    }
+
+    public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        return basicDataAnalysis.assignPlayerToSensor(sensorPlayerInfo);
+    }
+
+    public void unassignPlayerFromSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
+        basicDataAnalysis.unassignPlayerFromSensor(sensorPlayerInfo);
     }
 
 }

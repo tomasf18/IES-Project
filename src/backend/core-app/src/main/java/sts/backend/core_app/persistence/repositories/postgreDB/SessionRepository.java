@@ -1,4 +1,4 @@
-package sts.backend.core_app.persistence.repositories;
+package sts.backend.core_app.persistence.repositories.postgreDB;
 
 import java.util.Optional;
 import java.util.Set;
@@ -33,5 +33,24 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             WHERE t.team = :team
             """)
     Optional<Set<SessionInfoView>> findSessionInfoByTeam(@Param("team") Team team);
+
+    @Query("""
+            SELECT  s.id AS sessionId,
+                    s.startTime as startTime,
+                    (
+                       SELECT COUNT(ps)
+                       FROM playerSessions ps
+                       WHERE ps.session = s
+                    ) As numParticipants,
+                    CASE
+                        WHEN s.endTime IS NULL THEN 'Open'
+                        ELSE 'Closed'
+                    END AS state,
+                    (s.opponentTeam IS NOT NULL) AS isMatch
+            FROM sessions s
+            JOIN playerSessions ps ON ps.session = s
+            WHERE ps.player.id= :playerId
+            """)
+    Optional<Set<SessionInfoView>> findSessionInfoByPlayerId(@Param("playerId") Long playerId);
 }
     

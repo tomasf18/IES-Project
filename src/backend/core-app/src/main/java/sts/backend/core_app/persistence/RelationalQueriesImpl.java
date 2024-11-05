@@ -1,6 +1,9 @@
 package sts.backend.core_app.persistence;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+>>>>>>> dev
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -8,25 +11,33 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
-import sts.backend.core_app.persistence.repositories.MatchRepository;
-import sts.backend.core_app.persistence.repositories.PlayerRepository;
-import sts.backend.core_app.persistence.repositories.PlayerSessionRepository;
-import sts.backend.core_app.persistence.repositories.RegistrationCodeRepository;
-import sts.backend.core_app.persistence.repositories.SessionRepository;
-import sts.backend.core_app.persistence.repositories.TeamDirectorRepository;
-import sts.backend.core_app.persistence.repositories.TeamRepository;
-import sts.backend.core_app.persistence.repositories.TrainerRepository;
-import sts.backend.core_app.persistence.repositories.UserRepository;
-
+import sts.backend.core_app.persistence.repositories.postgreDB.MatchRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.PlayerRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.PlayerSensorRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.PlayerSessionRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.RegistrationCodeRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.SensorRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.SessionRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.TeamDirectorRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
+import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.dto.session.SessionInfoView;
+<<<<<<< HEAD
 import sts.backend.core_app.dto.team.TeamMembersResponse;
+=======
+import sts.backend.core_app.dto.team.TeamDirectorsView;
+import sts.backend.core_app.dto.team.SensorPlayerView;
+>>>>>>> dev
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.PlayerSensor;
 import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.RegistrationCode;
+import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.TeamDirector;
@@ -45,8 +56,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
     private final SessionRepository sessionRepository;
     private final PlayerSessionRepository playerSessionRepository;
     private final RegistrationCodeRepository registrationCodeRepository;
+    private final SensorRepository sensorRepository;
+    private final PlayerSensorRepository playerSensorRepository;
 
-    public RelationalQueriesImpl(UserRepository userRepository, TeamRepository teamRepository, PlayerRepository playerRepository, TeamDirectorRepository teamDirectorRepository, TrainerRepository trainerRepository, MatchRepository matchRepository, SessionRepository sessionRepository, PlayerSessionRepository playerSessionRepository, RegistrationCodeRepository registrationCodeRepository) {
+    public RelationalQueriesImpl(UserRepository userRepository, TeamRepository teamRepository, PlayerRepository playerRepository, TeamDirectorRepository teamDirectorRepository, TrainerRepository trainerRepository, MatchRepository matchRepository, SessionRepository sessionRepository, PlayerSessionRepository playerSessionRepository, RegistrationCodeRepository registrationCodeRepository, SensorRepository sensorRepository, PlayerSensorRepository playerSensorRepository) {
         this.userRepository = userRepository;
         this.teamRepository = teamRepository;
         this.playerRepository = playerRepository;
@@ -56,6 +69,8 @@ public class RelationalQueriesImpl implements RelationalQueries {
         this.sessionRepository = sessionRepository;
         this.playerSessionRepository = playerSessionRepository;
         this.registrationCodeRepository = registrationCodeRepository;
+        this.sensorRepository = sensorRepository;
+        this.playerSensorRepository = playerSensorRepository;
     }
 
     // --- Create methods ---
@@ -102,6 +117,14 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return userRepository.save(user);
     }
 
+    public Sensor createSensor(Sensor sensor) {
+        return sensorRepository.save(sensor);
+    }
+
+    public PlayerSensor createPlayerSensor(PlayerSensor playerSensor) {
+        return playerSensorRepository.save(playerSensor);
+    }
+
     // --- Get By ID methods ---
 
     public User getUserById(Long userId) throws ResourceNotFoundException {
@@ -145,11 +168,21 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("PlayerSession with ID " + playerSessionId + " not found"));
     }
 
+    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException {
+        return sensorRepository.findById(sensorId)
+            .orElseThrow(() -> new ResourceNotFoundException("Sensor with ID " + sensorId + " not found"));
+    }
+
     // --- Get By other methods ---
 
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException {
         return sessionRepository.findSessionInfoByTeam(team)
             .orElseThrow(() -> new ResourceNotFoundException("Sessions for team " + team.getName() + " not found"));
+    }
+
+    public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return sessionRepository.findSessionInfoByPlayerId(playerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Sessions for player with ID " + playerId + " not found"));
     }
 
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
@@ -162,11 +195,37 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Teams info not found"));
     }
 
+    public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException {
+        Set<TeamDirectorsView> officialDirectors = teamDirectorRepository.findTeamDirectorsByTeamId(teamId)
+            .orElseThrow(() -> new ResourceNotFoundException("No official team directors found for team with ID " + teamId));
+
+        Set<TeamDirectorsView> pendingDirectors = teamDirectorRepository.findPendingTeamDirectorsByTeamId(teamId)
+            .orElse(Set.of());
+
+        officialDirectors.addAll(pendingDirectors);
+
+        if (officialDirectors.isEmpty()) {
+            throw new ResourceNotFoundException("No team directors found for team with ID " + teamId);
+        }
+
+        return officialDirectors;
+    }    
+
+    public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException {
+        return teamRepository.findSensorsWithPlayersByTeamId(teamId)
+            .orElseThrow(() -> new ResourceNotFoundException("Sensors for team with ID " + teamId + " not found"));
+    }
+    
+            public List<User> getUsers() throws ResourceNotFoundException {
+        return userRepository.findAll();
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);
     }
 
+<<<<<<< HEAD
     @Override
     public List<TeamMembersResponse> getTeamMembers(Long teamId) {
         List<TeamMembersResponse> teamMembers = new ArrayList<>();
@@ -196,6 +255,30 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
 
         return teamMembers;
+=======
+    public void deleteSensor(Long sensorId) {
+        sensorRepository.deleteById(sensorId);
+    }
+
+    public void deletePlayerSensor(PlayerSensor playerSensor) {
+        playerSensorRepository.delete(playerSensor);
+    }
+    
+    @Override
+    public void deleteUser(Long userId) throws ResourceNotFoundException {
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        
+        playerRepository.deleteById(userId);
+        teamDirectorRepository.deleteById(userId);
+        trainerRepository.deleteById(userId);
+        userRepository.deleteById(userId); 
+    }
+
+    public void deleteTeam(Long teamId) {
+        teamRepository.deleteById(teamId);
+>>>>>>> dev
     }
 
 }
