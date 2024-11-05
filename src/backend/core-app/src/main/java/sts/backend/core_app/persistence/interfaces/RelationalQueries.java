@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
@@ -57,6 +58,8 @@ public interface RelationalQueries {
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
+    public List<TeamMembersResponse> getTeamMembers(Long teamId);
+
     public void deleteSensor(Long sensorId);
     public void deletePlayerSensor(PlayerSensor playerSensor);    
     public void deleteUser(Long userId) throws ResourceNotFoundException;

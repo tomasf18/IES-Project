@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.SensorTeamInfo;
@@ -126,6 +127,11 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteRegistrationCode(registrationCode);
     }
 
+    @Override
+    public List<TeamMembersResponse> getTeamMembers(Long teamId) {
+        return relationalQueries.getTeamMembers(teamId);
+    }
+        
     public void deleteSensor(Long sensorId) {
         relationalQueries.deleteSensor(sensorId);
     }

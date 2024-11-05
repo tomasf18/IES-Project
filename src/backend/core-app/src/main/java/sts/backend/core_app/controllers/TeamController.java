@@ -1,5 +1,6 @@
 package sts.backend.core_app.controllers;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,7 @@ public class TeamController {
     }
 
     @GetMapping("/team/team-members")
-    public TeamMembersResponse api_get_team_members(@RequestParam Long teamId) throws ResourceNotFoundException {
+    public List<TeamMembersResponse> api_get_team_members(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getTeamMembers(teamId); // TODO: implement
     }
 

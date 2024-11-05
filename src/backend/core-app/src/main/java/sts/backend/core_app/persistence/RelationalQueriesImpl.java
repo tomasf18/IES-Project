@@ -1,7 +1,9 @@
 package sts.backend.core_app.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import sts.backend.core_app.persistence.repositories.postgreDB.TeamRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.TrainerRepository;
 import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.dto.session.SessionInfoView;
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamDirectorsView;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
@@ -215,6 +218,37 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);
     }
+
+    @Override
+    public List<TeamMembersResponse> getTeamMembers(Long teamId) {
+        List<TeamMembersResponse> teamMembers = new ArrayList<>();
+
+        // Get players
+        List<Player> players = playerRepository.findPlayersByTeamTeamId(teamId);
+        teamMembers.addAll(players.stream()
+            .map(player -> new TeamMembersResponse(player.getUserId(), player.getName(), player.getProfilePictureUrl(), 1L, null))
+            .collect(Collectors.toList()));    
+
+        // Get Coaches
+        List<Trainer> coaches = trainerRepository.findByTeamTeamIdAndIsCoachTrue(teamId);
+        teamMembers.addAll(coaches.stream()
+            .map(trainer -> new TeamMembersResponse(trainer.getUserId(), trainer.getName(), trainer.getProfilePictureUrl(), 3L, null))
+            .collect(Collectors.toList()));
+
+        // Get Personal Trainers
+        List<Trainer> personalTrainers = trainerRepository.findByTeamTeamIdAndIsCoachFalse(teamId);
+        teamMembers.addAll(personalTrainers.stream()
+            .map(trainer -> new TeamMembersResponse(trainer.getUserId(), trainer.getName(), trainer.getProfilePictureUrl(), 4L, null))
+            .collect(Collectors.toList()));    
+
+        // Pending
+
+        List<TeamMembersResponse> teamMembersResponses = teamRepository.findPendingUsersByTypeId(teamId, Set.of(1L,3L,4L));
+        teamMembers.addAll(teamMembersResponses);
+
+
+        return teamMembers;
+    } 
 
     public void deleteSensor(Long sensorId) {
         sensorRepository.deleteById(sensorId);
