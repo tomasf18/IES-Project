@@ -174,20 +174,25 @@ public class RelationalQueriesImpl implements RelationalQueries {
         // Get players
         List<Player> players = playerRepository.findPlayersByTeamTeamId(teamId);
         teamMembers.addAll(players.stream()
-            .map(player -> new TeamMembersResponse(player.getName(), player.getProfilePictureUrl(), (long) 2))
-            .collect(Collectors.toList()));
+            .map(player -> new TeamMembersResponse(player.getUserId(), player.getName(), player.getProfilePictureUrl(), 2L, null))
+            .collect(Collectors.toList()));    
 
         // Get Coaches
         List<Trainer> coaches = trainerRepository.findByTeamTeamIdAndIsCoachTrue(teamId);
         teamMembers.addAll(coaches.stream()
-            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl(), (long) 3))
+            .map(trainer -> new TeamMembersResponse(trainer.getUserId(), trainer.getName(), trainer.getProfilePictureUrl(), 3L, null))
             .collect(Collectors.toList()));
 
         // Get Personal Trainers
-        List<Trainer> personal_trainers = trainerRepository.findByTeamTeamIdAndIsCoachFalse(teamId);
-        teamMembers.addAll(personal_trainers.stream()
-            .map(trainer -> new TeamMembersResponse(trainer.getName(), trainer.getProfilePictureUrl(), (long) 4))
+        List<Trainer> personalTrainers = trainerRepository.findByTeamTeamIdAndIsCoachFalse(teamId);
+        teamMembers.addAll(personalTrainers.stream()
+            .map(trainer -> new TeamMembersResponse(trainer.getUserId(), trainer.getName(), trainer.getProfilePictureUrl(), 4L, null))
             .collect(Collectors.toList()));    
+
+        // Pending
+
+        List<TeamMembersResponse> teamMembersResponses = teamRepository.findPendingUsersByTypeId(teamId, Set.of(1L,2L,3L));
+        teamMembers.addAll(teamMembersResponses);
 
 
         return teamMembers;

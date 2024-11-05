@@ -1,11 +1,14 @@
 package sts.backend.core_app.persistence.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamsInfoView;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.models.User;
@@ -26,5 +29,18 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
             GROUP BY t.teamId, t.name
             """)
     Optional<Set<TeamsInfoView>> findAllTeamsInfo();
+
+        @Query("""
+        SELECT NEW sts.backend.core_app.dto.team.TeamMembersResponse(
+            rc.id AS id,
+            rc.name AS name,
+            rc.profilePictureUrl AS profilePictureUrl,
+            rc.userTypeId AS userTypeId,
+            rc.code AS registrationCode
+        )
+        FROM registrationCodes rc
+        WHERE rc.team.teamId = :teamId AND rc.userTypeId IN :userTypeId
+    """)
+    List<TeamMembersResponse> findPendingUsersByTypeId(@Param("teamId") Long teamId, @Param("userTypeId") Set<Long> userTypeId);
 }
     
