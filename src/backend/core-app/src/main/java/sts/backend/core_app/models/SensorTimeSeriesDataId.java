@@ -45,4 +45,33 @@ public class SensorTimeSeriesDataId implements Serializable {
         this.metric = metric;
     }
 
+    @Override
+    public String toString() {
+        return "SensorTimeSeriesDataId{" +
+                "timestamp=" + timestamp +
+                ", playerId=" + playerId +
+                ", metric=" + metric +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SensorTimeSeriesDataId that = (SensorTimeSeriesDataId) o;
+
+        if (!timestamp.equals(that.timestamp)) return false;
+        if (!playerId.equals(that.playerId)) return false;
+        return metric.equals(that.metric);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = timestamp.hashCode();
+        result = 31 * result + playerId.hashCode();
+        result = 31 * result + metric.hashCode();
+        return result;
+    }
+
 }
