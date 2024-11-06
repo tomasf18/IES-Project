@@ -3,6 +3,7 @@ package sts.backend.core_app.services.analysis;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.player.MetricValue;
+import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
@@ -21,5 +22,9 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());
     }
 
+    @Override
+    public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
+        return timeSeriesQueries.getRealTimeExtraDetailsLast24Hours(playerId);
+    }
 
 }
