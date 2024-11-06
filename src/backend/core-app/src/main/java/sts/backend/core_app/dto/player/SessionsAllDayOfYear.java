@@ -1,5 +1,5 @@
 package sts.backend.core_app.dto.player;
 
-public class FatigueResponse {
+public class SessionsAllDayOfYear {
     
 }

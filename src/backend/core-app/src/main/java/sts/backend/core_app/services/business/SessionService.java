@@ -10,7 +10,6 @@ import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
 import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.MatchRequest;
 import sts.backend.core_app.dto.session.NotificationResponse;
-import sts.backend.core_app.dto.session.PlayerStrainResponse;
 import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.dto.session.SessionInfoView;
@@ -79,11 +78,6 @@ public class SessionService {
 
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
         return basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
-    }
-
-    public PlayerStrainResponse getPlayerStrain(Long playerId, Long sessionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayerStrain'");
     }
 
     public RealTimeInfoResponse getRealTimeInfo(Long sessionId) {

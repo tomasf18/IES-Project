@@ -1,13 +1,10 @@
 package sts.backend.core_app.services.business;
 
-import sts.backend.core_app.dto.player.RecoveryStrainResponse;
-
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.player.FatigueResponse;
+import sts.backend.core_app.dto.player.SessionsAllDayOfYear;
 import sts.backend.core_app.dto.player.MetricValue;
-import sts.backend.core_app.dto.player.OverviewStressResponse;
-import sts.backend.core_app.dto.player.SleepResponse;
+import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
@@ -24,28 +21,18 @@ public class PlayerService {
         this.realTimeAnalysis = realTimeAnalysis;
     }
 
-    public OverviewStressResponse getOverviewStress(Long playerId, String timeOption) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getOverviewStress'");
-    }
-
-    public SleepResponse getSleep(Long playerId, String timeOption) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSleep'");
-    }
-
-    public RecoveryStrainResponse getRecoveryStrain(Long playerId, String timeOption) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRecoveryStrain'");
-    }
-
-    public FatigueResponse getPlayerFatigueAllDaysOfYear(Long playerId, Long year) {
+    public SessionsAllDayOfYear getPlayerSessionsAllDaysOfYear(Long playerId, Long year) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getPlayerFatigueAllDaysOfYear'");
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
         return realTimeAnalysis.addMetricValue(metricValue);
+    }
+
+    public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRealTimeExtraDetails'");
     }
     
 }
