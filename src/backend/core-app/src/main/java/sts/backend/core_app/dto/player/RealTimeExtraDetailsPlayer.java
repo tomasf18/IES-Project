@@ -9,6 +9,7 @@ public class RealTimeExtraDetailsPlayer {
     private List<ValueTimeSeriesView> bodyTemperatureData;
     private List<ValueTimeSeriesView> respiratoryRateData;
 
+
     private Long playerId;
     private String playerName;
     // Getters and Setters

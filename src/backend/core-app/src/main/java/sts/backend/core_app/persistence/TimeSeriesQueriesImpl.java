@@ -58,4 +58,9 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
         return sensorTimeSeriesDataRepository.findByPlayerUserIdAndIdMetricAndIdTimestampBetween(playerId, metric, startTime, endTime);
     }
 
+    @Override
+    public Double getAverageValue(List<ValueTimeSeriesView> metricData) {
+        return metricData.stream().mapToDouble(ValueTimeSeriesView::getValue).average().orElse(0.0);
+    }
+
 }

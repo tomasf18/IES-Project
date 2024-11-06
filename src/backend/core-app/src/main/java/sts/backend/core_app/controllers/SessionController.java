@@ -79,8 +79,8 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/historical-extra-details")
-    public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
-        return sessionService.getHistoricalExtraDetails(sessionId);
+    public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId, @RequestParam Long playerId) throws ResourceNotFoundException {
+        return sessionService.getHistoricalExtraDetails(sessionId, playerId);
     }
 
     @GetMapping("/sessions/notifications")

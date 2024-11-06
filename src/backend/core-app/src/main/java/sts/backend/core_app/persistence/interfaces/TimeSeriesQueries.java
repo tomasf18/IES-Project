@@ -17,4 +17,6 @@ public interface TimeSeriesQueries {
 
     List<ValueTimeSeriesView> getHistoricalData(Long playerId, String metric, LocalDateTime startTime,
             LocalDateTime endTime);
+
+    Double getAverageValue(List<ValueTimeSeriesView> metricData);
 }

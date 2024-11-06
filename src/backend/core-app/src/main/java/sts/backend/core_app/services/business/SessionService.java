@@ -98,13 +98,12 @@ public class SessionService {
         throw new UnsupportedOperationException("Unimplemented method 'getNotifications'");
     }
 
-    public HistoricalExtraDetailsResponse getHistoricalExtraDetails(Long sessionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHistoricalExtraDetails'");
+    public HistoricalExtraDetailsResponse getHistoricalExtraDetails(Long sessionId, Long playerId) throws ResourceNotFoundException {
+        return historicalAnalysisImpl.getHistoricalExtraDetails(sessionId, playerId);
     }
 
-    public HistoricalInfoResponse getHistoricalInfo(Long sessionId) throws ResourceNotFoundException {
-        return historicalAnalysisImpl.getHistoricalInfo(sessionId);
+    public HistoricalInfoResponse getHistoricalInfo(Long sessionId){
+        throw new UnsupportedOperationException("Unimplemented method 'getHistoricalInfo'");
     }
 
 }

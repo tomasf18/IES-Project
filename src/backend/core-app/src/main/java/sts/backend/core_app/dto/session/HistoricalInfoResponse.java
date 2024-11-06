@@ -11,10 +11,8 @@ public class HistoricalInfoResponse {
     private int time;
     private int participants;
     private List<RealTimeExtraDetailsPlayer> historicalDataPlayers;
-
-    public HistoricalInfoResponse() {
-    }
     
+
     public HistoricalInfoResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers) {
         this.sessionName = sessionName;
         this.date = date;
@@ -67,4 +65,6 @@ public class HistoricalInfoResponse {
     public void setHistoricalDataPlayers(List<RealTimeExtraDetailsPlayer> historicalDataPlayers) {
         this.historicalDataPlayers = historicalDataPlayers;
     }
+
+    
 }
