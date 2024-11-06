@@ -1,5 +1,6 @@
 package sts.backend.core_app.persistence.repositories.postgreDB;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -8,9 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
+import sts.backend.core_app.models.User;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {

@@ -20,15 +20,18 @@ import sts.backend.core_app.models.PlayerSession;
 import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
+import sts.backend.core_app.services.analysis.HistoricalAnalysisImpl;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
 @Service
 public class SessionService {
 
     private final BasicDataAnalysis basicDataAnalysis;
+    private final HistoricalAnalysisImpl historicalAnalysisImpl;
 
-    public SessionService(BasicDataAnalysis basicDataAnalysis) {
+    public SessionService(BasicDataAnalysis basicDataAnalysis, HistoricalAnalysisImpl historicalAnalysisImpl) {
         this.basicDataAnalysis = basicDataAnalysis;
+        this.historicalAnalysisImpl = historicalAnalysisImpl;
     }
 
     public Set<SessionInfoView> getSessionsInfoByTeamId(Long teamId) throws ResourceNotFoundException {
@@ -100,9 +103,8 @@ public class SessionService {
         throw new UnsupportedOperationException("Unimplemented method 'getHistoricalExtraDetails'");
     }
 
-    public HistoricalInfoResponse getHistoricalInfo(Long sessionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getHistoricalInfo'");
+    public HistoricalInfoResponse getHistoricalInfo(Long sessionId) throws ResourceNotFoundException {
+        return historicalAnalysisImpl.getHistoricalInfo(sessionId);
     }
 
 }

@@ -9,6 +9,8 @@ public class RealTimeExtraDetailsPlayer {
     private List<ValueTimeSeriesView> bodyTemperatureData;
     private List<ValueTimeSeriesView> respiratoryRateData;
 
+    private Long playerId;
+    private String playerName;
     // Getters and Setters
 
     public List<ValueTimeSeriesView> getHeartRateData() {
@@ -33,5 +35,21 @@ public class RealTimeExtraDetailsPlayer {
 
     public void setRespiratoryRateData(List<ValueTimeSeriesView> respiratoryRateData) {
         this.respiratoryRateData = respiratoryRateData;
+    }
+
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String name) {
+        this.playerName = name;
     }
 }

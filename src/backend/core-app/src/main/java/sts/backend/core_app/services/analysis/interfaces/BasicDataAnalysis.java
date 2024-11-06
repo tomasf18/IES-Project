@@ -13,6 +13,7 @@ import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Sensor;
+import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
