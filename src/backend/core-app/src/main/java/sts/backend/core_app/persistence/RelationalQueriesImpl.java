@@ -218,6 +218,26 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return playerRepository.findPlayersWithoutSensorsByTeamId(teamId);
     }
 
+    public Player getPlayerByUsername(String username) throws ResourceNotFoundException {
+        return playerRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Player with username " + username + " not found"));
+    }
+
+    public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException {
+        return trainerRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Trainer with username " + username + " not found"));
+    }
+
+    public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException {
+        return teamDirectorRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Team director with username " + username + " not found"));
+    }
+
+    public User getUserByUsername(String currentUsername) throws ResourceNotFoundException {
+        return userRepository.findByUsername(currentUsername)
+            .orElseThrow(() -> new ResourceNotFoundException("User with username " + currentUsername + " not found"));
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);
