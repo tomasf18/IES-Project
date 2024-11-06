@@ -31,8 +31,7 @@ public class PlayerService {
     }
 
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRealTimeExtraDetails'");
+        return realTimeAnalysis.getRealTimeExtraDetailsLast24Hours(playerId);
     }
     
 }

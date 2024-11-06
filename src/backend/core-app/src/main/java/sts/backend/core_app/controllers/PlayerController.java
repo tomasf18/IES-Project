@@ -36,7 +36,7 @@ public class PlayerController {
         return playerService.addMetricValue(metricValue);
     }
 
-    @PostMapping("/player/real-time-extra-details-last-24-hours")
+    @GetMapping("/player/real-time-extra-details-last-24-hours")
     public RealTimeExtraDetailsPlayer api_real_time_extra_details_last_24_hours(@RequestParam Long playerId) throws ResourceNotFoundException {
         return playerService.getRealTimeExtraDetailsLast24Hours(playerId);
     }
