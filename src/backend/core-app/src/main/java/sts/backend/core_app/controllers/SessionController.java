@@ -14,7 +14,6 @@ import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
 import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.MatchRequest;
 import sts.backend.core_app.dto.session.NotificationResponse;
-import sts.backend.core_app.dto.session.PlayerStrainResponse;
 import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.dto.session.SessionInfoView;
@@ -62,11 +61,6 @@ public class SessionController {
     @GetMapping("/sessions/player")
     public Set<SessionInfoView> api_list_sessions_player(@RequestParam Long playerId) throws ResourceNotFoundException {
         return sessionService.getSessionsInfoByPlayerId(playerId);
-    }
-
-    @GetMapping("/sessions/player-strain")
-    public PlayerStrainResponse api_get_player_strain(@RequestParam Long playerId, @RequestParam Long sessionId) throws ResourceNotFoundException {
-        return sessionService.getPlayerStrain(playerId, sessionId);
     }
 
     @GetMapping("/sessions/real-time-info")
