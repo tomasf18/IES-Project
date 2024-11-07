@@ -2,6 +2,7 @@ package sts.backend.core_app.persistence;
 
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
+import sts.backend.core_app.dto.session.SessionLastMetricValues;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.models.SensorTimeSeriesDataId;
@@ -49,6 +50,23 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
         details.setRespiratoryRateData(respiratoryRateData);
 
         return details;
+    }
+
+    public SessionLastMetricValues getLastMetricValuesByPlayerId(Long playerId) throws ResourceNotFoundException {
+        SensorTimeSeriesData lastHeartRate = sensorTimeSeriesDataRepository.findFirstByPlayerUserIdAndIdMetricOrderByIdTimestampDesc(playerId, "heart_rate");
+        SensorTimeSeriesData lastBodyTemperature = sensorTimeSeriesDataRepository.findFirstByPlayerUserIdAndIdMetricOrderByIdTimestampDesc(playerId, "body_temperature");
+        SensorTimeSeriesData lastRespiratoryRate = sensorTimeSeriesDataRepository.findFirstByPlayerUserIdAndIdMetricOrderByIdTimestampDesc(playerId, "respiratory_rate");
+
+        if (lastHeartRate == null || lastBodyTemperature == null || lastRespiratoryRate == null) {
+            throw new ResourceNotFoundException("Player with id " + playerId + " has no metric values");
+        }
+
+        Double heartRate = lastHeartRate.getValue();
+        Double bodyTemperature = lastBodyTemperature.getValue();
+        Double respiratoryRate = lastRespiratoryRate.getValue();
+        SessionLastMetricValues lastMetricValues = new SessionLastMetricValues(heartRate, bodyTemperature, respiratoryRate);
+
+        return lastMetricValues;
     }
     
 }

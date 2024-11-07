@@ -21,14 +21,17 @@ import sts.backend.core_app.models.PlayerSessionId;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
+import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
 public class SessionService {
 
     private final BasicDataAnalysis basicDataAnalysis;
+    private final RealTimeAnalysis realTimeAnalysis;
 
-    public SessionService(BasicDataAnalysis basicDataAnalysis) {
+    public SessionService(BasicDataAnalysis basicDataAnalysis, RealTimeAnalysis realTimeAnalysis) {
         this.basicDataAnalysis = basicDataAnalysis;
+        this.realTimeAnalysis = realTimeAnalysis;
     }
 
     public Set<SessionInfoView> getSessionsInfoByTeamId(Long teamId) throws ResourceNotFoundException {
@@ -90,9 +93,8 @@ public class SessionService {
         throw new UnsupportedOperationException("Unimplemented method 'getRealTimeExtraDetails'");
     }
 
-    public Set<NotificationResponse> getNotifications(Long sessionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNotifications'");
+    public Set<NotificationResponse> getNotifications(Long sessionId) throws ResourceNotFoundException {
+        return realTimeAnalysis.getNotifications(sessionId);
     }
 
     public HistoricalExtraDetailsResponse getHistoricalExtraDetails(Long sessionId) {

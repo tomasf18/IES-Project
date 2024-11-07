@@ -179,6 +179,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Sessions for player with ID " + playerId + " not found"));
     }
 
+    public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException {
+        return playerRepository.findByPlayerSessionsSessionSessionId(sessionId)
+            .orElseThrow(() -> new ResourceNotFoundException("Players in session with ID " + sessionId + " not found"));
+    }
+
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
         return registrationCodeRepository.findByCode(code)
             .orElseThrow(() -> new ResourceNotFoundException("Registration code with code " + code + " not found"));

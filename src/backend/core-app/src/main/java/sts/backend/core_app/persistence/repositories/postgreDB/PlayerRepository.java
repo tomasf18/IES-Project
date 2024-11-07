@@ -1,6 +1,8 @@
 package sts.backend.core_app.persistence.repositories.postgreDB;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,5 +16,5 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     
     List<Player> findPlayersByTeamTeamId(Long teamId);
 
-
+    Optional<Set<Player>> findByPlayerSessionsSessionSessionId(Long sessionId);
 }
