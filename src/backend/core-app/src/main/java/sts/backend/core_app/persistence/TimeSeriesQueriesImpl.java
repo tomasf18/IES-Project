@@ -50,5 +50,8 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
 
         return details;
     }
-    
+
+    public List<ValueTimeSeriesView> getHeartRateData(Long playerId, LocalDateTime initialTimestamp) {
+        return sensorTimeSeriesDataRepository.findByPlayerUserIdAndIdMetricAndIdTimestampAfter(playerId, "heart_rate", initialTimestamp);
+    }
 }

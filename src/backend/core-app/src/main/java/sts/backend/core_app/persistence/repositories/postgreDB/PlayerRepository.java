@@ -14,5 +14,5 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     
     List<Player> findPlayersByTeamTeamId(Long teamId);
 
-
+    List<Player> findByTeamTeamIdAndPlayerSensorIsNotNull(Long teamId);
 }
