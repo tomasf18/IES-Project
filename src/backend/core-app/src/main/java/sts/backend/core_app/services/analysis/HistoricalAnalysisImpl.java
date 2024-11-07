@@ -32,14 +32,7 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
     }
 
     public HistoricalExtraDetailsResponse getHistoricalExtraDetails(Long sessionId, Long playerId) throws ResourceNotFoundException {
-        // Now in a session we have a list of players, we need to get the historical data of each player
-        // Session has a startTime and endTime, we can use these to get the historical data of each player
-        // Similar to the getRealTimeExtraDetailsLast24Hours method, we can get the historical data of each player
-        // and then return a list of HistoricalInfoResponse objects
-
-        // We can use the relationalQueries to get the list of players in a session
-        // and then use the timeSeriesQueries to get the historical data of each player
-    
+        // Get the session information
         Session session = relationalQueries.getSessionById(sessionId);
 
         String sessionName = session.getName();
