@@ -8,15 +8,20 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil {
@@ -38,20 +43,32 @@ public class JwtTokenUtil {
     }
 
     private PrivateKey loadPrivateKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(privateKeyResource.getFile().toPath());
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        return kf.generatePrivate(spec);
+        try (InputStream inputStream = privateKeyResource.getInputStream()) {
+            String privateKeyPEM = new BufferedReader(new InputStreamReader(inputStream))
+                    .lines()
+                    .filter(line -> !line.startsWith("-----"))
+                    .collect(Collectors.joining());
+            byte[] keyBytes = Base64.getDecoder().decode(privateKeyPEM);
+            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            return kf.generatePrivate(spec);
+        }
     }
 
     private PublicKey loadPublicKey() throws Exception {
-        byte[] keyBytes = Files.readAllBytes(publicKeyResource.getFile().toPath());
-        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        return kf.generatePublic(spec);
+        try (InputStream inputStream = publicKeyResource.getInputStream()) {
+            String publicKeyPEM = new BufferedReader(new InputStreamReader(inputStream))
+                    .lines()
+                    .filter(line -> !line.startsWith("-----"))
+                    .collect(Collectors.joining());
+            byte[] keyBytes = Base64.getDecoder().decode(publicKeyPEM);
+            X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            return kf.generatePublic(spec);
+        }
     }
 
-    public String generateToken(String username, List<String> roles) {
+    public String generateToken(String username, Set<String> roles) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("roles", roles)
@@ -76,7 +93,8 @@ public class JwtTokenUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        return ((List<?>) claims.get("roles", List.class)).stream().map(Object::toString).toList();
+        List<?> roles = claims.get("roles", List.class);
+        return roles.stream().map(Object::toString).collect(Collectors.toList());
     }
 
     public boolean validateToken(String token) {

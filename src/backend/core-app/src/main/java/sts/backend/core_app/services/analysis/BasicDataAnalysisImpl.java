@@ -96,7 +96,7 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
     public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException {
         return relationalQueries.getSensorById(sensorId);
     }
-    
+
 
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException {
@@ -145,6 +145,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public User getUserByUsername(String currentUsername) throws ResourceNotFoundException {
         return relationalQueries.getUserByUsername(currentUsername);
+    }
+
+    public User getUserByEmail(String email) throws ResourceNotFoundException {
+        return relationalQueries.getUserByEmail(email);
     }
 
     // --- Delete methods ---

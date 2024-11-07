@@ -1,6 +1,10 @@
 package sts.backend.core_app.services.security;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import sts.backend.core_app.models.Trainer;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
 
+
 @Service
 public class SecurityService {
 
@@ -23,13 +28,20 @@ public class SecurityService {
         this.basicDataAnalysis = basicDataAnalysis;
     }
 
+    private Set<String> getRolesFromAuthentication(Authentication authentication) {
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+    }
+
     public boolean hasAccessToUser(Long userId) throws ResourceNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
+        Set<String> roles = getRolesFromAuthentication(authentication);
 
         User user = basicDataAnalysis.getUserByUsername(currentUsername);
 
-        if (user == null || !user.getRoles().contains("PLAYER")) {
+        if (user == null || !roles.contains("ROLE_USER")) {
             return false;
         }
 
@@ -39,6 +51,7 @@ public class SecurityService {
     public boolean hasAccessToTrainer(Long trainerId) throws ResourceNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
+        Set<String> roles = getRolesFromAuthentication(authentication);
 
         User user = basicDataAnalysis.getUserByUsername(currentUsername);
 
@@ -46,7 +59,7 @@ public class SecurityService {
             return false;
         }
 
-        if (! (user.getRoles().contains("COACH") || user.getRoles().contains("PERSONAL_TRAINER"))) {
+        if (!roles.contains("ROLE_COACH") && !roles.contains("ROLE_PERSONAL_TRAINER")) {
             return false;
         }
 
@@ -56,6 +69,7 @@ public class SecurityService {
     public boolean hasAccessToSession(Long sessionId) throws ResourceNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
+        Set<String> roles = getRolesFromAuthentication(authentication);
 
         Trainer trainer = basicDataAnalysis.getTrainerByUsername(currentUsername);
 
@@ -70,13 +84,12 @@ public class SecurityService {
         }
 
         // Coaches can access any session of their team
-        if (trainer.getRoles().contains("COACH")) {
+        if (roles.contains("ROLE_COACH")) {
             return session.getTrainer().getTeam().getTeamId().equals(trainer.getTeam().getTeamId());
-        }
-        else if (trainer.getRoles().contains("PERSONAL_TRAINER")) {
+        } else if (roles.contains("ROLE_PERSONAL_TRAINER")) {
             return session.getTrainer().getUserId().equals(trainer.getUserId());
         }
-        
+
         return false;
     }
 
@@ -92,7 +105,7 @@ public class SecurityService {
 
         Session session = basicDataAnalysis.getSessionById(sessionId);
 
-        if (session == null || !session.getEndTime().equals(null)) {
+        if (session == null || session.getEndTime() != null) {
             return false;
         }
 
@@ -160,18 +173,18 @@ public class SecurityService {
     public boolean hasAccessToSensorOfTeam(Long teamId) throws ResourceNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = authentication.getName();
-
+        Set<String> roles = getRolesFromAuthentication(authentication);
+        
         User user = basicDataAnalysis.getUserByUsername(currentUsername);
 
         if (user == null) {
             return false;
         }
 
-        if (user.getRoles().contains("TEAM_DIRECTOR")) {
+        if (roles.contains("ROLE_TEAM_DIRECTOR")) {
             TeamDirector teamDirector = basicDataAnalysis.getTeamDirectorByUsername(currentUsername);
             return teamDirector.getTeam().getTeamId().equals(teamId);
-        }
-        else if (user.getRoles().contains("COACH") || user.getRoles().contains("PERSONAL_TRAINER")) {
+        } else if (roles.contains("ROLE_COACH") || roles.contains("ROLE_PERSONAL_TRAINER")) {
             Trainer trainer = basicDataAnalysis.getTrainerByUsername(currentUsername);
             return trainer.getTeam().getTeamId().equals(teamId);
         }
@@ -183,5 +196,5 @@ public class SecurityService {
         Sensor sensor = basicDataAnalysis.getSensorById(sensorId);
         return hasAccessToSensorOfTeam(sensor.getTeam().getTeamId());
     }
-
 }
+

@@ -35,67 +35,67 @@ public class SessionController {
     }
 
     @PostMapping("/sessions")
-    @PreAuthorize("@securityService.hasAccessToTrainer(#sessionRequest.trainerId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToTrainer(#sessionRequest.getTrainerId())")
     public Session api_create_session(@RequestBody SessionRequest sessionRequest) throws ResourceNotFoundException {
         return sessionService.createSession(sessionRequest);
     }
 
     @PostMapping("/sessions/match")
-    @PreAuthorize("hasRole('COACH') and @securityService.hasAccessToTrainer(#sessionRequest.trainerId)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('COACH') and @securityService.hasAccessToTrainer(#sessionRequest.getTrainerId()))")
     public Session api_create_match_session(@RequestParam MatchRequest matchRequest) throws ResourceNotFoundException {
         return sessionService.createMatch(matchRequest);
     }
 
     @PostMapping("/sessions/end")
-    @PreAuthorize("@securityService.hasAccessToSession(#sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public Session api_end_session(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.endSession(sessionId);
     }
 
     @PostMapping("/sessions/assign-player")
-    @PreAuthorize("@securityService.hasAccessToNewSession(#assignSessionPlayer.sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToNewSession(#assignSessionPlayer.getSessionId())")
     public PlayerSession api_assign_player(@RequestBody AssignSessionPlayer assignSessionPlayer) throws ResourceNotFoundException {
         return sessionService.assignPlayer(assignSessionPlayer);
     }
 
     @GetMapping("/sessions/team")
-    @PreAuthorize("hasRole('COACH') and @securityService.hasAccessToTeam(#teamId)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('COACH') and @securityService.hasAccessToTeam(#teamId))")
     public Set<SessionInfoView> api_list_sessions_team(@RequestParam Long teamId) throws ResourceNotFoundException {
         return sessionService.getSessionsInfoByTeamId(teamId);
     }
 
     @GetMapping("/sessions/player")
-    @PreAuthorize("@securityService.hasAccessToPlayer(#playerId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToPlayer(#playerId)")
     public Set<SessionInfoView> api_list_sessions_player(@RequestParam Long playerId) throws ResourceNotFoundException {
         return sessionService.getSessionsInfoByPlayerId(playerId);
     }
 
     @GetMapping("/sessions/real-time-info")
-    @PreAuthorize("@securityService.hasAccessToSession(#sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public RealTimeInfoResponse api_get_real_time_info(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getRealTimeInfo(sessionId);
     }
 
     @GetMapping("/sessions/real-time-extra-details")
-    @PreAuthorize("@securityService.hasAccessToSession(#sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public RealTimeExtraDetailsResponse api_get_real_time_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getRealTimeExtraDetails(sessionId);
     }
 
     @GetMapping("/sessions/historical-info")
-    @PreAuthorize("@securityService.hasAccessToSession(#sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public HistoricalInfoResponse api_get_historical_info(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getHistoricalInfo(sessionId);
     }
 
     @GetMapping("/sessions/historical-extra-details")
-    @PreAuthorize("@securityService.hasAccessToSession(#sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getHistoricalExtraDetails(sessionId);
     }
 
     @GetMapping("/sessions/notifications")
-    @PreAuthorize("@securityService.hasAccessToSession(#sessionId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public Set<NotificationResponse> api_get_notifications(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getNotifications(sessionId);
     }

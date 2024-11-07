@@ -238,6 +238,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("User with username " + currentUsername + " not found"));
     }
 
+    public User getUserByEmail(String email) throws ResourceNotFoundException {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " not found"));
+    }
+
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode) {
         registrationCodeRepository.delete(registrationCode);

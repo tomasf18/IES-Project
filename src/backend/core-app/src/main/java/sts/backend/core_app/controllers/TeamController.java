@@ -60,13 +60,13 @@ public class TeamController {
     }
 
     @GetMapping("/team/players-available/real-time-info")
-    @PreAuthorize("@securityService.hasAccessToTeam(#teamId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToTeam(#teamId)")
     public RealTimeInfo api_get_players_available_real_time_info(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getPlayersAvailableRealTimeInfo(teamId);
     }
 
     @PostMapping("/team/registration-code")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateTeam(#teamId))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateTeam(#teamMemberRegistration.getTeamId()))")
     public RegistrationCode api_generate_new_registration_code(@RequestBody TeamMemberRegistration teamMemberRegistration) throws ResourceNotFoundException {
         return teamService.generateNewRegistrationCode(teamMemberRegistration);
     }
@@ -85,7 +85,7 @@ public class TeamController {
     }
 
     @GetMapping("/team/team-members")
-    @PreAuthorize("hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateTeam(#teamId)")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateTeam(#teamId))")
     public List<TeamMembersResponse> api_get_team_members(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getTeamMembers(teamId); // TODO: implement
     }
@@ -103,7 +103,7 @@ public class TeamController {
     }
 
     @GetMapping("/team/sensors")
-    @PreAuthorize("@securityService.hasAccessToSensorOfTeam(#teamId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSensorOfTeam(#teamId)")
     public Set<SensorPlayerView> api_get_sensors(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getSensors(teamId);
     }
@@ -122,20 +122,20 @@ public class TeamController {
     }
 
     @PostMapping("/team/sensors/assign-player")
-    @PreAuthorize("@securityService.hasAccessToSensor(#sensorPlayerInfo.sensorId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSensor(#sensorPlayerInfo.getSensorId())")
     public PlayerSensor api_assign_player_to_sensor(@RequestBody SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
         return teamService.assignPlayerToSensor(sensorPlayerInfo);
     }
 
     @DeleteMapping("/team/sensors/assign-player")
-    @PreAuthorize("@securityService.hasAccessToSensor(#sensorPlayerInfo.sensorId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSensor(#sensorPlayerInfo.getSensorId())")
     public ResponseEntity<?> api_unassign_player_from_sensor(@RequestBody SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException {
         teamService.unassignPlayerFromSensor(sensorPlayerInfo);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/team/players-without-sensors")
-    @PreAuthorize("@securityService.hasAccessToSensorOfTeam(#teamId)")
+    @GetMapping("/team/players-without-sensor")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSensorOfTeam(#teamId)")
     public ResponseEntity<?> getPlayersWithoutSensors(@RequestParam Long teamId) throws ResourceNotFoundException {
         List<Player> players = teamService.getPlayersWithoutSensorsByTeamId(teamId);
 

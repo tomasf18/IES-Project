@@ -60,6 +60,7 @@ public interface RelationalQueries {
     public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException;
     public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException;
     public User getUserByUsername(String currentUsername) throws ResourceNotFoundException;
+    public User getUserByEmail(String email) throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
