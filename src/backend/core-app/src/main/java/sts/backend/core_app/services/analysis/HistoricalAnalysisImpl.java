@@ -38,6 +38,7 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         String sessionName = session.getName();
         LocalDateTime startTime = session.getStartTime();
         LocalDateTime endTime = session.getEndTime();
+
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String startDate = startTime.format(dateFormatter);

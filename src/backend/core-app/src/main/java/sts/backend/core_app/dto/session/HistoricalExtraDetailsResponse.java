@@ -8,6 +8,7 @@ public class HistoricalExtraDetailsResponse extends HistoricalInfoResponse {
     private Double averageHeartRate;
     private Double averageBodyTemperature;
     private Double averageRespiratoryRate;
+    
 
     public HistoricalExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate) {
         super(sessionName, date, time, participants, historicalDataPlayers);
