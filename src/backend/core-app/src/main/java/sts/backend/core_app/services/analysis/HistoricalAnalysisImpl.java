@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
-import sts.backend.core_app.dto.session.HistoricalInfoResponse;
-import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;

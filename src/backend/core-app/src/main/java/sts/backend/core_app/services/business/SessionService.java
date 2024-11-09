@@ -86,9 +86,8 @@ public class SessionService {
         return basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
     }
 
-    public RealTimeInfoResponse getRealTimeInfo(Long sessionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRealTimeInfo'");
+    public RealTimeInfoResponse getRealTimeInfo(Long sessionId) throws ResourceNotFoundException {
+        return realTimeAnalysisImpl.getRealTimeInfo(sessionId);
     }
 
     public RealTimeExtraDetailsResponse getRealTimeExtraDetails(Long sessionId, Long playerId) throws ResourceNotFoundException {

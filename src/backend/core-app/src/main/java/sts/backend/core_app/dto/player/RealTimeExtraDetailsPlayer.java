@@ -12,6 +12,7 @@ public class RealTimeExtraDetailsPlayer {
 
     private Long playerId;
     private String playerName;
+
     // Getters and Setters
 
     public List<ValueTimeSeriesView> getHeartRateData() {
