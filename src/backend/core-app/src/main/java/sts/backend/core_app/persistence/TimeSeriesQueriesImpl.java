@@ -2,6 +2,7 @@ package sts.backend.core_app.persistence;
 
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
+import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.models.SensorTimeSeriesDataId;
@@ -50,5 +51,16 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
 
         return details;
     }
-    
+
+    @Override
+    public List<ValueTimeSeriesView> getHistoricalData(Long playerId, String metric, LocalDateTime startTime,
+            LocalDateTime endTime) {
+        return sensorTimeSeriesDataRepository.findByPlayerUserIdAndIdMetricAndIdTimestampBetween(playerId, metric, startTime, endTime);
+    }
+
+    @Override
+    public Double getAverageValue(List<ValueTimeSeriesView> metricData) {
+        return metricData.stream().mapToDouble(ValueTimeSeriesView::getValue).average().orElse(0.0);
+    }
+
 }

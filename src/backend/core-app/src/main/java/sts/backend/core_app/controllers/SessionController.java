@@ -39,7 +39,7 @@ public class SessionController {
     }
 
     @PostMapping("/sessions/match")
-    public Session api_create_match_session(@RequestParam MatchRequest matchRequest) throws ResourceNotFoundException {
+    public Session api_create_match_session(@RequestBody MatchRequest matchRequest) throws ResourceNotFoundException {
         return sessionService.createMatch(matchRequest);
     }
 
@@ -79,13 +79,14 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/historical-extra-details")
-    public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
-        return sessionService.getHistoricalExtraDetails(sessionId);
+    public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId, @RequestParam Long playerId) throws ResourceNotFoundException {
+        return sessionService.getHistoricalExtraDetails(sessionId, playerId);
     }
 
     @GetMapping("/sessions/notifications")
     public Set<NotificationResponse> api_get_notifications(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getNotifications(sessionId);
     }
+
 
 }
