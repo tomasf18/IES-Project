@@ -39,7 +39,7 @@ public class SessionController {
     }
 
     @PostMapping("/sessions/match")
-    public Session api_create_match_session(@RequestParam MatchRequest matchRequest) throws ResourceNotFoundException {
+    public Session api_create_match_session(@RequestBody MatchRequest matchRequest) throws ResourceNotFoundException {
         return sessionService.createMatch(matchRequest);
     }
 
