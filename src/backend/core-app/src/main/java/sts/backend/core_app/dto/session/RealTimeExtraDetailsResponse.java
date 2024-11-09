@@ -13,7 +13,6 @@ public class RealTimeExtraDetailsResponse extends HistoricalInfoResponse {
     private String type;
     private String location;
     private String weather;
-    private String result = "Not available"; // TODO: ...
     
     public RealTimeExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate) {
         super(sessionName, date, time, participants, historicalDataPlayers);
@@ -22,7 +21,7 @@ public class RealTimeExtraDetailsResponse extends HistoricalInfoResponse {
         this.lastRespiratoryRate = lastRespiratoryRate;
     }
 
-    public RealTimeExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate, String opponentTeam, String type, String location, String weather, String result) {
+    public RealTimeExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate, String opponentTeam, String type, String location, String weather) {
         super(sessionName, date, time, participants, historicalDataPlayers);
         this.lastHeartRate = lastHeartRate;
         this.lastBodyTemperature = lastBodyTemperature;
@@ -31,7 +30,6 @@ public class RealTimeExtraDetailsResponse extends HistoricalInfoResponse {
         this.type = type;
         this.location = location;
         this.weather = weather;
-        this.result = result;
     }
 
     public Double getLastHeartRate() {
@@ -89,13 +87,4 @@ public class RealTimeExtraDetailsResponse extends HistoricalInfoResponse {
     public void setWeather(String weather) {
         this.weather = weather;
     }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-    
 }

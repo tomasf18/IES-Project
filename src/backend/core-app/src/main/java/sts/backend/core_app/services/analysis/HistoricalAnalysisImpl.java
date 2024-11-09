@@ -1,6 +1,7 @@
 package sts.backend.core_app.services.analysis;
 
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -45,7 +46,9 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         String startDate = startTime.format(dateFormatter);
         String endTimeFormatted = endTime.format(timeFormatter);
         String date = startDate + "-" + endTimeFormatted; // "Oct 12, 2021 12:00-13:30"
-        int time = (int) (endTime.getMinute() - startTime.getMinute());
+        Duration duration = Duration.between(startTime, endTime);
+        long minutes = duration.toMinutes();
+        int time = (int) minutes;
 
         // Get the list of players in the session through the PlayerSession table
         List<Long> playerIds = relationalQueries.getPlayerIdsBySessionId(sessionId);
@@ -56,14 +59,12 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         String matchType = null;
         String location = null;
         String weather = null;
-        String result = null;
         if (session instanceof Match) {
             Match match = (Match) session;
             opponentTeam = match.getOpponentTeam();
             matchType = match.getType();
             location = match.getLocation();
             weather = match.getWeather();
-            result = match.getResult();
         }
 
         // Metrics to retrieve
@@ -113,95 +114,10 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         }
 
         if (session instanceof Match) {
-            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather, result);
+            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather);
         } 
         return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
     }
 
-    public RealTimeExtraDetailsResponse getRealTimeExtraDetails(Long sessionId, Long playerId) throws ResourceNotFoundException {
-        // Get the session information
-        Session session = relationalQueries.getSessionById(sessionId);
-
-        String sessionName = session.getName();
-        LocalDateTime startTime = session.getStartTime();
-        
-        // it's real time, so we need to get the current time
-        LocalDateTime endTime = LocalDateTime.now();
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
-        String startDate = startTime.format(dateFormatter);
-        String date = startDate; // Only display the start: "Oct 12, 2021 12:00"
-        int time = (int) (endTime.getMinute() - startTime.getMinute());
-
-        // Get the list of players in the session through the PlayerSession table
-        List<Long> playerIds = relationalQueries.getPlayerIdsBySessionId(sessionId);
-        int participants = playerIds.size();
-
-        // Check if Session is instance of Match
-        String opponentTeam = null;
-        String matchType = null;
-        String location = null;
-        String weather = null;
-        String result = null;
-        if (session instanceof Match) {
-            Match match = (Match) session;
-            opponentTeam = match.getOpponentTeam();
-            matchType = match.getType();
-            location = match.getLocation();
-            weather = match.getWeather();
-            result = match.getResult();
-        }
-
-        // Metrics to retrieve
-        List<String> metrics = Arrays.asList("heart_rate", "body_temperature", "respiratory_rate");
-
-        // Get the historical data of each player
-        List<RealTimeExtraDetailsPlayer> historicalDataPlayers = new ArrayList<>();
-
-        Double lastHeartRate = 0.0;
-        Double lastBodyTemperature = 0.0;
-        Double lastRespiratoryRate = 0.0;
-
-        for (Long userId : playerIds) {
-            RealTimeExtraDetailsPlayer historicalDataPlayer = new RealTimeExtraDetailsPlayer();
-            
-            historicalDataPlayer.setPlayerId(userId);
-            historicalDataPlayer.setPlayerName(relationalQueries.getPlayerById(userId).getName());
-            
-            for (String metric : metrics) {
-                List<ValueTimeSeriesView> metricData = timeSeriesQueries.getHistoricalData(userId, metric, startTime, endTime);
-                switch (metric) {
-                    case "heart_rate":
-                        historicalDataPlayer.setHeartRateData(metricData);
-                        if (userId == playerId) {
-                            lastHeartRate = metricData.get(metricData.size() - 1).getValue();
-                        }
-                        break;
-                    case "body_temperature":
-                        historicalDataPlayer.setBodyTemperatureData(metricData);
-                        if (userId == playerId) {
-                            lastBodyTemperature = metricData.get(metricData.size() - 1).getValue();
-                        }
-                        break;
-                    case "respiratory_rate":
-                        historicalDataPlayer.setRespiratoryRateData(metricData);
-                        if (userId == playerId) {
-                            lastRespiratoryRate = metricData.get(metricData.size() - 1).getValue();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-            
-            historicalDataPlayers.add(historicalDataPlayer);
-        }
-
-        if (session instanceof Match) {
-            return new RealTimeExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, lastHeartRate, lastBodyTemperature, lastRespiratoryRate, opponentTeam, matchType, location, weather, result);
-        } 
-        return new RealTimeExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, lastHeartRate, lastBodyTemperature, lastRespiratoryRate);
-    }
     
 }
