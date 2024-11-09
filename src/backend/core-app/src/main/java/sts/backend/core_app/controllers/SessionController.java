@@ -69,8 +69,8 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/real-time-extra-details")
-    public RealTimeExtraDetailsResponse api_get_real_time_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
-        return sessionService.getRealTimeExtraDetails(sessionId);
+    public RealTimeExtraDetailsResponse api_get_real_time_extra_details(@RequestParam Long sessionId, @RequestParam Long playerId) throws ResourceNotFoundException {
+        return sessionService.getRealTimeExtraDetails(sessionId, playerId);
     }
 
     @GetMapping("/sessions/historical-info")
@@ -87,6 +87,5 @@ public class SessionController {
     public Set<NotificationResponse> api_get_notifications(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getNotifications(sessionId);
     }
-
 
 }

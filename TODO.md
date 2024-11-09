@@ -4,7 +4,16 @@
 
 2. Adicionar na classe Match atributo result. Quando faço o end do Match devia puder inserir o result.
 
-# GET /sessions/historical-info
+# GET /sessions/real-time-extra-details
+
+Diferença relativamente ao anterior, não faço o display do average heart, faço do último valor.
+    private Double lastHeartRate;
+    private Double lastBodyTemperature;
+    private Double lastRespiratoryRate;
+    
+Acho que nem preciso usar "RealTimeInfoResponse" posso continuar a usar "HistoricalInfoResponse".
+
+# DANILO: GET /sessions/historical-info
 
 1. Criar classe "HistoricalExtraDetailsPlayer" que extende "RealTimeExtraDetailsPlayer" e tem os atributos:
     1. private Double averageHeartRate;

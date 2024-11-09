@@ -20,8 +20,6 @@ public class Match extends Session {
     @Size(max = 50, message = "Match: match weather must be at most 50 characters")
     private String weather;
 
-    private String result = "Not available"; // TODO: ...
-
     // standard constructors / setters / getters / toString
     public Match() {}
 
@@ -63,14 +61,6 @@ public class Match extends Session {
 
     public void setWeather(String weather) {
         this.weather = weather;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
     }
 
 }

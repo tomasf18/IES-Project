@@ -13,7 +13,6 @@ public class HistoricalExtraDetailsResponse extends HistoricalInfoResponse {
     private String type;
     private String location;
     private String weather;
-    private String result = "Not available"; // TODO: ...
     
     public HistoricalExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate) {
         super(sessionName, date, time, participants, historicalDataPlayers);
@@ -22,7 +21,7 @@ public class HistoricalExtraDetailsResponse extends HistoricalInfoResponse {
         this.averageRespiratoryRate = averageRespiratoryRate;
     }
 
-    public HistoricalExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate, String opponentTeam, String type, String location, String weather, String result) {
+    public HistoricalExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate, String opponentTeam, String type, String location, String weather) {
         super(sessionName, date, time, participants, historicalDataPlayers);
         this.averageHeartRate = averageHeartRate;
         this.averageBodyTemperature = averageBodyTemperature;
@@ -31,7 +30,6 @@ public class HistoricalExtraDetailsResponse extends HistoricalInfoResponse {
         this.type = type;
         this.location = location;
         this.weather = weather;
-        this.result = result;
     }
 
     public Double getAverageHeartRate() {
@@ -88,14 +86,6 @@ public class HistoricalExtraDetailsResponse extends HistoricalInfoResponse {
 
     public void setWeather(String weather) {
         this.weather = weather;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
     }
     
 }

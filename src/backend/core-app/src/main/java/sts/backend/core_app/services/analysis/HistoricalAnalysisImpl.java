@@ -1,6 +1,7 @@
 package sts.backend.core_app.services.analysis;
 
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
 import sts.backend.core_app.dto.session.HistoricalInfoResponse;
+import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
@@ -44,7 +46,9 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         String startDate = startTime.format(dateFormatter);
         String endTimeFormatted = endTime.format(timeFormatter);
         String date = startDate + "-" + endTimeFormatted; // "Oct 12, 2021 12:00-13:30"
-        int time = (int) (endTime.getMinute() - startTime.getMinute());
+        Duration duration = Duration.between(startTime, endTime);
+        long minutes = duration.toMinutes();
+        int time = (int) minutes;
 
         // Get the list of players in the session through the PlayerSession table
         List<Long> playerIds = relationalQueries.getPlayerIdsBySessionId(sessionId);
@@ -55,14 +59,12 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         String matchType = null;
         String location = null;
         String weather = null;
-        String result = null;
         if (session instanceof Match) {
             Match match = (Match) session;
             opponentTeam = match.getOpponentTeam();
             matchType = match.getType();
             location = match.getLocation();
             weather = match.getWeather();
-            result = match.getResult();
         }
 
         // Metrics to retrieve
@@ -112,9 +114,10 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         }
 
         if (session instanceof Match) {
-            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather, result);
+            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather);
         } 
         return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
     }
+
     
 }
