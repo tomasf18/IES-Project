@@ -17,7 +17,7 @@ import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
 import sts.backend.core_app.services.analysis.interfaces.HistoricalAnalysis;
-
+import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.Session;
 
 @Service
@@ -49,6 +49,21 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         // Get the list of players in the session through the PlayerSession table
         List<Long> playerIds = relationalQueries.getPlayerIdsBySessionId(sessionId);
         int participants = playerIds.size();
+
+        // Check if Session is instance of Match
+        String opponentTeam = null;
+        String matchType = null;
+        String location = null;
+        String weather = null;
+        String result = null;
+        if (session instanceof Match) {
+            Match match = (Match) session;
+            opponentTeam = match.getOpponentTeam();
+            matchType = match.getType();
+            location = match.getLocation();
+            weather = match.getWeather();
+            result = match.getResult();
+        }
 
         // Metrics to retrieve
         List<String> metrics = Arrays.asList("heart_rate", "body_temperature", "respiratory_rate");
@@ -96,7 +111,9 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
             historicalDataPlayers.add(historicalDataPlayer);
         }
 
-        
+        if (session instanceof Match) {
+            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather, result);
+        } 
         return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
     }
     

@@ -1,6 +1,8 @@
 # GET /sessions/historical-extra-details
 
-1. IF MATCH, show the Opposite Team, weather, etc... -> Adicionar estes atributos na classe HistoricalInfoResponse.
+1. IF MATCH, show the Opposite Team, weather, etc... -> Adicionar estes atributos na classe HistoricalExtraDetailsResponse (ou na HistoricalInfoResponse).
+
+2. Adicionar na classe Match atributo result. Quando faço o end do Match devia puder inserir o result.
 
 # GET /sessions/historical-info
 

@@ -11,7 +11,6 @@ public class HistoricalInfoResponse {
     private int time;
     private int participants;
     private List<RealTimeExtraDetailsPlayer> historicalDataPlayers;
-    
 
     public HistoricalInfoResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers) {
         this.sessionName = sessionName;
@@ -20,9 +19,6 @@ public class HistoricalInfoResponse {
         this.participants = participants;
         this.historicalDataPlayers = historicalDataPlayers;
     }
-
-    // TODO: If match ...
-
 
     // Getters and Setters
 
@@ -66,5 +62,5 @@ public class HistoricalInfoResponse {
         this.historicalDataPlayers = historicalDataPlayers;
     }
 
-    
+
 }
