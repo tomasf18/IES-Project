@@ -3,7 +3,6 @@ package sts.backend.core_app.persistence.interfaces;
 import java.util.List;
 import java.util.Set;
 import sts.backend.core_app.models.User;
-import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.TeamDirectorsView;

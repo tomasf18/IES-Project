@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.AssignSessionPlayer;
 import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
-import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.MatchRequest;
 import sts.backend.core_app.dto.session.NotificationResponse;
 import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
@@ -103,8 +102,8 @@ public class SessionService {
         return historicalAnalysisImpl.getHistoricalExtraDetails(sessionId, playerId);
     }
 
-    public HistoricalInfoResponse getHistoricalInfo(Long sessionId){
-        throw new UnsupportedOperationException("Unimplemented method 'getHistoricalInfo'");
+    public HistoricalExtraDetailsResponse getHistoricalInfo(Long sessionId) throws ResourceNotFoundException {
+        return historicalAnalysisImpl.getHistoricalInfo(sessionId);
     }
 
 }
