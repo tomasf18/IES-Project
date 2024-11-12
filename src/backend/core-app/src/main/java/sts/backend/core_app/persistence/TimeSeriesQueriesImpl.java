@@ -2,7 +2,6 @@ package sts.backend.core_app.persistence;
 
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
-import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.models.SensorTimeSeriesDataId;
