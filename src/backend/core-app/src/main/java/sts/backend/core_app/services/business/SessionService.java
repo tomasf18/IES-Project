@@ -22,16 +22,19 @@ import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.HistoricalAnalysisImpl;
 import sts.backend.core_app.services.analysis.RealTimeAnalysisImpl;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
+import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
 public class SessionService {
 
     private final BasicDataAnalysis basicDataAnalysis;
+    private final RealTimeAnalysis realTimeAnalysis;
     private final HistoricalAnalysisImpl historicalAnalysisImpl;
     private final RealTimeAnalysisImpl realTimeAnalysisImpl;
 
-    public SessionService(BasicDataAnalysis basicDataAnalysis, HistoricalAnalysisImpl historicalAnalysisImpl, RealTimeAnalysisImpl realTimeAnalysisImpl) {
+    public SessionService(BasicDataAnalysis basicDataAnalysis, RealTimeAnalysis realTimeAnalysis, HistoricalAnalysisImpl historicalAnalysisImpl, RealTimeAnalysisImpl realTimeAnalysisImpl) {
         this.basicDataAnalysis = basicDataAnalysis;
+        this.realTimeAnalysis = realTimeAnalysis;
         this.historicalAnalysisImpl = historicalAnalysisImpl;
         this.realTimeAnalysisImpl = realTimeAnalysisImpl;
     }
@@ -93,9 +96,8 @@ public class SessionService {
         return realTimeAnalysisImpl.getRealTimeExtraDetails(sessionId, playerId);
     }
 
-    public Set<NotificationResponse> getNotifications(Long sessionId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNotifications'");
+    public Set<NotificationResponse> getNotifications(Long sessionId) throws ResourceNotFoundException {
+        return realTimeAnalysis.getNotifications(sessionId);
     }
 
     public HistoricalExtraDetailsResponse getHistoricalExtraDetails(Long sessionId, Long playerId) throws ResourceNotFoundException {
