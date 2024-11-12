@@ -23,11 +23,9 @@ import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.SensorTimeSeriesData;
-import sts.backend.core_app.models.Player;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
-import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
