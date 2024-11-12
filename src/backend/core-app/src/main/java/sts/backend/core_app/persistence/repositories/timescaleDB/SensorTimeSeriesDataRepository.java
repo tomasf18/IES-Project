@@ -16,4 +16,7 @@ import java.util.List;
 public interface SensorTimeSeriesDataRepository extends JpaRepository<SensorTimeSeriesData, SensorTimeSeriesDataId> {
     List<ValueTimeSeriesView> findByPlayerUserIdAndIdMetricAndIdTimestampAfter(Long playerId, String metricType, LocalDateTime timestamp);
     SensorTimeSeriesData findFirstByPlayerUserIdAndIdMetricOrderByIdTimestampDesc(Long playerId, String metricType);
+
+    List<ValueTimeSeriesView> findByPlayerUserIdAndIdMetricAndIdTimestampBetween(Long playerId, String metric,
+            LocalDateTime startTime, LocalDateTime endTime);
 }

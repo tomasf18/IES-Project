@@ -68,5 +68,16 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
 
         return lastMetricValues;
     }
-    
+
+    @Override
+    public List<ValueTimeSeriesView> getHistoricalData(Long playerId, String metric, LocalDateTime startTime,
+            LocalDateTime endTime) {
+        return sensorTimeSeriesDataRepository.findByPlayerUserIdAndIdMetricAndIdTimestampBetween(playerId, metric, startTime, endTime);
+    }
+
+    @Override
+    public Double getAverageValue(List<ValueTimeSeriesView> metricData) {
+        return metricData.stream().mapToDouble(ValueTimeSeriesView::getValue).average().orElse(0.0);
+    }
+
 }

@@ -255,7 +255,6 @@ public class RelationalQueriesImpl implements RelationalQueries {
         List<TeamMembersResponse> teamMembersResponses = teamRepository.findPendingUsersByTypeId(teamId, Set.of(1L,3L,4L));
         teamMembers.addAll(teamMembersResponses);
 
-
         return teamMembers;
     } 
 
@@ -281,6 +280,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
     public void deleteTeam(Long teamId) {
         teamRepository.deleteById(teamId);
+    }
+
+    @Override
+    public List<Long> getPlayerIdsBySessionId(Long sessionId) {
+        return playerSessionRepository.findPlayerUserIdsBySessionSessionId(sessionId);
     }
 
 }

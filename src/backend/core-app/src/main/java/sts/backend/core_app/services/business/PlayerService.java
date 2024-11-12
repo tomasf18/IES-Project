@@ -1,8 +1,14 @@
 package sts.backend.core_app.services.business;
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.player.SessionsAllDayOfYear;
+import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -21,9 +27,18 @@ public class PlayerService {
         this.realTimeAnalysis = realTimeAnalysis;
     }
 
-    public SessionsAllDayOfYear getPlayerSessionsAllDaysOfYear(Long playerId, Long year) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayerFatigueAllDaysOfYear'");
+    public SessionsAllDayOfYear getPlayerSessionsAllDaysOfYear(Long playerId, Long year) throws ResourceNotFoundException {
+        Set<SessionInfoView> allSessions = basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
+
+        Map<LocalDate, Integer> sessionsPerDay = new HashMap<>();
+        for (SessionInfoView session : allSessions) {
+            LocalDate sessionDate = session.getStartTime().toLocalDate();
+            if (sessionDate.getYear() == year) {
+                sessionsPerDay.put(sessionDate, sessionsPerDay.getOrDefault(sessionDate, 0) + 1);
+            }
+        }
+        return new SessionsAllDayOfYear(playerId, year, sessionsPerDay);
+        
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
