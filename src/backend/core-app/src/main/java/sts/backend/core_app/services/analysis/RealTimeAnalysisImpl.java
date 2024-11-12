@@ -34,10 +34,9 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     private final TimeSeriesQueries timeSeriesQueries;
     private final RelationalQueries relationalQueries;
 
-    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries, RelationalQueries relationalQueries) {
+    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries) {
         this.relationalQueries = relationalQueries;
         this.timeSeriesQueries = timeSeriesQueries;
-        this.relationalQueries = relationalQueries;
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
