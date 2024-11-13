@@ -1,22 +1,20 @@
-import {
-	ConfigurationCard
-  } from "../components";
+import { SideBar } from "../components";
+import { FaHome, FaUser, FaCog, FaBell } from "react-icons/fa";
 
 export default function TestPage() {
+  const navLinks = [
+    { icon: <FaHome />, to: "/home", label: "Home" },
+    { icon: <FaUser />, to: "/profile", label: "Sensors Tracking" },
+    { icon: <FaCog />, to: "/settings", label: "Settings" },
+    { icon: <FaBell />, to: "/notifications", label: "Notifications" },
+  ];
 
-	let widthClass = "w-[60rem]";
-	let heightClass = "h-[40rem]";
-	let name = "António Mendes";
-	let rightContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus ut purus"
+  return (
+    <div className="flex min-h-screen">
+      <SideBar navLinks={navLinks} width="w-60" isLargeBar={true} />
 
-	return (
-		<div className="flex flex-col min-h-screen m-10">
-			<ConfigurationCard
-			widthClass={widthClass}
-			heightClass={heightClass}
-			name={name}
-			rightContent={rightContent}
-		/>
-		</div>
-	)
+      {/* Main Content */}
+      <div className="flex-grow p-8 ml-60"></div>
+    </div>
+  );
 }
