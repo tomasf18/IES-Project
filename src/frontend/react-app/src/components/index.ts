@@ -13,3 +13,5 @@ export { default as StripedTable } from "./StripedTable/StripedTable";
 export { default as SideBar } from "./SideBar/SideBar";
 export { default as ConfigurationCard } from "./ConfigurationCard/ConfigurationCard";
 export { default as SimpleModal } from "./SimpleModal/SimpleModal";
+export { default as TeamUniqueCard } from "./TeamsCard/TeamUniqueCard";
+export { default as TeamsCard } from "./TeamsCard/TeamsCard";
