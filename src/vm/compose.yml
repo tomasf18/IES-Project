@@ -2,18 +2,13 @@ services:
   database:
     image: timescale/timescaledb:latest-pg16
     environment:
-      POSTGRES_USER_FILE: /run/secrets/postgres_user
-      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
-      POSTGRES_DB_FILE: /run/secrets/postgres_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "${DATABASE_LOCAL_PORT}:${DATABASE_DOCKER_PORT}"
-    secrets:
-      - postgres_user
-      - postgres_password
-      - postgres_db
     volumes:
       - postgres_db_data:/var/lib/postgresql/data
-    restart: unless-stopped
 
   backend:
     image: tomassf/ies-project-backend:latest
@@ -31,7 +26,6 @@ services:
       - database
     ports:
       - "${BACKEND_LOCAL_PORT}:${BACKEND_DOCKER_PORT}"
-    restart: on-failure
 
   frontend:
     image: tomassf/ies-project-frontend:latest
@@ -39,15 +33,6 @@ services:
       - backend
     ports:
       - "${FRONTEND_LOCAL_PORT}:${FRONTEND_DOCKER_PORT}"
-    restart: on-failure
-
-secrets:
-  postgres_user:
-    external: true
-  postgres_password:
-    external: true
-  postgres_db:
-    external: true
 
 volumes:
   postgres_db_data:
