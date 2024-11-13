@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import sts.backend.core_app.models.Player;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -15,6 +16,8 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
     List<Player> findByTeamTeamIdAndPlayerSensorIsNull(Long teamId);
     
     List<Player> findPlayersByTeamTeamId(Long teamId);
+
+    Optional<Player> findByUsername(String username);
 
     List<Player> findByTeamTeamIdAndPlayerSensorIsNotNull(Long teamId);    
     

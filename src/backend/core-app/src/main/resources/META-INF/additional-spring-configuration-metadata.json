@@ -1,5 +1,22 @@
-{"properties": [{
-  "name": "timescaledb.datasource.url",
-  "type": "java.lang.String",
-  "description": "Used to generate timescaledb datasource url'"
-}]}
+{"properties": [
+  {
+    "name": "timescaledb.datasource.url",
+    "type": "java.lang.String",
+    "description": "Used to generate timescaledb datasource url'"
+  },
+  {
+    "name": "jwt.private-key",
+    "type": "java.lang.String",
+    "description": "Private key for JWT token generation'"
+  },
+  {
+    "name": "jwt.public-key",
+    "type": "java.lang.String",
+    "description": "Public key for JWT token generation'"
+  },
+  {
+    "name": "jwt.expiration-time",
+    "type": "java.lang.String",
+    "description": "Expiration time for JWT token'"
+  }
+]}
