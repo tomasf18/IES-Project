@@ -52,6 +52,10 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
         return details;
     }
 
+    public List<ValueTimeSeriesView> getHeartRateData(Long playerId, LocalDateTime initialTimestamp) {
+        return sensorTimeSeriesDataRepository.findByPlayerUserIdAndIdMetricAndIdTimestampAfter(playerId, "heart_rate", initialTimestamp);
+    }
+
     public SessionLastMetricValues getLastMetricValuesByPlayerId(Long playerId) throws ResourceNotFoundException {
         SensorTimeSeriesData lastHeartRate = sensorTimeSeriesDataRepository.findFirstByPlayerUserIdAndIdMetricOrderByIdTimestampDesc(playerId, "heart_rate");
         SensorTimeSeriesData lastBodyTemperature = sensorTimeSeriesDataRepository.findFirstByPlayerUserIdAndIdMetricOrderByIdTimestampDesc(playerId, "body_temperature");

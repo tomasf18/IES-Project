@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.team.TeamsInfoView;
-import sts.backend.core_app.dto.team.RealTimeInfo;
+import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.SensorPlayerView;
@@ -24,15 +24,18 @@ import sts.backend.core_app.models.RegistrationCode;
 import sts.backend.core_app.models.Sensor;
 import sts.backend.core_app.models.Team;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
+import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
 public class TeamService {
     public static final int REGISTRATION_CODE_EXPIRATION_MINUTES = 15;
 
     private final BasicDataAnalysis basicDataAnalysis;
+    private final RealTimeAnalysis realTimeAnalysis;
 
-    public TeamService(BasicDataAnalysis basicDataAnalysis) {
+    public TeamService(BasicDataAnalysis basicDataAnalysis, RealTimeAnalysis realTimeAnalysis) {
         this.basicDataAnalysis = basicDataAnalysis;
+        this.realTimeAnalysis = realTimeAnalysis;
     }
 
     public Team createTeam(TeamCreation teamCreation) throws ResourceNotFoundException {
@@ -81,9 +84,8 @@ public class TeamService {
         basicDataAnalysis.deleteTeam(teamId);
     }
 
-    public RealTimeInfo getPlayersAvailableRealTimeInfo(Long teamId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayersAvailableRealTimeInfo'");
+    public Set<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
+        return realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
     }
 
     public void deleteRegistrationCode(RegistrationCodeString code) {

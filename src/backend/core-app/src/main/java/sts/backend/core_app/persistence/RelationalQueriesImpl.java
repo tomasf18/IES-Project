@@ -2,6 +2,7 @@ package sts.backend.core_app.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -221,6 +222,20 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException {
         return playerRepository.findByTeamTeamIdAndPlayerSensorIsNull(teamId);
+    }
+
+    public List<Player> getAvailablePlayersByTeamId(Long teamId) throws ResourceNotFoundException {
+        List<Player> result = new ArrayList<>();
+        List<Player> playersWithSensor = playerRepository.findByTeamTeamIdAndPlayerSensorIsNotNull(teamId);
+        for (Player player : playersWithSensor) {
+            Optional<Set<SessionInfoView>> playerSessions = sessionRepository.findSessionInfoByPlayerId(player.getUserId());
+            
+            if (playerSessions.isEmpty() || 
+                playerSessions.get().stream().allMatch(session -> session.getState().equals("Closed"))) {
+                result.add(player);
+            }
+        }
+        return result;
     }
 
     // --- Delete methods ---

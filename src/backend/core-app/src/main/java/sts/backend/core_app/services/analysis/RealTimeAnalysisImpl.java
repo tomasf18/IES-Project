@@ -1,22 +1,22 @@
 package sts.backend.core_app.services.analysis;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.time.Duration;
 
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
+import sts.backend.core_app.dto.player.ValueTimeSeriesView;
+import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
 import sts.backend.core_app.dto.session.NotificationResponse;
 import sts.backend.core_app.dto.session.SessionLastMetricValues;
-import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -46,6 +46,21 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     @Override
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
         return timeSeriesQueries.getRealTimeExtraDetailsLast24Hours(playerId);
+    }
+
+    public Set<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
+        Set<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = new HashSet<>();
+        List<Player> players = relationalQueries.getAvailablePlayersByTeamId(teamId);
+        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(5);
+
+        for (Player player : players) {
+            List<ValueTimeSeriesView> heartRateData = timeSeriesQueries.getHeartRateData(player.getUserId(), initialTimestamp);
+            Double currentHeartRate = heartRateData.get(heartRateData.size() - 1).getValue();
+
+            playersAvailableRealTimeInfo.add(new PlayersAvailableRealTimeInfo(player.getName(), player.getProfilePictureUrl(), heartRateData, currentHeartRate));
+        }
+        
+        return playersAvailableRealTimeInfo;
     }
 
     public Set<NotificationResponse> getNotifications(Long sessionId) throws ResourceNotFoundException {

@@ -1,7 +1,7 @@
 package sts.backend.core_app.persistence.interfaces;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDateTime;
 
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.session.SessionLastMetricValues;
@@ -14,6 +14,8 @@ public interface TimeSeriesQueries {
     SensorTimeSeriesData addMetricValue(Long playerId, String metricName, Double value) throws ResourceNotFoundException;
 
     RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId);
+
+    List<ValueTimeSeriesView> getHeartRateData(Long playerId, LocalDateTime initialTimestamp);
 
     SessionLastMetricValues getLastMetricValuesByPlayerId(Long playerId) throws ResourceNotFoundException;
 
