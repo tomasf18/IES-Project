@@ -57,6 +57,11 @@ public interface RelationalQueries {
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
     public List<User> getUsers() throws ResourceNotFoundException;
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException;
+    public Player getPlayerByUsername(String username) throws ResourceNotFoundException;
+    public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException;
+    public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException;
+    public User getUserByUsername(String currentUsername) throws ResourceNotFoundException;
+    public User getUserByEmail(String email) throws ResourceNotFoundException;
     public List<Player> getAvailablePlayersByTeamId(Long teamId) throws ResourceNotFoundException;
 
     // --- Delete methods ---

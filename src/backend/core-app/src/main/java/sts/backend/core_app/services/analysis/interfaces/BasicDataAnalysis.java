@@ -39,6 +39,7 @@ public interface BasicDataAnalysis {
     public Team getTeamById(Long teamId) throws ResourceNotFoundException;
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException;
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
+    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException;
     
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
@@ -49,6 +50,11 @@ public interface BasicDataAnalysis {
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException; 
     public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException;
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
+    public Player getPlayerByUsername(String username) throws ResourceNotFoundException;
+    public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException;
+    public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException;
+    public User getUserByUsername(String currentUsername) throws ResourceNotFoundException;
+    public User getUserByEmail(String email) throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

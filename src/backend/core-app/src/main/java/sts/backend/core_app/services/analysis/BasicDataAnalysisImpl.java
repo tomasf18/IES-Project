@@ -93,6 +93,11 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getPlayerById(playerId);
     }
 
+    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException {
+        return relationalQueries.getSensorById(sensorId);
+    }
+
+
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException {
         return relationalQueries.getSessionsInfoByTeam(team);
@@ -124,6 +129,26 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException {
         return relationalQueries.getPlayersWithoutSensorsByTeamId(teamId);
+    }
+
+    public Player getPlayerByUsername(String username) throws ResourceNotFoundException {
+        return relationalQueries.getPlayerByUsername(username);
+    }
+
+    public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException {
+        return relationalQueries.getTrainerByUsername(username);
+    }
+
+    public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException {
+        return relationalQueries.getTeamDirectorByUsername(username);
+    }
+
+    public User getUserByUsername(String currentUsername) throws ResourceNotFoundException {
+        return relationalQueries.getUserByUsername(currentUsername);
+    }
+
+    public User getUserByEmail(String email) throws ResourceNotFoundException {
+        return relationalQueries.getUserByEmail(email);
     }
 
     // --- Delete methods ---
