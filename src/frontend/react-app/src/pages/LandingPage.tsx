@@ -9,9 +9,22 @@ import {
 } from "../components";
 
 export default function LandingPage() {
+  const links = [
+    { href: "#home", label: "Home" },
+    { href: "#service", label: "Service" },
+    { href: "#feature", label: "Feature" },
+    { href: "#product", label: "Product" },
+    { href: "#security", label: "Security" },
+  ];
+
+  const buttons: { to: string; label: string; color: "primary" | "secondary" }[] = [
+    { to: "/login", label: "Login", color: "secondary" },
+    { to: "/signup", label: "Sign Up", color: "primary" },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
+      <Header links={links} buttons={buttons}/>
 
       <main className="flex-grow">
         <section id="home">
