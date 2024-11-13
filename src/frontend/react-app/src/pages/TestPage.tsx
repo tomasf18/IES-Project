@@ -1,4 +1,4 @@
-import { SmallSideBar } from "../components";
+import { SideBar } from "../components";
 import { FaHome, FaUser, FaCog, FaBell } from "react-icons/fa";
 
 export default function TestPage() {
@@ -11,7 +11,7 @@ export default function TestPage() {
 
   return (
     <div className="flex min-h-screen">
-      <SmallSideBar navLinks={navLinks} width="w-60" isLargeBar={true} />
+      <SideBar navLinks={navLinks} width="w-60" isLargeBar={true} />
 
       {/* Main Content */}
       <div className="flex-grow p-8 ml-60"></div>

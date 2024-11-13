@@ -8,7 +8,7 @@ interface SmallSideBarProps {
   isLargeBar?: boolean;
 }
 
-export default function SmallSideBar({
+export default function SideBar({
   avatarUrl = "https://via.placeholder.com/80",
   navLinks = [],
   width = "w-24",
