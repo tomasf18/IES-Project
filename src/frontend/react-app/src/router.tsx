@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { LandingPage, LoginPage, SignUpPage } from "./pages";
+import { LandingPage, LoginPage, SignUpPage, TestPage } from "./pages";
 
 export default function AppRoutes() {
   return (
@@ -7,6 +7,7 @@ export default function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/test" element={<TestPage />} />
     </Routes>
   );
 }
