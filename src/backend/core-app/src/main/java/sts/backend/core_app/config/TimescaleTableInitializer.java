@@ -34,7 +34,7 @@ public class TimescaleTableInitializer implements ApplicationRunner {
 
     @Bean(name = "timescaleDataSource")
     public DataSource dataSource(
-        @Value("${timescaledb.datasource.url}") String url,
+        @Value("${spring.datasource.url}") String url,
         @Value("${spring.datasource.username}") String username,
         @Value("${spring.datasource.password}") String password
     ) {
