@@ -1,8 +1,5 @@
-import TeamsCard from "../components/TeamsCard/TeamsCard";
-import { Google } from "../assets";
-
-export default function TestPage() {
-  const teams = [
+```typescript
+const teams = [
     {
       teamName: "Real Madrid",
       numberTeamMembers: 10,
@@ -57,4 +54,4 @@ export default function TestPage() {
       <TeamsCard teams={teams} handleTeamManagement={handleTeamManagement} />
     </div>
   );
-}
+```
