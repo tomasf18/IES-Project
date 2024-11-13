@@ -11,3 +11,4 @@ export { default as ProductSection } from "./LandingPage/ProductSection";
 export { default as SecuritySection } from "./LandingPage/SecuritySection";
 export { default as StripedTable } from "./StripedTable/StripedTable";
 export { default as SideBar } from "./SideBar/SideBar";
+export { default as ConfigurationCard } from "./ConfigurationCard/ConfigurationCard";
