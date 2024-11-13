@@ -2,8 +2,10 @@ import {
 	ConfigurationCard,
 	StripedTable
   } from "../components";
+// import { useUser } from "../hooks/UserProvider";
 
 export default function TestPage() {
+	// const user = useUser();
 
 	let widthClass = "w-[60rem]";
 	let heightClass = "h-[40rem]";

@@ -37,7 +37,7 @@ public class AuthController {
         return authService.signUpValidation(inputValidationRequest);
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/auth/sign-up")
     public UserCreationInfo api_create_user(@RequestBody UserSignUp userSignUp) throws ResourceNotFoundException {
         RegistrationCode registrationCode = teamService.claimRegistrationCode(userSignUp.getCode()); // claim, even if it's not valid
         return authService.createUser(userSignUp, registrationCode);

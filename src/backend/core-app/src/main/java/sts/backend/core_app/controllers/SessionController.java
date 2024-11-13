@@ -40,12 +40,8 @@ public class SessionController {
     }
 
     @PostMapping("/sessions/match")
-<<<<<<< HEAD
     @PreAuthorize("hasRole('ADMIN') or (hasRole('COACH') and @securityService.hasAccessToTrainer(#sessionRequest.getTrainerId()))")
-    public Session api_create_match_session(@RequestParam MatchRequest matchRequest) throws ResourceNotFoundException {
-=======
     public Session api_create_match_session(@RequestBody MatchRequest matchRequest) throws ResourceNotFoundException {
->>>>>>> dev
         return sessionService.createMatch(matchRequest);
     }
 
