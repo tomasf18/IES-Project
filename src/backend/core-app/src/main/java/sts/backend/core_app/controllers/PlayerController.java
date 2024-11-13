@@ -28,8 +28,8 @@ public class PlayerController {
 
     @GetMapping("/player/sessions/all-days-of-year")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToUser(#playerId)")
-    public SessionsAllDayOfYear api_get_player_fatigue_all_days_of_year(@RequestParam Long playerId, @RequestParam Long year) {
-        return playerService.getPlayerSessionsAllDaysOfYear(playerId, year); // TODO: implement
+    public SessionsAllDayOfYear api_get_player_fatigue_all_days_of_year(@RequestParam Long playerId, @RequestParam Long year) throws ResourceNotFoundException {
+        return playerService.getPlayerSessionsAllDaysOfYear(playerId, year);
     }
 
     @PostMapping("/player/add-metric-value")

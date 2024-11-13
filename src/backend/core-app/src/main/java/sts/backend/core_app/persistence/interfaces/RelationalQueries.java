@@ -50,6 +50,7 @@ public interface RelationalQueries {
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException;
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException;
+    public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException;
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException;
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
     public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException;
@@ -61,6 +62,7 @@ public interface RelationalQueries {
     public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException;
     public User getUserByUsername(String currentUsername) throws ResourceNotFoundException;
     public User getUserByEmail(String email) throws ResourceNotFoundException;
+    public List<Player> getAvailablePlayersByTeamId(Long teamId) throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
@@ -70,5 +72,6 @@ public interface RelationalQueries {
     public void deletePlayerSensor(PlayerSensor playerSensor);    
     public void deleteUser(Long userId) throws ResourceNotFoundException;
     public void deleteTeam(Long teamId);
+    public List<Long> getPlayerIdsBySessionId(Long sessionId);
     
 }

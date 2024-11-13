@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.dto.session.AssignSessionPlayer;
 import sts.backend.core_app.dto.session.HistoricalExtraDetailsResponse;
-import sts.backend.core_app.dto.session.HistoricalInfoResponse;
 import sts.backend.core_app.dto.session.MatchRequest;
 import sts.backend.core_app.dto.session.NotificationResponse;
 import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
@@ -41,8 +40,12 @@ public class SessionController {
     }
 
     @PostMapping("/sessions/match")
+<<<<<<< HEAD
     @PreAuthorize("hasRole('ADMIN') or (hasRole('COACH') and @securityService.hasAccessToTrainer(#sessionRequest.getTrainerId()))")
     public Session api_create_match_session(@RequestParam MatchRequest matchRequest) throws ResourceNotFoundException {
+=======
+    public Session api_create_match_session(@RequestBody MatchRequest matchRequest) throws ResourceNotFoundException {
+>>>>>>> dev
         return sessionService.createMatch(matchRequest);
     }
 
@@ -78,20 +81,20 @@ public class SessionController {
 
     @GetMapping("/sessions/real-time-extra-details")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
-    public RealTimeExtraDetailsResponse api_get_real_time_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
-        return sessionService.getRealTimeExtraDetails(sessionId);
+    public RealTimeExtraDetailsResponse api_get_real_time_extra_details(@RequestParam Long sessionId, @RequestParam Long playerId) throws ResourceNotFoundException {
+        return sessionService.getRealTimeExtraDetails(sessionId, playerId);
     }
 
     @GetMapping("/sessions/historical-info")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
-    public HistoricalInfoResponse api_get_historical_info(@RequestParam Long sessionId) throws ResourceNotFoundException {
+    public HistoricalExtraDetailsResponse api_get_historical_info(@RequestParam Long sessionId) throws ResourceNotFoundException {
         return sessionService.getHistoricalInfo(sessionId);
     }
 
     @GetMapping("/sessions/historical-extra-details")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
-    public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId) throws ResourceNotFoundException {
-        return sessionService.getHistoricalExtraDetails(sessionId);
+    public HistoricalExtraDetailsResponse api_get_historical_extra_details(@RequestParam Long sessionId, @RequestParam Long playerId) throws ResourceNotFoundException {
+        return sessionService.getHistoricalExtraDetails(sessionId, playerId);
     }
 
     @GetMapping("/sessions/notifications")

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import sts.backend.core_app.dto.team.RealTimeInfo;
+import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
 import sts.backend.core_app.dto.team.RegistrationCodeString;
 import sts.backend.core_app.dto.team.SensorPlayerInfo;
 import sts.backend.core_app.dto.team.SensorPlayerView;
@@ -61,7 +61,7 @@ public class TeamController {
 
     @GetMapping("/team/players-available/real-time-info")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToTeam(#teamId)")
-    public RealTimeInfo api_get_players_available_real_time_info(@RequestParam Long teamId) throws ResourceNotFoundException {
+    public Set<PlayersAvailableRealTimeInfo> api_get_players_available_real_time_info(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getPlayersAvailableRealTimeInfo(teamId);
     }
 
