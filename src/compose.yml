@@ -1,8 +1,6 @@
 services:
   database:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
+    image: timescale/timescaledb:latest-pg16
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -35,7 +33,7 @@ services:
       - .m2:/root/.m2     # volume for maven dependencies caching, so that we don't have to download them every time we build the image
     restart: on-failure
 
-  react_app:
+  frontend:
     depends_on:
       - backend
     build:
