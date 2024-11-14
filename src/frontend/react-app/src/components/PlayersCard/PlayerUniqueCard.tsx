@@ -41,13 +41,14 @@ export default function PlayersCard({
             style={{
                 height: isEmptyValues ? "140px" : "auto", // Adjusted height if values array is empty
             }}
+            onClick={() => handlePlayerManagement(playerId)}
         >
-            <div className="flex items-center mb-4 justify-left">
+            <div className="flex items-center mb-4 justify-left" >
                 <img
                     src={playerPhotoURL}
                     alt={`${playerName} logo`}
                     className="w-12 h-14 rounded bg-gray-100 p-2 mr-4"
-                    onClick={() => handlePlayerManagement(playerId)}
+                    
                 />
                 <h3 className="text-lg font-bold">{playerName}</h3>
             </div>
@@ -61,9 +62,9 @@ export default function PlayersCard({
                 <>
                     {/* Display actual state with dynamic width */}
                     <div
-                        className={`text-gray-600 text-base px-2 py-1 rounded inline-block bg-red-100 w-100`}
+                        className={`text-gray-600 text-base px-2 py-1 rounded inline-block w-100`}
                         style={{
-                            backgroundColor: color,
+                            backgroundColor: lightenColor(color, 200), // Apply lighter filter by adding opacity
                             width: 'fit-content'
                         }}
                     >
@@ -98,4 +99,35 @@ export default function PlayersCard({
             )}
         </div>
     );
+}
+
+
+// auxiliary functions to lighten the color of the actualState and convert hex to rgb:
+function lightenColor(color: string, amount: number): string {
+    const colors: { [key: string]: string } = {
+        red: "#FF0000",
+        blue: "#0000FF",
+        green: "#008000"
+    };
+
+    const hex = colors[color];
+    if (!hex) return color;
+
+    const [r, g, b] = hexToRgb(hex);
+    const newColor = `rgb(${clamp(r + amount)}, ${clamp(g + amount)}, ${clamp(b + amount)})`;
+
+    return newColor;
+}
+
+function hexToRgb(hex: string): [number, number, number] {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return [r, g, b];
+}
+
+function clamp(value: number): number {
+    return Math.max(0, Math.min(255, value));
 }

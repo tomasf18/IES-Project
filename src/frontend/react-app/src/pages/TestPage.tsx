@@ -20,6 +20,16 @@ export default function TestPage() {
       playerId: "1123",
       singleValue: "150",
       actualState: "Critical",
+      color: "green",
+      values: ["123", "124", "67", "123", "145", "167", "145", "210"],
+      metric: "bpm"
+    },
+    {
+      playerPhotoURL: Google,
+      playerName: "João Pinto",
+      playerId: "112223",
+      singleValue: "150",
+      actualState: "Critical",
       color: "blue",
       values: ["123", "124", "67", "123", "145", "167", "145", "210"],
       metric: "bpm"
