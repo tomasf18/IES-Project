@@ -6,7 +6,13 @@ import {
   Button,
 } from "../../components";
 import { TextInput, Select } from "flowbite-react";
-import { FaUsers, FaHeartPulse, FaPen, FaUserPlus, FaUserMinus } from "react-icons/fa6";
+import {
+  FaUsers,
+  FaHeartPulse,
+  FaPen,
+  FaUserPlus,
+  FaUserMinus,
+} from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 
 export default function TeamDirectorTeamManagingPage() {
@@ -164,7 +170,7 @@ export default function TeamDirectorTeamManagingPage() {
         {/* Main Content */}
         <div className="flex-grow flex flex-col p-8 jsutify-center items-center">
           <div className="w-full max-w-[80rem]">
-            <h2 className="text-2xl mb-6 text-left">Team Managing</h2>
+            <h2 className="text-3xl mb-6 text-left">Team Managing</h2>
           </div>
           <ConfigurationCard
             widthClass={configurationCardWidthClass}

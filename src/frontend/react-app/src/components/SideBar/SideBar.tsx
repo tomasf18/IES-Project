@@ -40,7 +40,7 @@ export default function SideBar({
           <Link
             to={link.to}
             key={index}
-            className={`flex items-center text-2xl cursor-pointer rounded-full px-4 py-3 transition-colors duration-300 ${
+            className={`flex items-center text-3xl cursor-pointer rounded-full px-4 py-3 transition-colors duration-300 ${
               link.to === activePath
                 ? "text-gray-900 bg-green-t3"
                 : "text-gray-600 hover:bg-green-t3 hover:text-gray-900"
@@ -49,7 +49,7 @@ export default function SideBar({
             <div className="flex items-center">
               {link.icon}
               {isLargeBar && link.label && (
-                <span className="ml-2 text-lg">{link.label}</span>
+                <span className="ml-2 text-2xl">{link.label}</span>
               )}
             </div>
           </Link>
