@@ -1,60 +1,65 @@
-import TeamsCard from "../components/TeamsCard/TeamsCard";
+import React, { useEffect, useState } from 'react';
+import PlayersCard from "../components/PlayersCard/PlayersCard";
 import { Google } from "../assets";
 
 export default function TestPage() {
-  const teams = [
+  const [players, setPlayers] = useState([
     {
-      teamName: "Real Madrid",
-      numberTeamMembers: 10,
-      teamPhotoURL: Google,
-      teamId: "team-1231",
+      playerPhotoURL: Google,
+      playerName: "Heart Rate",
+      playerId: "123",
+      singleValue: "150",
+      actualState: "Normal",
+      color: "red",
+      values: ["150", "170", "130", "123", "177", "190", "145", "210"],
+      metric: "bpm"
+    }, 
+    {
+      playerPhotoURL: Google,
+      playerName: "João Pinto",
+      playerId: "1123",
+      singleValue: "150",
+      actualState: "Critical",
+      color: "blue",
+      values: ["123", "124", "67", "123", "145", "167", "145", "210"],
+      metric: "bpm"
     },
     {
-      teamName: "Barcelona",
-      numberTeamMembers: 12,
-      teamPhotoURL: Google,
-      teamId: "team-1232",
+      playerPhotoURL: Google,
+      playerName: "João Pinto",
+      playerId: "11323",
+      singleValue: "150",
+      actualState: "Critical",
+      color: "red",
+      values: [],
+      metric: "bpm"
     },
-    {
-      teamName: "Atletico Madrid",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1233",
-    },
-    {
-      teamName: "Atletico Madrid",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1233",
-    },
-    {
-      teamName: "Atletico Madrid",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1233",
-    },
-    {
-      teamName: "Atletico Madrid",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1233",
-    },
-    {
-      teamName: "Atletico Madrid",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1233",
-    },
-    // Add more team objects as needed
-  ];
+  ]);
 
-  const handleTeamManagement = (teamId: string) => {
-    console.log(`Managing team with id: ${teamId}`);
-  };
+  // Add random value every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlayers((prevPlayers) => {
+        const newPlayers = [...prevPlayers]; 
+        // newPlayers.forEach(player => player.values.push((Math.floor(Math.random() * 100) + 100).toString())); // Add new random value as a string
+        // add new random value as a string for the first player
+        if (newPlayers[0].values) {
+          newPlayers[0].values.push((Math.floor(Math.random() * 100) + 100).toString());
+        }
+        return newPlayers;
+      });
+    }, 300);
 
-  return (
+    return () => clearInterval(interval); // Clear the interval on component unmount
+  }, []);
+
+const handlePlayerManagement = (playerId: string) => {
+  console.log(`Player with id: ${playerId}`);
+};
+
+return (
     <div className="flex flex-wrap justify-center p-4">
-      <TeamsCard teams={teams} handleTeamManagement={handleTeamManagement} />
+      <PlayersCard players={players} handlePlayerManagement={handlePlayerManagement} />
     </div>
   );
 }

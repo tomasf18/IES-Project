@@ -14,3 +14,5 @@ export { default as SideBar } from "./SideBar/SideBar";
 export { default as ConfigurationCard } from "./ConfigurationCard/ConfigurationCard";
 export { default as TeamUniqueCard } from "./TeamsCard/TeamUniqueCard";
 export { default as TeamsCard } from "./TeamsCard/TeamsCard";
+export { default as PlayersCard } from "./PlayersCard/PlayerUniqueCard";
+export { default as PlayerUniqueCard } from "./PlayersCard/PlayersCard";
