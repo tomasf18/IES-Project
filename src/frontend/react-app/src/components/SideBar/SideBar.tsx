@@ -6,6 +6,7 @@ interface SmallSideBarProps {
   navLinks?: { icon: JSX.Element; to: string; label?: string }[];
   width?: string;
   isLargeBar?: boolean;
+  activePath?: string;
 }
 
 export default function SideBar({
@@ -13,10 +14,11 @@ export default function SideBar({
   navLinks = [],
   width = "w-24",
   isLargeBar = false,
+  activePath = "",
 }: SmallSideBarProps) {
   return (
     <aside
-      className={`fixed top-0 left-0 h-full ${width} bg-green-t4 p-4 flex flex-col items-center shadow-lg rounded-r-xl overflow-hidden`}
+      className={`sticky left-0 ${width} bg-green-t4 p-4 flex flex-col items-center shadow-lg rounded-r-xl overflow-hidden`}
     >
       {/* Avatar and line if !isLargeBar */}
       {!isLargeBar && (
@@ -33,20 +35,21 @@ export default function SideBar({
       )}
 
       {/* Icons */}
-      <nav className="flex flex-col gap-10 flex-grow">
+      <nav className="flex flex-col gap-4 flex-grow">
         {navLinks.map((link, index) => (
           <Link
             to={link.to}
             key={index}
-            className="flex items-center text-2xl cursor-pointer text-gray-600 hover:text-green-primary"
+            className={`flex items-center text-2xl cursor-pointer rounded-full px-4 py-3 transition-colors duration-300 ${
+              link.to === activePath
+                ? "text-gray-900 bg-green-t3"
+                : "text-gray-600 hover:bg-green-t3 hover:text-gray-900"
+            }`}
           >
             <div className="flex items-center">
               {link.icon}
-              {/* Labels if isLargeBar */}
               {isLargeBar && link.label && (
-                <span className="ml-2 text-lg">
-                  {link.label}
-                </span>
+                <span className="ml-2 text-lg">{link.label}</span>
               )}
             </div>
           </Link>
@@ -56,7 +59,7 @@ export default function SideBar({
       {/* Logout if !isLargeBar */}
       {!isLargeBar && (
         <Link
-          className="mt-auto mb-4 text-2xl text-gray-600 hover:text-green-primary"
+          className="mt-auto mb-4 text-2xl text-gray-600 hover:text-gray-900"
           to="/"
         >
           <FaSignOutAlt />
