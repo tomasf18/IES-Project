@@ -1,9 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import PlayersCard from "../components/PlayersCard/PlayersCard";
-import { Google } from "../assets";
-
-export default function TestPage() {
-  const [players, setPlayers] = useState([
+```typescript
+const [players, setPlayers] = useState([
     {
       playerPhotoURL: Google,
       playerName: "Heart Rate",
@@ -72,4 +68,4 @@ return (
       <PlayersCard players={players} handlePlayerManagement={handlePlayerManagement} />
     </div>
   );
-}
+```
