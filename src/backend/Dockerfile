@@ -10,6 +10,6 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/target/core-app-0.0.1-SNAPSHOT.jar /app/core-app.jar
-EXPOSE 8080
+# EXPOSE 8080 -> Not needed since we are already specifying the port in compose file
 CMD ["java", "-jar", "core-app.jar"]
 
