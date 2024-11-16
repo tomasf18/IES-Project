@@ -1,6 +1,8 @@
 import { SideBar } from "../../components";
 import { FaChartBar, FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
+import { useEffect } from "react";
 
 
 export default function CoachSensorsPage() {
@@ -9,8 +11,16 @@ export default function CoachSensorsPage() {
     { icon: <FaFutbol />, to: "/coach/start-match" },
     { icon: <FaHeartPulse />, to: "/coach/sensors" },
   ];
+  const user = useUser();
+  const auth = useAuth();
 
-  const avatarUrl = "https://via.placeholder.com/80";
+  useEffect(() => {
+    if (user?.username === "") {
+      auth.authMe();
+    }
+  }, [user, auth]);
+
+  const avatarUrl = user.profilePictureUrl;
   const location = useLocation();
 
   return (

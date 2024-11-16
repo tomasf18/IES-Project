@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Checkbox, Label, TextInput } from "flowbite-react";
 import { Button } from "../../components";
 import { Google } from "../../assets";

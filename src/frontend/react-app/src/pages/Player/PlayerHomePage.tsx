@@ -1,13 +1,24 @@
 import { SideBar } from "../../components";
 import { FaHome } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
+import { useEffect } from "react";
 
 export default function PlayerHomePage() {
   const navLinks = [
     { icon: <FaHome />, to: "/player/home" },
   ];
 
-  const avatarUrl = "https://via.placeholder.com/80";
+  const user = useUser();
+  const auth = useAuth();
+
+  useEffect(() => {
+    if (user?.username === "") {
+      auth.authMe();
+    }
+  }, [user, auth]);
+
+  const avatarUrl = user.profilePictureUrl;
   const location = useLocation();
 
   return (
