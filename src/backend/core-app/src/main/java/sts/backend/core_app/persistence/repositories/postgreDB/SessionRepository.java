@@ -17,6 +17,8 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     @Query("""
             SELECT  s.id AS sessionId, 
                     s.startTime as startTime,
+                    s.name as sessionName,
+                    s.endTime as endTime,
                     (
                         SELECT COUNT(ps)
                         FROM playerSessions ps
@@ -37,6 +39,8 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     @Query("""
             SELECT  s.id AS sessionId,
                     s.startTime as startTime,
+                    s.name as sessionName,
+                    s.endTime as endTime,
                     (
                        SELECT COUNT(ps)
                        FROM playerSessions ps
