@@ -12,8 +12,8 @@ export default function Header({ links = [], buttons = [] }: HeaderProps) {
   return (
     <Navbar fluid rounded theme={customHeaderTheme}>
       <Navbar.Brand>
-        <img src="/logo.png" className="mr-3 h-6 sm:h-10" alt="STS Logo" />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+        <img src="/logo.png" className="mr-3 h-10 sm:h-16" alt="STS Logo" />
+        <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
           Smart Training System
         </span>
       </Navbar.Brand>
@@ -31,7 +31,7 @@ export default function Header({ links = [], buttons = [] }: HeaderProps) {
       {/* Links */}
       <Navbar.Collapse>
         {links.map((link, index) => (
-          <Navbar.Link href={link.href} key={index}>
+          <Navbar.Link href={link.href} key={index} className="text-lg">
             {link.label}
           </Navbar.Link>
         ))}

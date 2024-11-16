@@ -14,7 +14,7 @@ export default function StripedTable({ widthClass, heightClass, columnsName, row
         {columnsName && 
           <TableHead>
             {columnsName.map((columnName, index) => (
-                <TableHeadCell className="text-center" key={index}>{columnName}</TableHeadCell>
+                <TableHeadCell className="text-center text-xl" key={index}>{columnName}</TableHeadCell>
             ))}
           </TableHead>
         }
@@ -23,7 +23,7 @@ export default function StripedTable({ widthClass, heightClass, columnsName, row
           {rows.map((row, rowIndex) => (
             <TableRow key={rowIndex} className="bg-white dark:border-gray-700 dark:bg-gray-800">
               {row.map((cell, cellIndex) => (
-                <TableCell key={cellIndex} className="text-center whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                <TableCell key={cellIndex} className="text-center text-lg whitespace-nowrap font-medium text-gray-900 dark:text-white">
                   {cell}
                 </TableCell>
               ))}
