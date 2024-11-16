@@ -11,10 +11,9 @@ interface Team {
 
 interface TeamsCardProps {
   teams: Team[];
-  handleTeamManagement: (teamId: string) => void;
 }
 
-export default function TeamsCard({ teams, handleTeamManagement }: TeamsCardProps) {
+export default function TeamsCard({ teams}: TeamsCardProps) {
   return (
     
       <div className="grid grid-cols-5 gap-4 justify-items-center w-full ">
@@ -25,7 +24,6 @@ export default function TeamsCard({ teams, handleTeamManagement }: TeamsCardProp
             numberTeamMembers={team.numberTeamMembers}
             teamPhotoURL={team.teamPhotoURL}
             teamId={team.teamId}
-            handleTeamManagement={handleTeamManagement}
           />
         ))}
       </div>
