@@ -1,4 +1,4 @@
-import { SideBar, Header, ConfigurationCard, StripedTable, Button } from "../../components";
+import { SideBar, Header, ConfigurationCard, StripedTable } from "../../components";
 import { FaUsers, FaRegCopy, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
@@ -6,9 +6,16 @@ import { SimpleModal } from "../../components";
 import { useState } from "react";
 
 export default function AdminManageTeam() {
+  // Open Modal
   const [openModal, setOpenModal] = useState(false);
+  
   const handleConfirm = () => {
     setOpenModal(false);
+  };
+
+  const openRegistrationCodeModal = (e: React.MouseEvent<SVGElement>) => {
+    e.preventDefault();
+    setOpenModal(true);
   };
 
   const navLinks = [
@@ -59,7 +66,7 @@ export default function AdminManageTeam() {
       "João Silva",
       <div className="flex justify-center items-center space-x-4">
         <FaRegCopy className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200"
-        onClick={() => alert("New code: 123456")}
+        onClick={e => openRegistrationCodeModal(e)}
         />
         <FaUserMinus className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200" />
       </div>,
@@ -138,7 +145,7 @@ export default function AdminManageTeam() {
         onClose={() => setOpenModal(false)}
         content={
           <>
-            <h2 className="text-center font-bold text-lg">New code</h2>
+            <h2 className="text-center font-bold text-lg">New code: 123e4567-e89b-42d3-a456-556642440000 </h2>
           </>
         }
         buttonText="Ok"
