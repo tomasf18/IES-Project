@@ -1,2 +1,2 @@
-export { getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer } from "./CoachConsumer";
-export type { SensorAssign, PlayersWithoutSensor } from "./CoachConsumer";
+export { getTeamSensors, deleteTeamSensorsAssignPlayer, getSessionsTeam, getPlayersWithoutSensor, postSensorPlayer } from "./CoachConsumer";
+export type { SensorAssign, PlayersWithoutSensor, Session } from "./CoachConsumer";

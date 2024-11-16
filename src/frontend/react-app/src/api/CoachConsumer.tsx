@@ -1,3 +1,12 @@
+interface Session {
+    sessionName: string;
+    sessionId: number;
+    startTime: string;
+    endTime: string;
+    numParticipants: number;
+    state: string;
+}
+
 interface SensorAssign {
     sensorId: number;
     name: string;
@@ -7,6 +16,22 @@ interface SensorAssign {
 interface PlayersWithoutSensor {
     playerId: number;
     name: string;
+}
+
+const getSessionsTeam = async (axiosInstance: any, teamId: number) => {
+    try {
+        const response = await axiosInstance.get("/sessions/team?teamId=" + teamId);
+        
+        if (response) {
+            const authResponse = response.data as Session[];
+            
+            return authResponse;
+        }
+        return [];
+      } catch (error) {
+        console.error(error);
+        return [];
+      }
 }
 
 const getTeamSensors = async (axiosInstance: any, teamId: number) => {
@@ -76,5 +101,5 @@ const postSensorPlayer = async (axiosInstance: any, playerId: number, sensorId: 
       }
 }
 
-export { getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer };
-export type { SensorAssign, PlayersWithoutSensor };
+export { getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer, getSessionsTeam };
+export type { SensorAssign, PlayersWithoutSensor, Session };
