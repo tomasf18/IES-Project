@@ -9,7 +9,7 @@ export { default as AdminTeamsManagingPage } from "./Admin/AdminTeamsManagingPag
 export { default as TeamDirectorTeamManagingPage } from "./TeamDirector/TeamDirectorTeamManagingPage";
 export { default as TeamDirectorSensorsManagingPage } from "./TeamDirector/TeamDirectorSensorsManagingPage";
 export { default as CoachSessionsPage } from "./Coach/CoachSessionsPage";
-export { default as CoachStartMatchPage } from "./Coach/CoachStartMatchPage";
+export { default as CoachStartSessionPage } from "./Coach/CoachStartSessionPage";
 export { default as CoachSensorsPage } from "./Coach/CoachSensorsPage";
 export { default as PersonalTrainerStartSessionPage } from "./PersonalTrainer/PersonalTrainerStartSessionPage";
 export { default as PersonalTrainerSensorsPage } from "./PersonalTrainer/PersonalTrainerSensorsPage";

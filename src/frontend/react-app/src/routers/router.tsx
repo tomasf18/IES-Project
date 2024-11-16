@@ -12,7 +12,7 @@ import {
   TeamDirectorTeamManagingPage,
   TeamDirectorSensorsManagingPage,
   CoachSessionsPage,
-  CoachStartMatchPage,
+  CoachStartSessionPage,
   CoachSensorsPage,
   PersonalTrainerStartSessionPage,
   PersonalTrainerSensorsPage,
@@ -53,7 +53,7 @@ export default function AppRoutes() {
         {/* Coach Routes Group */}
         <Route path="/coach">
           <Route path="sessions" element={<CoachSessionsPage />} />
-          <Route path="start-match" element={<CoachStartMatchPage />} />
+          <Route path="start-session" element={<CoachStartSessionPage />} />
           <Route path="sensors" element={<CoachSensorsPage />} />
         </Route>
 

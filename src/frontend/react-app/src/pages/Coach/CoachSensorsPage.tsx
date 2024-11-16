@@ -8,7 +8,7 @@ import { getTeamSensors, SensorAssign, PlayersWithoutSensor, postSensorPlayer, d
 export default function CoachSensorsPage() {
   const navLinks = [
     { icon: <FaChartBar />, to: "/coach/sessions" },
-    { icon: <FaFutbol />, to: "/coach/start-match" },
+    { icon: <FaFutbol />, to: "/coach/start-session" },
     { icon: <FaHeartPulse />, to: "/coach/sensors" },
   ];
 

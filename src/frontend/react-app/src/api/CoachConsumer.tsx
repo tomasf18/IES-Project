@@ -5,6 +5,7 @@ interface Session {
     endTime: string;
     numParticipants: number;
     state: string;
+    isMatch: boolean;
 }
 
 interface SensorAssign {
@@ -16,6 +17,19 @@ interface SensorAssign {
 interface PlayersWithoutSensor {
     playerId: number;
     name: string;
+}
+
+interface RealTimeInfo {
+    playerId: number;
+    playerName: string;
+    playerProfilePictureUrl: string;
+    heartRateData: [
+        {
+            value: number;
+            idTimestamp: string;
+        }
+    ],
+    heartRate: number;
 }
 
 const getSessionsTeam = async (axiosInstance: any, teamId: number) => {
@@ -87,10 +101,8 @@ const getPlayersWithoutSensor = async (axiosInstance: any, teamId: number) => {
 const postSensorPlayer = async (axiosInstance: any, playerId: number, sensorId: number) => {
     try {
         const response = await axiosInstance.post("/team/sensors/assign-player", {
-
-                playerId: playerId,
-                sensorId: sensorId
-
+            playerId: playerId,
+            sensorId: sensorId
         });
         
         if (response) {
@@ -101,5 +113,52 @@ const postSensorPlayer = async (axiosInstance: any, playerId: number, sensorId: 
       }
 }
 
-export { getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer, getSessionsTeam };
-export type { SensorAssign, PlayersWithoutSensor, Session };
+const postSessions = async (axiosInstance: any, sessionName: string, trainerId: number) => {
+    try {
+        const response = await axiosInstance.post("/sessions", {
+            sessionName: sessionName,
+            trainerId: trainerId
+        });
+        
+        if (response) {
+            console.log(response);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+}
+
+const postSessionsAssignPlayer = async (axiosInstance: any, sessionId: number, playerId: number) => {
+    try {
+        const response = await axiosInstance.post("/sessions/assign-player", {
+            sessionId: sessionId,
+            playerId: playerId
+        });
+        
+        if (response) {
+            console.log(response);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+}
+
+const getTeamPlayersAvailableReaTimeInfo = async (axiosInstance: any, teamId: number) => {
+    try {
+        const response = await axiosInstance.get("/team/players-available/real-time-info?teamId=" + teamId);
+        
+        if (response) {
+            const authResponse = response.data as RealTimeInfo[];
+
+            return authResponse;
+        }
+        return [];
+    } catch (error) {
+        console.error(error);
+        return [];
+    }
+        
+}
+
+export { getSessionsTeam, getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer, postSessions, postSessionsAssignPlayer, getTeamPlayersAvailableReaTimeInfo };
+export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo };
