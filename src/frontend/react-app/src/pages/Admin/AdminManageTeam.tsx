@@ -2,8 +2,15 @@ import { SideBar, Header, ConfigurationCard, StripedTable, Button } from "../../
 import { FaUsers, FaRegCopy, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
+import { SimpleModal } from "../../components";
+import { useState } from "react";
 
 export default function AdminManageTeam() {
+  const [openModal, setOpenModal] = useState(false);
+  const handleConfirm = () => {
+    setOpenModal(false);
+  };
+
   const navLinks = [
     {
       icon: <FaCode />,
@@ -51,7 +58,9 @@ export default function AdminManageTeam() {
     [
       "João Silva",
       <div className="flex justify-center items-center space-x-4">
-        <FaRegCopy className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200"/>
+        <FaRegCopy className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200"
+        onClick={() => alert("New code: 123456")}
+        />
         <FaUserMinus className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200" />
       </div>,
     ],
@@ -61,7 +70,6 @@ export default function AdminManageTeam() {
       </div>,
       <FaUserPlus className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
     ],
-
   ];
 
   const navigate = useNavigate();
@@ -103,25 +111,41 @@ export default function AdminManageTeam() {
   );
   
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header buttons={headerButtons} />
-      <div className="flex flex-grow">
-        <SideBar
-          navLinks={navLinks}
-          width="w-62"
-          isLargeBar={true}
-          activePath={location.pathname}
-        />
-        {/* Main Content */}
-        <div className="flex-grow flex flex-col p-8 justify-center items-center">
-        <ConfigurationCard
-            widthClass={configurationCardWidthClass}
-            heightClass={configurationCardHeightClass}
-            name={configurationCardName}
-            rightContent={configurationCardRightContent}
+    <>
+      <div className="flex flex-col min-h-screen">
+        <Header buttons={headerButtons} />
+        <div className="flex flex-grow">
+          <SideBar
+            navLinks={navLinks}
+            width="w-62"
+            isLargeBar={true}
+            activePath={location.pathname}
           />
+          {/* Main Content */}
+          <div className="flex-grow flex flex-col p-8 justify-center items-center">
+          <ConfigurationCard
+              widthClass={configurationCardWidthClass}
+              heightClass={configurationCardHeightClass}
+              name={configurationCardName}
+              rightContent={configurationCardRightContent}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    
+      <SimpleModal
+        show={openModal}
+        onClose={() => setOpenModal(false)}
+        content={
+          <>
+            <h2 className="text-center font-bold text-lg">New code</h2>
+          </>
+        }
+        buttonText="Ok"
+        buttonClass="bg-green-t3"
+        onConfirm={handleConfirm}
+      />
+    
+    </>
   );
 }
