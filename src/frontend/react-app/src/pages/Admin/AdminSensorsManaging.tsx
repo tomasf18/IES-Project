@@ -120,6 +120,13 @@ try {
     </div>
   );
 
+  const headerButtons: {
+    to: string;
+    label: string;
+    color: "primary" | "secondary";
+  }[] = [{ to: "/", label: "Sign Out", color: "primary" }];
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header buttons={headerButtons} />
