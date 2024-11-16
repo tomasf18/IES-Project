@@ -13,3 +13,4 @@ export { default as CoachStartMatchPage } from "./Coach/CoachStartMatchPage";
 export { default as CoachSensorsPage } from "./Coach/CoachSensorsPage";
 export { default as PersonalTrainerStartSessionPage } from "./PersonalTrainer/PersonalTrainerStartSessionPage";
 export { default as PersonalTrainerSensorsPage } from "./PersonalTrainer/PersonalTrainerSensorsPage";
+export { default as AdminAddTeam } from "./Admin/AdminAddTeam";

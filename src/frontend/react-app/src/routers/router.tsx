@@ -16,6 +16,7 @@ import {
   CoachSensorsPage,
   PersonalTrainerStartSessionPage,
   PersonalTrainerSensorsPage,
+  AdminAddTeam,
 } from "../pages";
 
 export default function AppRoutes() {
@@ -40,6 +41,7 @@ export default function AppRoutes() {
           <Route path="endpoints" element={<AdminEndpointsPage />} />
           <Route path="sensors-tracking" element={<AdminSensorsTrackingPage />} />
           <Route path="teams-managing" element={<AdminTeamsManagingPage />} />
+          <Route path="teams-managing/add-team" element={<AdminAddTeam />} />
         </Route>
 
         {/* Team Director Routes Group */}
