@@ -9,4 +9,5 @@ public interface SessionInfoView {
     LocalDateTime getEndTime();
     int getNumParticipants();
     String getState();
+    boolean getIsMatch();
 }

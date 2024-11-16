@@ -6,12 +6,14 @@ import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 
 public class PlayersAvailableRealTimeInfo {
     private String playerName;
+    private Long playerId;
     private String playerProfilePictureUrl;
     private List<ValueTimeSeriesView> heartRateData;
     private Double heartRate;
 
-    public PlayersAvailableRealTimeInfo(String playerName, String playerProfilePictureUrl, List<ValueTimeSeriesView> heartRateData, Double heartRate) {
+    public PlayersAvailableRealTimeInfo(String playerName, Long playerId, String playerProfilePictureUrl, List<ValueTimeSeriesView> heartRateData, Double heartRate) {
         this.playerName = playerName;
+        this.playerId = playerId;
         this.playerProfilePictureUrl = playerProfilePictureUrl;
         this.heartRateData = heartRateData;
         this.heartRate = heartRate;
@@ -25,6 +27,14 @@ public class PlayersAvailableRealTimeInfo {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public Long getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        this.playerId = playerId;
     }
 
     public String getPlayerProfilePictureUrl() {
