@@ -38,7 +38,7 @@ export default function CustomButton({
   };
 
   return (
-    <Button theme={customTheme} color="custom" className={className} {...props}>
+    <Button theme={customTheme} color="custom" className={className} {...props} size="lg">
       {children}
     </Button>
   );
