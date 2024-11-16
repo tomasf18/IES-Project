@@ -17,7 +17,7 @@ interface TeamsCardProps {
 export default function TeamsCard({ teams, handleTeamManagement }: TeamsCardProps) {
   return (
     
-      <div className="grid grid-cols-5 gap-4 justify-items-center w-full">
+      <div className="grid grid-cols-5 gap-4 justify-items-center ">
         {teams.map((team) => (
           <TeamUniqueCard
             key={team.teamId}
