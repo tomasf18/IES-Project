@@ -1,27 +1,15 @@
-import { SideBar, Header } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
+import { ConfigurationCard, SideBar, SimpleModal, StripedTable } from "../../components";
+import { FaChartBar, FaFutbol, FaHeartPulse, FaUserMinus, FaUserPlus } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
 import { getTeamSensors, SensorAssign, PlayersWithoutSensor, postSensorPlayer, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor } from "../../api";
 
-export default function AdminSensorsTrackingPage() {
+export default function CoachSensorsPage() {
   const navLinks = [
-    {
-      icon: <FaCode />,
-      to: "/admin/endpoints",
-      label: "Endpoints",
-    },
-    {
-      icon: <FaHeartPulse />,
-      to: "/admin/sensors-tracking",
-      label: "Sensors Tracking",
-    },
-    {
-      icon: <FaUsers />,
-      to: "/admin/teams-managing",
-      label: "Teams Managing",
-    },
+    { icon: <FaChartBar />, to: "/coach/sessions" },
+    { icon: <FaFutbol />, to: "/coach/start-match" },
+    { icon: <FaHeartPulse />, to: "/coach/sensors" },
   ];
 
   const user = useUser();
@@ -117,66 +105,64 @@ try {
           ),
         ])}
       />
-    </div>
+    </              div>
   );
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header buttons={headerButtons} />
-      <div className="flex flex-grow">
-        <SideBar
-          navLinks={navLinks}
-          width="w-62"
-          isLargeBar={true}
-          activePath={location.pathname}
+    <div className="flex min-h-screen">
+      <SideBar avatarUrl={avatarUrl} navLinks={navLinks} activePath={location.pathname} />
+
+      {/* Main Content */}
+      <div className="flex-grow p-8">
+        {/* Logo */}
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="absolute top-8 right-8 h-24"
         />
-        {/* Main Content */}
-        <div className="flex-grow p-8">{/* Content */}
-            <div className="flex-grow flex flex-col p-8 justify-center items-center">
-              <div className="w-full max-w-[80rem]">
-                <h2 className="text-3xl mb-6 text-left">Sensors Managing</h2>
-              </div>
-              <ConfigurationCard
-                widthClass="w-[80rem]"
-                heightClass="h-[50rem]"
-                name={user.name}
-                rightContent={configurationCardRightContent}
-              />
-            </div>
+        {/* Content */}
+        <div className="flex-grow flex flex-col p-8 justify-center items-center">
+          <div className="w-full max-w-[80rem]">
+            <h2 className="text-3xl mb-6 text-left">Sensors Managing</h2>
           </div>
-          <SimpleModal
-            show={openModal}
-            onClose={() => {
-              setOpenModal(false);
-              setCurrentlySelectedSensor(null);
-              setSelectedPlayerId(null);
-            }}
-            content={
-              <>
-                <h2 className="text-center font-bold text-lg">Players Available</h2>
-                <form className="max-w-sm mx-auto">
-                  <label htmlFor="players" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a player</label>
-                  <select
-                    id="players"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    value={selectedPlayerId ?? ""}
-                    onChange={(e) => setSelectedPlayerId(Number(e.target.value))}
-                  >
-                    <option value="" disabled>Choose a player</option>
-                    {playersWithoutSensor.map((player) => (
-                      <option key={player.playerId} value={player.playerId}>{player.name}</option>
-                    ))}
-                  </select>
-                </form>
-              </>
-            }
-            buttonText="Yes, I'm sure"
-            buttonClass={selectedPlayerId === null ? "bg-gray-300" : "bg-gray-600"}
-            onConfirm={handleConfirm}
+          <ConfigurationCard
+            widthClass="w-[80rem]"
+            heightClass="h-[50rem]"
+            name={user.name}
+            rightContent={configurationCardRightContent}
           />
-    
-            </div>
+        </div>
       </div>
+      <SimpleModal
+        show={openModal}
+        onClose={() => {
+          setOpenModal(false);
+          setCurrentlySelectedSensor(null);
+          setSelectedPlayerId(null);
+        }}
+        content={
+          <>
+            <h2 className="text-center font-bold text-lg">Players Available</h2>
+            <form className="max-w-sm mx-auto">
+              <label htmlFor="players" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a player</label>
+              <select
+                id="players"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={selectedPlayerId ?? ""}
+                onChange={(e) => setSelectedPlayerId(Number(e.target.value))}
+              >
+                <option value="" disabled>Choose a player</option>
+                {playersWithoutSensor.map((player) => (
+                  <option key={player.playerId} value={player.playerId}>{player.name}</option>
+                ))}
+              </select>
+            </form>
+          </>
+        }
+        buttonText="Yes, I'm sure"
+        buttonClass={selectedPlayerId === null ? "bg-gray-300" : "bg-gray-600"}
+        onConfirm={handleConfirm}
+      />
     </div>
   );
 }
