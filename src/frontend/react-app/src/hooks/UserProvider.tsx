@@ -7,6 +7,7 @@ interface UserContextType {
   username: string;
   email: string;
   profilePictureUrl: string;
+  teamId: number;
   roles: string[];
   setUser: (user: User | null) => void;
   redirectHomeByUserType: () => void;
@@ -44,7 +45,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
 
 
   return (
-    <UserContext.Provider value={{ userId: user?.userId ?? 0, name: user?.name ?? '', username: user?.username ?? '', email: user?.email ?? '', profilePictureUrl: user?.profilePictureUrl ?? '', roles: user?.roles ?? [], setUser, redirectHomeByUserType }}>
+    <UserContext.Provider value={{ userId: user?.userId ?? 0, name: user?.name ?? '', username: user?.username ?? '', email: user?.email ?? '', profilePictureUrl: user?.profilePictureUrl ?? '', teamId: user?.teamId ?? 0, roles: user?.roles ?? [], setUser, redirectHomeByUserType }}>
       {children}
     </UserContext.Provider>
   );

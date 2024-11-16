@@ -6,6 +6,7 @@ import { useUser } from "./UserProvider";
 
 interface AuthContextType {
   token: string;
+  axiosInstance: any;
   loginAction: (data: AuthRequestProps) => Promise<string|undefined>
   logOut: () => void;
   signUpAction: (data: SignUpRequestProps) => Promise<string|undefined>;
@@ -89,6 +90,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           roles: authResponse.roles,
         });
       }
+      return undefined;
     } catch (error) {
       console.error(error);
       return "Password or username is incorrect";
@@ -124,7 +126,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   return (
-    <AuthContext.Provider value={{ token, loginAction, logOut, signUpAction, authMe }}>
+    <AuthContext.Provider value={{ token, axiosInstance, loginAction, logOut, signUpAction, authMe }}>
       {children}
     </AuthContext.Provider>
   );
