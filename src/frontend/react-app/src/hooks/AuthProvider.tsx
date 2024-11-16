@@ -40,7 +40,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string>(Cookies.get("site") || "");
+  const [token, setToken] = useState<string>(Cookies.get("siteSTS") || "");
   const navigate = useNavigate();
   const { setUser } = useUser();
 
@@ -75,7 +75,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         const authResponse = response.data as AuthResponseProps;
         
         setToken(authResponse.token);
-        Cookies.set("site", authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
+        Cookies.set("siteSTS", authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${authResponse.token}`;
         setUser({
           userId: authResponse.userId,
@@ -96,8 +96,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const logOut = () => {
     setUser(null);
     setToken("");
-    Cookies.remove("site");
+    Cookies.remove("siteSTS");
     navigate("/login");
+    console.log("Logged out");
   };
 
   const redirectByToken = () => {

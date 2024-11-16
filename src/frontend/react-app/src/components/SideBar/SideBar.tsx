@@ -1,5 +1,6 @@
 import { FaSignOutAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../hooks/AuthProvider";
 
 interface SmallSideBarProps {
   avatarUrl?: string;
@@ -16,6 +17,8 @@ export default function SideBar({
   isLargeBar = false,
   activePath = "",
 }: SmallSideBarProps) {
+  const auth = useAuth();
+
   return (
     <aside
       className={`sticky left-0 ${width} bg-green-t4 p-4 flex flex-col items-center shadow-lg rounded-r-xl overflow-hidden`}
@@ -59,8 +62,9 @@ export default function SideBar({
       {/* Logout if !isLargeBar */}
       {!isLargeBar && (
         <Link
+          to="#"
           className="mt-auto mb-4 text-2xl text-gray-600 hover:text-gray-900"
-          to="/"
+          onClick={() => auth.logOut()}
         >
           <FaSignOutAlt />
         </Link>
