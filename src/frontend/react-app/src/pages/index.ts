@@ -15,3 +15,4 @@ export { default as PersonalTrainerStartSessionPage } from "./PersonalTrainer/Pe
 export { default as PersonalTrainerSensorsPage } from "./PersonalTrainer/PersonalTrainerSensorsPage";
 export { default as AdminAddTeam } from "./Admin/AdminAddTeam";
 export { default as AdminManageTeam } from "./Admin/AdminManageTeam";
+export { default as AdminSensorsManaging } from "./Admin/AdminSensorsManaging";

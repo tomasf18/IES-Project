@@ -36,8 +36,6 @@ export default function AdminManageTeam() {
     },
   ];
 
-  const location = useLocation();
-
   const headerButtons: {
     to: string;
     label: string;
@@ -47,9 +45,9 @@ export default function AdminManageTeam() {
   let configurationCardWidthClass = "w-[80rem]";
   let configurationCardHeightClass = "h-[50rem]";
 
-  const searchParams = new URLSearchParams(location.search);
-  
   // /admin/teams-managing/config?teamId=${teamId}&teamName=${teamName}
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
   const teamID = searchParams.get("teamId");
   const teamName = searchParams.get("teamName");
   let configurationCardName = teamName || "Default Team Name";
@@ -127,7 +125,7 @@ export default function AdminManageTeam() {
             navLinks={navLinks}
             width="w-62"
             isLargeBar={true}
-            activePath={location.pathname}
+            activePath={"/admin/teams-managing"}
           />
           {/* Main Content */}
           <div className="flex-grow flex flex-col p-8 justify-center items-center">
