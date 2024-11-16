@@ -8,7 +8,6 @@ interface AuthContextType {
   token: string;
   loginAction: (data: AuthRequestProps) => Promise<string|undefined>
   logOut: () => void;
-  redirectByToken: () => void;
   signUpAction: (data: SignUpRequestProps) => Promise<string|undefined>
 }
 
@@ -30,6 +29,7 @@ interface AuthResponseProps {
   username: string;
   email: string;
   profilePictureUrl: string;
+  teamId: number;
   roles: string[];
 }
 
@@ -42,7 +42,7 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string>(Cookies.get("siteSTS") || "");
   const navigate = useNavigate();
-  const { setUser } = useUser();
+  const user = useUser();
 
   const axiosInstance = axios.create({
     baseURL: "http://localhost:8080/api/v1",
@@ -77,12 +77,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setToken(authResponse.token);
         Cookies.set("siteSTS", authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${authResponse.token}`;
-        setUser({
+        user.setUser({
           userId: authResponse.userId,
           name: authResponse.name,
           username: authResponse.username,
           email: authResponse.email,
           profilePictureUrl: authResponse.profilePictureUrl,
+          teamId: authResponse.teamId,
           roles: authResponse.roles,
         });
         navigate("/test"); // TODO: Redirect to the dashboard
@@ -94,21 +95,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logOut = () => {
-    setUser(null);
+    user.setUser(null);
     setToken("");
     Cookies.remove("siteSTS");
     navigate("/login");
     console.log("Logged out");
   };
 
-  const redirectByToken = () => {
-    if (token) {
-      navigate("/test"); // TODO: Redirect to the correct role main page
-    }
-  }
-
   return (
-    <AuthContext.Provider value={{ token, loginAction, logOut, redirectByToken, signUpAction }}>
+    <AuthContext.Provider value={{ token, loginAction, logOut, signUpAction }}>
       {children}
     </AuthContext.Provider>
   );

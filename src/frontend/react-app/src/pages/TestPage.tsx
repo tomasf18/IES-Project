@@ -1,75 +1,46 @@
-import { useEffect, useState } from 'react';
-import PlayersCard from "../components/PlayersCard/PlayersCard";
-import { Google } from "../assets";
+import {
+	ConfigurationCard,
+	StripedTable
+  } from "../components";
+// import { useUser } from "../hooks/UserProvider";
 
 export default function TestPage() {
-  const [players, setPlayers] = useState([
-    {
-      playerPhotoURL: Google,
-      playerName: "Heart Rate",
-      playerId: "123",
-      singleValue: "150",
-      actualState: "Normal",
-      color: "red",
-      values: ["150", "170", "130", "123", "177", "190", "145", "210"],
-      metric: "bpm"
-    }, 
-    {
-      playerPhotoURL: Google,
-      playerName: "João Pinto",
-      playerId: "1123",
-      singleValue: "150",
-      actualState: "Critical",
-      color: "green",
-      values: ["123", "124", "67", "123", "145", "167", "145", "210"],
-      metric: "bpm"
-    },
-    {
-      playerPhotoURL: Google,
-      playerName: "João Pinto",
-      playerId: "112223",
-      singleValue: "150",
-      actualState: "Critical",
-      color: "blue",
-      values: ["123", "124", "67", "123", "145", "167", "145", "210"],
-      metric: "bpm"
-    },
-    {
-      playerPhotoURL: Google,
-      playerName: "João Pinto",
-      playerId: "11323",
-      singleValue: "150",
-      actualState: "Critical",
-      color: "red",
-      values: [],
-      metric: "bpm"
-    },
-  ]);
+	// const user = useUser();
 
-  // Add random value every 3 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPlayers((prevPlayers) => {
-        const newPlayers = [...prevPlayers]; 
-        // newPlayers.forEach(player => player.values.push((Math.floor(Math.random() * 100) + 100).toString())); // Add new random value as a string
-        // add new random value as a string for the first player
-        if (newPlayers[0].values) {
-          newPlayers[0].values.push((Math.floor(Math.random() * 100) + 100).toString());
-        }
-        return newPlayers;
-      });
-    }, 300);
+	let widthClass = "w-[60rem]";
+	let heightClass = "h-[40rem]";
+	let name = "António Mendes";
+	let widthClass2 = "w-full";
+	let heightClass2 = "h-full";
+	let columnsName = ["Product name", "Color", "Category", <span className="sr-only">Edit</span>];
+	let rows = [
+		["Apple MacBook Pro 17\"", "Sliver", "Laptop", "$2999"],
+		["Microsoft Surface Pro", "White", "Laptop PC", "$1999"],
+		["Magic Mouse 2", "Black", "Accessories", "$99"],
+		["Google Pixel Phone", "Gray", "Phone", "$799"],
+		["Google Pixel Phone", "Gray", "Phone", "$799"],
+		["Google Pixel Phone", "Gray", "Phone", "$799"],
+		["Google Pixel Phone", "Gray", "Phone", "$799"],
+	];
 
-    return () => clearInterval(interval); // Clear the interval on component unmount
-  }, []);
+	let rightContent =
+		<div className="flex flex-col min-h-screen p-4">
+			<StripedTable 
+				widthClass={widthClass2} 
+				heightClass={heightClass2}
+				columnsName={columnsName}
+				rows={rows}
+			/>
+		</div>
 
-const handlePlayerManagement = (playerId: string) => {
-  console.log(`Player with id: ${playerId}`);
-};
-
-return (
-    <div className="flex flex-wrap justify-center p-4">
-      <PlayersCard players={players} handlePlayerManagement={handlePlayerManagement} />
-    </div>
-  );
+	return (
+		<div className="flex flex-col min-h-screen m-10">
+			<ConfigurationCard
+			widthClass={widthClass}
+			heightClass={heightClass}
+			name={name}
+			rightContent={rightContent}
+		/>
+		</div>
+	)
 }

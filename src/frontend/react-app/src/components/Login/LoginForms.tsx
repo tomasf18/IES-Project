@@ -4,7 +4,7 @@ import { Checkbox, Label, TextInput } from "flowbite-react";
 import { Button } from "../../components";
 import { Google } from "../../assets";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useAuth } from "../../hooks/AuthProvider";
+import { useAuth, useUser } from "../../hooks";
 
 export default function Component() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +16,7 @@ export default function Component() {
   });
 
   const auth = useAuth();
+  const user = useUser();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,7 +42,7 @@ export default function Component() {
 
   // check if the token is available, if so, redirect
   useEffect(() => {
-    auth.redirectByToken();
+    user.redirectHomeByUserType();
   }, [auth.token, navigate]);
 
   return (

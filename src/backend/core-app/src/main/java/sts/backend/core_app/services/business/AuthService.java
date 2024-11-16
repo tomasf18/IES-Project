@@ -149,6 +149,19 @@ public class AuthService {
         authResponse.setProfilePictureUrl(user.getProfilePictureUrl());
         authResponse.setRoles(user.getRoles());
 
+        if (user.getRoles().contains("ROLE_ADMIN")) {
+            authResponse.setTeamId(null);
+
+        } else if (user.getRoles().contains("ROLE_PLAYER")) {
+            authResponse.setTeamId(basicDataAnalysis.getPlayerById(user.getUserId()).getTeam().getTeamId());
+
+        } else if (user.getRoles().contains("ROLE_TEAM_DIRECTOR")) {
+            authResponse.setTeamId(basicDataAnalysis.getTeamDirectorById(user.getUserId()).getTeam().getTeamId());
+
+        } else if (user.getRoles().contains("ROLE_COACH") || user.getRoles().contains("ROLE_PERSONAL_TRAINER")) {
+            authResponse.setTeamId(basicDataAnalysis.getTrainerById(user.getUserId()).getTeam().getTeamId());
+        }
+
         return authResponse;
     }
 

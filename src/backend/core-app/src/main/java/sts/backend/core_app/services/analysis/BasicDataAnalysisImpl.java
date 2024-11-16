@@ -97,6 +97,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getSensorById(sensorId);
     }
 
+    public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException {
+        return relationalQueries.getTeamDirectorById(teamDirectorId);
+    }
+
 
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException {

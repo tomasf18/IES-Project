@@ -40,6 +40,7 @@ public interface BasicDataAnalysis {
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException;
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
     public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException;
+    public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException;
     
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;

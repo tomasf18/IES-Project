@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface UserContextType {
   userId: number;
@@ -8,6 +9,7 @@ interface UserContextType {
   profilePictureUrl: string;
   roles: string[];
   setUser: (user: User | null) => void;
+  redirectHomeByUserType: () => void;
 }
 
 interface User {
@@ -16,6 +18,7 @@ interface User {
   username: string;
   email: string;
   profilePictureUrl: string;
+  teamId: number;
   roles: string[];
 }
 
@@ -29,7 +32,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
   return (
-    <UserContext.Provider value={{ userId: user?.userId ?? 0, name: user?.name ?? '', username: user?.username ?? '', email: user?.email ?? '', profilePictureUrl: user?.profilePictureUrl ?? '', roles: user?.roles ?? [], setUser }}>
+    <UserContext.Provider value={{ userId: user?.userId ?? 0, name: user?.name ?? '', username: user?.username ?? '', email: user?.email ?? '', profilePictureUrl: user?.profilePictureUrl ?? '', roles: user?.roles ?? [], setUser, redirectHomeByUserType }}>
       {children}
     </UserContext.Provider>
   );
@@ -41,6 +44,13 @@ const useUser = () => {
     throw new Error("useUser must be used within a UserProvider");
   }
   return context;
+};
+
+const navigate = useNavigate();
+
+
+const redirectHomeByUserType = () => {
+  navigate("/test"); // TODO: Redirect to the correct role main page
 };
 
 export { UserProvider, useUser };
