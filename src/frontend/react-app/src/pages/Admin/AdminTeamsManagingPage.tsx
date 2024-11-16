@@ -1,4 +1,4 @@
-import { SideBar, Header, TeamsCard } from "../../components";
+import { SideBar, Header, TeamsCard, ButtonWithIcon } from "../../components";
 import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { Google } from "../../assets";
@@ -92,7 +92,10 @@ export default function AdminTeamsManagingPage() {
         />
         {/* Main Content */}
         <div className="flex-grow p-8">
+          <ButtonWithIcon color="green"/>
+          <div className="mt-14">
             <TeamsCard teams={teams} handleTeamManagement={handleTeamManagement} />
+          </div>
         </div>
       </div>
     </div>
