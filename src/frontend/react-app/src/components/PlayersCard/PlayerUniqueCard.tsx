@@ -1,4 +1,3 @@
-import React from 'react';
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
 interface PlayerCardProps {

@@ -26,9 +26,7 @@ export default function ConfigurationCard({ widthClass, heightClass, name, right
       
       {/* Main content area with white background */}
       <div className="w-full bg-white m-6">
-        <p className="font-normal text-gray-700">
-          {rightContent}
-        </p>
+        {rightContent}
       </div>
     </div>
   );
