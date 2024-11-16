@@ -108,6 +108,7 @@ export default function AdminManageTeam() {
         <button
           type="submit"
           className="px-16 py-3 bg-red-primary text-black text-lg font-medium rounded-full shadow hover:bg-gray-400 transition duration-300"
+          onClick={() => navigate(`/admin/teams-managing/`)} // TODO: Delete Team
         >
           Delete Team
         </button>
