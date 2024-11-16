@@ -73,7 +73,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await axiosInstance.post("/auth/sign-in", data);
       if (response) {
         const authResponse = response.data as AuthResponseProps;
-        
+
         setToken(authResponse.token);
         Cookies.set("siteSTS", authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${authResponse.token}`;
@@ -86,7 +86,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
           teamId: authResponse.teamId,
           roles: authResponse.roles,
         });
-        navigate("/test"); // TODO: Redirect to the dashboard
       }
     } catch (error) {
       console.error(error);

@@ -26,9 +26,11 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
 
+      {/* TODO: Remove this route */}
+      <Route path="/test" element={<TestPage />} />
+
       {/* Private Routes */}
       <Route element={<PrivateRoute/>}>
-        <Route path="/test" element={<TestPage />} />
 
         {/* Player Routes Group */}
         <Route path="/player">

@@ -17,7 +17,6 @@ export default function Component() {
 
   const auth = useAuth();
   const user = useUser();
-  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -42,8 +41,11 @@ export default function Component() {
 
   // check if the token is available, if so, redirect
   useEffect(() => {
-    user.redirectHomeByUserType();
-  }, [auth.token, navigate]);
+    console.log(auth.token);
+    if (auth.token) {
+      user.redirectHomeByUserType();
+    }
+  }, [auth.token]);
 
   return (
     <form className="flex w-full max-w-xl flex-col gap-4 mx-auto" onSubmit={handleSubmitEvent}>
