@@ -54,31 +54,27 @@ export default function AdminTeamsManagingPage() {
       teamName: "Porto",
       numberTeamMembers: 8,
       teamPhotoURL: Google,
-      teamId: "team-1233",
+      teamId: "team-1239",
     },
     {
       teamName: "Benfica",
       numberTeamMembers: 8,
       teamPhotoURL: Google,
-      teamId: "team-1233",
+      teamId: "team-1237",
     },
     {
       teamName: "Sporting",
       numberTeamMembers: 8,
       teamPhotoURL: Google,
-      teamId: "team-1233",
+      teamId: "team-1254",
     },
     {
       teamName: "Bayern Munich",
       numberTeamMembers: 8,
       teamPhotoURL: Google,
-      teamId: "team-1233",
+      teamId: "team-1223",
     },
   ];
-
-  const handleTeamManagement = (teamId: string) => {
-    console.log(`Managing team with id: ${teamId}`);
-  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -94,7 +90,7 @@ export default function AdminTeamsManagingPage() {
         <div className="flex-grow p-8">
           <ButtonWithIcon color="green"/>
           <div className="mt-14">
-            <TeamsCard teams={teams} handleTeamManagement={handleTeamManagement} />
+            <TeamsCard teams={teams} />
           </div>
         </div>
       </div>
