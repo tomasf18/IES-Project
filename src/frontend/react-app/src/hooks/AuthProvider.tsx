@@ -8,7 +8,8 @@ interface AuthContextType {
   token: string;
   loginAction: (data: AuthRequestProps) => Promise<string|undefined>
   logOut: () => void;
-  signUpAction: (data: SignUpRequestProps) => Promise<string|undefined>
+  signUpAction: (data: SignUpRequestProps) => Promise<string|undefined>;
+  authMe: () => void;
 }
 
 interface AuthRequestProps {
@@ -40,7 +41,8 @@ interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string>(Cookies.get("siteSTS") || "");
+  const tokenName = "sts_token";
+  const [token, setToken] = useState<string>(Cookies.get(tokenName) || "");
   const navigate = useNavigate();
   const user = useUser();
 
@@ -75,7 +77,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         const authResponse = response.data as AuthResponseProps;
 
         setToken(authResponse.token);
-        Cookies.set("siteSTS", authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
+        Cookies.set(tokenName, authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${authResponse.token}`;
         user.setUser({
           userId: authResponse.userId,
@@ -96,13 +98,33 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const logOut = () => {
     user.setUser(null);
     setToken("");
-    Cookies.remove("siteSTS");
+    Cookies.remove(tokenName);
     navigate("/login");
     console.log("Logged out");
   };
 
+  const authMe = async () => {
+    try {
+      const response = await axiosInstance.get("/auth/me");
+      if (response) {
+        const authResponse = response.data as AuthResponseProps;
+        user.setUser({
+          userId: authResponse.userId,
+          name: authResponse.name,
+          username: authResponse.username,
+          email: authResponse.email,
+          profilePictureUrl: authResponse.profilePictureUrl,
+          teamId: authResponse.teamId,
+          roles: authResponse.roles,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ token, loginAction, logOut, signUpAction }}>
+    <AuthContext.Provider value={{ token, loginAction, logOut, signUpAction, authMe }}>
       {children}
     </AuthContext.Provider>
   );

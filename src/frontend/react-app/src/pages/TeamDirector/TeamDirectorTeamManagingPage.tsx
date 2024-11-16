@@ -14,8 +14,10 @@ import {
   FaUserMinus,
 } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
+import { useAuth } from "../../hooks";
 
 export default function TeamDirectorTeamManagingPage() {
+  const auth = useAuth();
   const navLinks = [
     {
       icon: <FaUsers />,
@@ -35,7 +37,8 @@ export default function TeamDirectorTeamManagingPage() {
     to: string;
     label: string;
     color: "primary" | "secondary";
-  }[] = [{ to: "/", label: "Sign Out", color: "primary" }];
+    onClick?: () => void;
+  }[] = [{ to: "#", label: "Sign Out", color: "primary", onClick:() => auth.logOut() }];
 
   let StripedTableWidthClass = "w-full";
   let StripedTableHeightClass = "h-full";

@@ -41,11 +41,18 @@ export default function Component() {
 
   // check if the token is available, if so, redirect
   useEffect(() => {
-    console.log(auth.token);
     if (auth.token) {
-      user.redirectHomeByUserType();
+      if (user.username === "") {
+        auth.authMe();
+      }
     }
   }, [auth.token]);
+
+  useEffect(() => {
+    if (user.username !== "") {
+      user.redirectHomeByUserType();
+    }
+  }, [user.username]);
 
   return (
     <form className="flex w-full max-w-xl flex-col gap-4 mx-auto" onSubmit={handleSubmitEvent}>
