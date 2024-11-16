@@ -18,3 +18,4 @@ export { default as TeamsCard } from "./TeamsCard/TeamsCard";
 export { default as PlayersCard } from "./PlayersCard/PlayerUniqueCard";
 export { default as PlayerUniqueCard } from "./PlayersCard/PlayersCard";
 export { default as ButtonWithIcon } from "./ButtonWithIcon/ButtonWithIcon";
+export { default as Navbar } from "./Navbar/Navbar";
