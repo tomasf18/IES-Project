@@ -55,7 +55,10 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
 
         for (Player player : players) {
             List<ValueTimeSeriesView> heartRateData = timeSeriesQueries.getHeartRateData(player.getUserId(), initialTimestamp);
-            Double currentHeartRate = heartRateData.get(heartRateData.size() - 1).getValue();
+            Double currentHeartRate = null;
+            if (heartRateData.size() > 0) {
+                heartRateData.get(heartRateData.size() - 1).getValue();
+            }
 
             playersAvailableRealTimeInfo.add(new PlayersAvailableRealTimeInfo(player.getName(), player.getUserId(), player.getProfilePictureUrl(), heartRateData, currentHeartRate));
         }
