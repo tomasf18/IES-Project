@@ -61,7 +61,7 @@ public class TeamController {
 
     @GetMapping("/team/players-available/real-time-info")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToTeam(#teamId)")
-    public Set<PlayersAvailableRealTimeInfo> api_get_players_available_real_time_info(@RequestParam Long teamId) throws ResourceNotFoundException {
+    public List<PlayersAvailableRealTimeInfo> api_get_players_available_real_time_info(@RequestParam Long teamId) throws ResourceNotFoundException {
         return teamService.getPlayersAvailableRealTimeInfo(teamId);
     }
 

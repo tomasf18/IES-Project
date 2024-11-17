@@ -235,6 +235,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
                 result.add(player);
             }
         }
+        result.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
         return result;
     }
 

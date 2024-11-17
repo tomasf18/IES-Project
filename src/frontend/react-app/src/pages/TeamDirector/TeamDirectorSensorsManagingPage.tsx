@@ -133,7 +133,7 @@ export default function TeamDirectorSensorsManagingPage() {
           activePath={location.pathname}
         />
         {/* Main Content */}
-        <div className="flex-grow flex flex-col p-8 jsutify-center items-center">
+        <div className="flex-grow flex flex-col p-8 justify-center items-center">
           <div className="w-full max-w-[80rem]">
             <h2 className="text-3xl mb-6 text-left">Sensors Managing</h2>
           </div>

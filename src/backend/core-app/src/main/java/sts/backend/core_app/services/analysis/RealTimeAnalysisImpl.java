@@ -48,8 +48,8 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         return timeSeriesQueries.getRealTimeExtraDetailsLast24Hours(playerId);
     }
 
-    public Set<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
-        Set<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = new HashSet<>();
+    public List<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
+        List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = new ArrayList<>();
         List<Player> players = relationalQueries.getAvailablePlayersByTeamId(teamId);
         LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(5);
 
