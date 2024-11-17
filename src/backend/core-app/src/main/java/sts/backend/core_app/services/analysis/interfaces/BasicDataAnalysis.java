@@ -69,4 +69,7 @@ public interface BasicDataAnalysis {
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;
     public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
 
+    // --- Update methods ---
+    public User updateUser(Long userId, String profilePictureUrl) throws ResourceNotFoundException;
+
 }

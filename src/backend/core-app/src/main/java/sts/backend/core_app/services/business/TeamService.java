@@ -88,9 +88,9 @@ public class TeamService {
         return realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
     }
 
-    public void deleteRegistrationCode(RegistrationCodeString code) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteRegistrationCode'");
+    public void deleteRegistrationCode(RegistrationCodeString code) throws ResourceNotFoundException {
+        RegistrationCode registrationCode = basicDataAnalysis.getRegistrationCode(code.getCode());
+        basicDataAnalysis.deleteRegistrationCode(registrationCode);
     }
 
     public List<TeamMembersResponse> getTeamMembers(Long teamId) {
