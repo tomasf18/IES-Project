@@ -1,3 +1,4 @@
+```tsx
 import { SessionMatchInfo } from "../components";
 
 export default function TestPage() {
@@ -35,3 +36,4 @@ export default function TestPage() {
         </div>
     );
 }
+```
