@@ -20,7 +20,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                    .allowedOrigins("http://localhost:5173")
+                    .allowedOrigins("http://localhost:3000")
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
@@ -60,7 +60,7 @@ public class WebConfig {
     @Bean
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Adjust to match your frontend's origin
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Adjust to match your frontend's origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -72,7 +72,7 @@ public class WebConfig {
     @Bean
     UrlBasedCorsConfigurationSource myWebsiteConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Adjust to match your frontend's origin
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Adjust to match your frontend's origin
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
