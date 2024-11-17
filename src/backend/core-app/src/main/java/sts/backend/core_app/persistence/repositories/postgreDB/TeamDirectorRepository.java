@@ -33,5 +33,7 @@ public interface TeamDirectorRepository extends JpaRepository<TeamDirector, Long
             WHERE rc.team.teamId = :teamId AND rc.userTypeId = 2
             """)
     Optional<Set<TeamDirectorsView>> findPendingTeamDirectorsByTeamId(@Param("teamId") Long teamId);
+
+    Optional<TeamDirector> findByUsername(String username);
 }
     

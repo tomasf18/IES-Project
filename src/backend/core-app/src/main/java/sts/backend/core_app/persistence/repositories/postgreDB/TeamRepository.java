@@ -44,7 +44,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     List<TeamMembersResponse> findPendingUsersByTypeId(@Param("teamId") Long teamId, @Param("userTypeId") Set<Long> userTypeId);
 
     @Query("""
-        SELECT s.sensorId as sensorId, p.name as name
+        SELECT s.sensorId as sensorId, p.name as name, p.id as playerId
         FROM sensors s
         LEFT JOIN playerSensors ps ON ps.sensor.sensorId = s.sensorId
         LEFT JOIN players p ON ps.player.userId = p.userId

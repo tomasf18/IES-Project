@@ -1,5 +1,7 @@
 package sts.backend.core_app.models;
 import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -21,8 +23,8 @@ public class Trainer extends User {
     // standard constructors / setters / getters / toString
     public Trainer() {}
 
-    public Trainer(String name, String username, String email, String password, String profilePictureUrl, Team team, Boolean isCoach) {
-        super(name, username, email, password, profilePictureUrl);
+    public Trainer(String name, String username, String email, String password, String profilePictureUrl, Set<String> roles, Team team, Boolean isCoach) {
+        super(name, username, email, password, profilePictureUrl, roles);
         this.team = team;
         this.isCoach = isCoach;
     }

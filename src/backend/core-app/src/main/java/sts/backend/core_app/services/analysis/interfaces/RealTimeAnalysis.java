@@ -1,5 +1,6 @@
 package sts.backend.core_app.services.analysis.interfaces;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -17,7 +18,7 @@ public interface RealTimeAnalysis {
 
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId);
 
-    public Set<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException;
+    public List<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException;
 
     public Set<NotificationResponse> getNotifications(Long sessionId) throws ResourceNotFoundException;
 
