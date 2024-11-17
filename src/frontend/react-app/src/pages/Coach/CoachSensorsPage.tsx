@@ -85,7 +85,7 @@ export default function CoachSensorsPage() {
                 openModalHandler(sensorAssign.sensorId);
               }                }
             >
-              <FaUserPlus className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />
+              <FaUserPlus className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />
             </button>
           ) : (
             <button
