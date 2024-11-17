@@ -14,6 +14,7 @@ import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.User;
 import sts.backend.core_app.services.business.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
@@ -31,6 +32,13 @@ public class UserController {
     public ResponseEntity<?> api_get_users() throws ResourceNotFoundException {
         List<User> users = userService.getUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @PutMapping("/users")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEAM_DIRECTOR')")
+    public ResponseEntity<?> api_update_user(@RequestParam Long userId, String profilePictureUrl) throws ResourceNotFoundException {
+        userService.updateUser(userId, profilePictureUrl);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/users")

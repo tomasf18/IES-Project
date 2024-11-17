@@ -202,4 +202,11 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         relationalQueries.deleteTeam(teamId);
     }
 
+    // --- Update methods ---
+    public User updateUser(Long userId, String profilePictureUrl) throws ResourceNotFoundException {
+        User user = relationalQueries.getUserById(userId);
+        user.setProfilePictureUrl(profilePictureUrl);
+        return relationalQueries.updateUser(user);
+    }
+
 }

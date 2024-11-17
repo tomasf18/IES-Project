@@ -22,6 +22,10 @@ public class UserService {
         return basicDataAnalysis.getUsers();
     }
 
+    public void updateUser(Long userId, String profilePictureUrl) throws ResourceNotFoundException {
+        basicDataAnalysis.updateUser(userId, profilePictureUrl);
+    }
+
     public void deleteUser(Long userId) throws ResourceNotFoundException {
         basicDataAnalysis.deleteUser(userId);
     }
