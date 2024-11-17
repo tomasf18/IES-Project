@@ -1,6 +1,8 @@
 import { SideBar } from "../../components";
 import { FaChartBar, FaHeartPulse } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
+import { useEffect } from "react";
 
 
 export default function PersonalTrainerSensorsPage() {
@@ -8,8 +10,16 @@ export default function PersonalTrainerSensorsPage() {
     { icon: <FaChartBar />, to: "/personal-trainer/start-session" },
     { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
   ];
+  const user = useUser();
+  const auth = useAuth();
 
-  const avatarUrl = "https://via.placeholder.com/80";
+  useEffect(() => {
+    if (user?.username === "") {
+      auth.authMe();
+    }
+  }, [user, auth]);
+
+  const avatarUrl = user.profilePictureUrl;
   const location = useLocation();
 
   return (

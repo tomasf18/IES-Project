@@ -84,7 +84,7 @@ public class TeamService {
         basicDataAnalysis.deleteTeam(teamId);
     }
 
-    public Set<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
+    public List<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
         return realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
     }
 

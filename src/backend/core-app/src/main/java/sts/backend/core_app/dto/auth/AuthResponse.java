@@ -10,6 +10,7 @@ public class AuthResponse {
     private String username;
     private String email;
     private String profilePictureUrl;
+    private Long teamId;
     private Set<String> roles;
     
     
@@ -49,14 +50,17 @@ public class AuthResponse {
     public void setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
     }
+    public Long getTeamId() {
+        return teamId;
+    }
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
+    }
     public Set<String> getRoles() {
         return roles;
     }
     public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
-
-
-    
 
 }

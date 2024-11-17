@@ -17,6 +17,8 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
     @Query("""
             SELECT  s.id AS sessionId, 
                     s.startTime as startTime,
+                    s.name as sessionName,
+                    s.endTime as endTime,
                     (
                         SELECT COUNT(ps)
                         FROM playerSessions ps
@@ -31,12 +33,15 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             JOIN s.trainer t
             JOIN t.team team
             WHERE t.team = :team
+            ORDER BY s.startTime DESC
             """)
     Optional<Set<SessionInfoView>> findSessionInfoByTeam(@Param("team") Team team);
 
     @Query("""
             SELECT  s.id AS sessionId,
                     s.startTime as startTime,
+                    s.name as sessionName,
+                    s.endTime as endTime,
                     (
                        SELECT COUNT(ps)
                        FROM playerSessions ps
@@ -50,6 +55,7 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             FROM sessions s
             JOIN playerSessions ps ON ps.session = s
             WHERE ps.player.id= :playerId
+            ORDER BY s.startTime DESC
             """)
     Optional<Set<SessionInfoView>> findSessionInfoByPlayerId(@Param("playerId") Long playerId);
 }

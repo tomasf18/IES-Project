@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface UserContextType {
   userId: number;
@@ -6,8 +7,10 @@ interface UserContextType {
   username: string;
   email: string;
   profilePictureUrl: string;
+  teamId: number;
   roles: string[];
   setUser: (user: User | null) => void;
+  redirectHomeByUserType: () => void;
 }
 
 interface User {
@@ -16,6 +19,7 @@ interface User {
   username: string;
   email: string;
   profilePictureUrl: string;
+  teamId: number;
   roles: string[];
 }
 
@@ -27,9 +31,21 @@ interface UserProviderProps {
 
 const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+
+  const redirectHomeByUserType = () => {
+    // navigate by user type
+    if (user?.roles.includes("ROLE_ADMIN")) navigate("/admin/endpoints");
+    else if (user?.roles.includes("ROLE_player")) navigate("/player/home");
+    else if (user?.roles.includes("ROLE_COACH")) navigate("/coach/sessions");
+    else if (user?.roles.includes("ROLE_PERSONAL_TRAINER")) navigate("/personal-trainer/start-session");
+    else if (user?.roles.includes("ROLE_TEAM_DIRECTOR")) navigate("/team-director/team-managing");
+    else navigate("/login");
+  };
+
 
   return (
-    <UserContext.Provider value={{ userId: user?.userId ?? 0, name: user?.name ?? '', username: user?.username ?? '', email: user?.email ?? '', profilePictureUrl: user?.profilePictureUrl ?? '', roles: user?.roles ?? [], setUser }}>
+    <UserContext.Provider value={{ userId: user?.userId ?? 0, name: user?.name ?? '', username: user?.username ?? '', email: user?.email ?? '', profilePictureUrl: user?.profilePictureUrl ?? '', teamId: user?.teamId ?? 0, roles: user?.roles ?? [], setUser, redirectHomeByUserType }}>
       {children}
     </UserContext.Provider>
   );

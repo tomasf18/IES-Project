@@ -6,10 +6,11 @@ import { useUser } from "./UserProvider";
 
 interface AuthContextType {
   token: string;
+  axiosInstance: any;
   loginAction: (data: AuthRequestProps) => Promise<string|undefined>
   logOut: () => void;
-  redirectByToken: () => void;
-  signUpAction: (data: SignUpRequestProps) => Promise<string|undefined>
+  signUpAction: (data: SignUpRequestProps) => Promise<string|undefined>;
+  authMe: () => void;
 }
 
 interface AuthRequestProps {
@@ -30,6 +31,7 @@ interface AuthResponseProps {
   username: string;
   email: string;
   profilePictureUrl: string;
+  teamId: number;
   roles: string[];
 }
 
@@ -40,9 +42,10 @@ interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [token, setToken] = useState<string>(Cookies.get("site") || "");
+  const tokenName = "sts_token";
+  const [token, setToken] = useState<string>(Cookies.get(tokenName) || "");
   const navigate = useNavigate();
-  const { setUser } = useUser();
+  const user = useUser();
 
   const axiosInstance = axios.create({
     baseURL: "http://localhost:8080/api/v1",
@@ -73,20 +76,21 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await axiosInstance.post("/auth/sign-in", data);
       if (response) {
         const authResponse = response.data as AuthResponseProps;
-        
+
         setToken(authResponse.token);
-        Cookies.set("site", authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
+        Cookies.set(tokenName, authResponse.token, { expires: 15, secure: false, sameSite: 'strict' });
         axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${authResponse.token}`;
-        setUser({
+        user.setUser({
           userId: authResponse.userId,
           name: authResponse.name,
           username: authResponse.username,
           email: authResponse.email,
           profilePictureUrl: authResponse.profilePictureUrl,
+          teamId: authResponse.teamId,
           roles: authResponse.roles,
         });
-        navigate("/test"); // TODO: Redirect to the dashboard
       }
+      return undefined;
     } catch (error) {
       console.error(error);
       return "Password or username is incorrect";
@@ -94,20 +98,35 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logOut = () => {
-    setUser(null);
+    user.setUser(null);
     setToken("");
-    Cookies.remove("site");
+    Cookies.remove(tokenName);
     navigate("/login");
+    console.log("Logged out");
   };
 
-  const redirectByToken = () => {
-    if (token) {
-      navigate("/test"); // TODO: Redirect to the correct role main page
+  const authMe = async () => {
+    try {
+      const response = await axiosInstance.get("/auth/me");
+      if (response) {
+        const authResponse = response.data as AuthResponseProps;
+        user.setUser({
+          userId: authResponse.userId,
+          name: authResponse.name,
+          username: authResponse.username,
+          email: authResponse.email,
+          profilePictureUrl: authResponse.profilePictureUrl,
+          teamId: authResponse.teamId,
+          roles: authResponse.roles,
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
   return (
-    <AuthContext.Provider value={{ token, loginAction, logOut, redirectByToken, signUpAction }}>
+    <AuthContext.Provider value={{ token, axiosInstance, loginAction, logOut, signUpAction, authMe }}>
       {children}
     </AuthContext.Provider>
   );

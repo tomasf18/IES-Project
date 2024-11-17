@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Checkbox, Label, TextInput } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useAuth } from "../../hooks/AuthProvider";
+import { useAuth } from "../../hooks";
 import { SimpleModal } from "../../components";
 
 export default function Component() {
