@@ -24,6 +24,24 @@ const getTeamMembers = async (axiosInstance: any, teamId: number) => {
   }
 };
 
+const changeProfilePictureUrl = async (
+  axiosInstance: any,
+  userId: number,
+  profilePictureUrl: string
+) => {
+  try {
+    const response = await axiosInstance.put(
+      "/users?userId=" + userId + "&profilePictureUrl=" + profilePictureUrl
+    );
+
+    if (response) {
+      console.log(response);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const deleteRegistrationCode = async (axiosInstance: any, code: string) => {
   try {
     console.log("code: " + code);
@@ -42,19 +60,22 @@ const deleteRegistrationCode = async (axiosInstance: any, code: string) => {
 };
 
 const refreshRegistrationCode = async (axiosInstance: any, code: string) => {
-    try {
-        console.log("code: " + code);
-        const response = await axiosInstance.put("/team/registration-code/refresh", {
-            code: code,
-        });
-    
-        if (response) {
-            console.log(response);
-            return response.data.code;
-        }
-    } catch (error) {
-        console.error(error);
+  try {
+    console.log("code: " + code);
+    const response = await axiosInstance.put(
+      "/team/registration-code/refresh",
+      {
+        code: code,
+      }
+    );
+
+    if (response) {
+      console.log(response);
+      return response.data.code;
     }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const deleteUser = async (axiosInstance: any, userId: number) => {
@@ -70,5 +91,11 @@ const deleteUser = async (axiosInstance: any, userId: number) => {
   }
 };
 
-export { getTeamMembers, deleteRegistrationCode, deleteUser, refreshRegistrationCode };
+export {
+  getTeamMembers,
+  deleteRegistrationCode,
+  deleteUser,
+  refreshRegistrationCode,
+  changeProfilePictureUrl,
+};
 export type { TeamMembers };

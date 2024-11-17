@@ -23,6 +23,7 @@ import {
   deleteRegistrationCode,
   deleteUser,
   refreshRegistrationCode,
+  changeProfilePictureUrl,
 } from "../../api";
 
 export default function TeamDirectorTeamManagingPage() {
@@ -60,6 +61,7 @@ export default function TeamDirectorTeamManagingPage() {
   const [openModalProfileUrl, setOpenModalProfileUrl] = useState(false);
   const [openModalRegistrationCode, setOpenModalRegistrationCode] = useState(false);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [registrationCode, setRegistrationCode] = useState("");
 
   // Fetch user data from token
@@ -82,7 +84,8 @@ export default function TeamDirectorTeamManagingPage() {
     }
   }, [auth.axiosInstance, user?.teamId]);
 
-  const openModalHandlerProfileUrl = (profilePictureUrl: string) => {
+  const openModalHandlerProfileUrl = (userId: number, profilePictureUrl: string) => {
+    setSelectedUserId(userId);
     setProfilePictureUrl(profilePictureUrl || "");
     setOpenModalProfileUrl(true);
   };
@@ -93,7 +96,16 @@ export default function TeamDirectorTeamManagingPage() {
   }
 
   const handleConfirmProfileUrl = async () => {
-    setOpenModalProfileUrl(false);
+    if (selectedUserId !== null) {
+      try {
+        await changeProfilePictureUrl(auth.axiosInstance, selectedUserId, profilePictureUrl);
+        const response = await getTeamMembers(auth.axiosInstance, user.teamId);
+        setTeamMembers(response);
+        setOpenModalProfileUrl(false);
+      } catch (error) {
+        console.error("Error changing profile picture URL:", error);
+      }
+    }
   };
 
   const handleConfirmRegistrationCode = async () => {
@@ -111,10 +123,10 @@ export default function TeamDirectorTeamManagingPage() {
           teamMember.profilePictureUrl ? (
             <FaPen
               className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200"
-              onClick={() => openModalHandlerProfileUrl(teamMember.profilePictureUrl)}
+              onClick={() => openModalHandlerProfileUrl(teamMember.id, teamMember.profilePictureUrl)}
             />
           ) : (
-            <Button color="primary" className="mx-auto" onClick={() => openModalHandlerProfileUrl(teamMember.profilePictureUrl)}>
+            <Button color="primary" className="mx-auto" onClick={() => openModalHandlerProfileUrl(teamMember.id, teamMember.profilePictureUrl)}>
               Add Photo
             </Button>
           ),
