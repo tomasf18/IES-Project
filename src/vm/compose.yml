@@ -14,9 +14,7 @@ services:
   backend:
     depends_on: 
       - database
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: tomassf/ies-project-backend:latest
     environment:
       SPRING_APPLICATION_JSON: 
         '{
@@ -33,19 +31,13 @@ services:
       - .m2:/root/.m2     
     restart: unless-stopped
 
-  # frontend:
-  #   depends_on:
-  #     - backend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "${FRONTEND_LOCAL_PORT}:${FRONTEND_DOCKER_PORT}"
-  #   restart: on-failure
-  
-volumes:    
-  postgres_db_data:
-    
+  frontend:
+    depends_on:
+      - backend
+    image: tomassf/ies-project-frontend:latest
+    ports:
+      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}" 
+    restart: unless-stopped
 
-
-    
+volumes:
+  db_data:
