@@ -328,4 +328,12 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return playerSessionRepository.findPlayerUserIdsBySessionSessionId(sessionId);
     }
 
+    // --- Update methods ---
+    public User updateUser(User user) throws ResourceNotFoundException  {
+        if (!userRepository.existsById(user.getUserId())) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        return userRepository.save(user);
+    }
+
 }

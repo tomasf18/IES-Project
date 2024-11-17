@@ -24,11 +24,13 @@ export default function CustomButton({
     color = "primary",
     className = "",
     children,
-    ...props
+    onClick,
+  ...props
 }: {
     color?: ColorKey;
     className?: string;
     children: React.ReactNode;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
     const customTheme = {
         ...baseTheme,
@@ -41,7 +43,7 @@ export default function CustomButton({
         <Button
             theme={customTheme}
             color="custom"
-            className={className}
+            className={className} onClick={onClick}
             {...props}
             size="lg"
         >

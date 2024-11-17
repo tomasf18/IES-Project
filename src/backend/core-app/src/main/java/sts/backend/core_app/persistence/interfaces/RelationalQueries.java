@@ -73,5 +73,8 @@ public interface RelationalQueries {
     public void deleteUser(Long userId) throws ResourceNotFoundException;
     public void deleteTeam(Long teamId);
     public List<Long> getPlayerIdsBySessionId(Long sessionId);
+
+    // --- Update methods ---
+    public User updateUser(User user) throws ResourceNotFoundException;
     
 }

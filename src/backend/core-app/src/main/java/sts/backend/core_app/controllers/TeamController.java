@@ -72,15 +72,15 @@ public class TeamController {
     }
 
     @PutMapping("/team/registration-code/refresh")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateCode(#code))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateCode(#code.code))")
     public RegistrationCode api_refresh_registration_code(@RequestBody RegistrationCodeString code) throws ResourceNotFoundException {
         return teamService.refreshRegistrationCode(code);
     }
 
     @DeleteMapping("/team/registration-code")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateCode(#code))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('TEAM_DIRECTOR') and @securityService.hasAccessToModerateCode(#code.code))")
     public ResponseEntity<?> api_delete_registration_code(@RequestBody RegistrationCodeString code) throws ResourceNotFoundException {
-        teamService.deleteRegistrationCode(code); // TODO: implement
+        teamService.deleteRegistrationCode(code);
         return ResponseEntity.ok().build();
     }
 
