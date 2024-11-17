@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('TEAM_DIRECTOR')")
     public ResponseEntity<?> api_delete_user(@RequestParam Long userId) throws ResourceNotFoundException {
         userService.deleteUser(userId); 
         return ResponseEntity.ok().build();

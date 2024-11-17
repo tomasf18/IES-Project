@@ -4,20 +4,28 @@ import {
   ConfigurationCard,
   StripedTable,
   Button,
+  SimpleModal,
 } from "../../components";
-import { TextInput, Select } from "flowbite-react";
 import {
   FaUsers,
   FaHeartPulse,
   FaPen,
-  FaUserPlus,
   FaUserMinus,
+  FaRegCopy,
+  FaTrashCan,
 } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "../../hooks";
+import { useAuth, useUser } from "../../hooks";
+import { useEffect, useState } from "react";
+import {
+  getTeamMembers,
+  TeamMembers,
+  deleteRegistrationCode,
+  deleteUser,
+  refreshRegistrationCode,
+} from "../../api";
 
 export default function TeamDirectorTeamManagingPage() {
-  const auth = useAuth();
   const navLinks = [
     {
       icon: <FaUsers />,
@@ -31,131 +39,151 @@ export default function TeamDirectorTeamManagingPage() {
     },
   ];
 
-  const location = useLocation();
-
   const headerButtons: {
     to: string;
     label: string;
     color: "primary" | "secondary";
     onClick?: () => void;
-  }[] = [{ to: "#", label: "Sign Out", color: "primary", onClick:() => auth.logOut() }];
-
-  let StripedTableWidthClass = "w-full";
-  let StripedTableHeightClass = "h-full";
-  let StripedTableColumnsName = ["Team Members", "", "Role", "Options "];
-  let StripedTableRows = [
-    [
-      "Danilo Silva",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Maria Oliveira",
-      <Button color="primary" className="mx-auto">
-        Add Photo
-      </Button>,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "José Lima",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Coach",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Danilo Silva",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Maria Oliveira",
-      <Button color="primary" className="mx-auto">
-        Add Photo
-      </Button>,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "José Lima",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Coach",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Danilo Silva",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Maria Oliveira",
-      <Button color="primary" className="mx-auto">
-        Add Photo
-      </Button>,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "José Lima",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Coach",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Danilo Silva",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Maria Oliveira",
-      <Button color="primary" className="mx-auto">
-        Add Photo
-      </Button>,
-      "Player",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "José Lima",
-      <FaPen className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-      "Coach",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "Ana Martins",
-      <Button color="primary" className="mx-auto">
-        Add Photo
-      </Button>,
-      "Personal Trainer",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      <TextInput placeholder="Add Team Member" size={4} />,
-      <Button color="primary" className="mx-auto">
-        Add Photo
-      </Button>,
-      <Select id="role" required className="w-40 mx-auto">
-        <option>Coach</option>
-        <option>Personal Trainer</option>
-        <option>Player</option>
-      </Select>,
-      <FaUserPlus className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-    ],
+  }[] = [
+    {
+      to: "#",
+      label: "Sign Out",
+      color: "primary",
+      onClick: () => auth.logOut(),
+    },
   ];
 
-  let configurationCardWidthClass = "w-[80rem]";
-  let configurationCardHeightClass = "h-[50rem]";
-  let configurationCardName = "António Mendes";
+  const auth = useAuth();
+  const user = useUser();
+  const location = useLocation();
+  const [teamMembers, setTeamMembers] = useState<TeamMembers[]>([]);
+  const [openModalProfileUrl, setOpenModalProfileUrl] = useState(false);
+  const [openModalRegistrationCode, setOpenModalRegistrationCode] = useState(false);
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [registrationCode, setRegistrationCode] = useState("");
+
+  // Fetch user data from token
+  useEffect(() => {
+    if (user?.username === "") {
+      auth.authMe();
+    }
+  }, [auth, user?.username]);
+
+  // Fetch display data
+  useEffect(() => {
+    if (user?.teamId) {
+      getTeamMembers(auth.axiosInstance, user.teamId)
+        .then((response) => {
+          setTeamMembers(response);
+        })
+        .catch((error) => {
+          console.error("Error fetching team sensors:", error);
+        });
+    }
+  }, [auth.axiosInstance, user?.teamId]);
+
+  const openModalHandlerProfileUrl = (profilePictureUrl: string) => {
+    setProfilePictureUrl(profilePictureUrl || "");
+    setOpenModalProfileUrl(true);
+  };
+
+  const openModalHandlerRegistrationCode = (code: string) => {
+    setRegistrationCode(code);
+    setOpenModalRegistrationCode(true);
+  }
+
+  const handleConfirmProfileUrl = async () => {
+    setOpenModalProfileUrl(false);
+  };
+
+  const handleConfirmRegistrationCode = async () => {
+    setOpenModalRegistrationCode(false);
+  }
+
   let configurationCardRightContent = (
     <div className="max-h-[45rem] overflow-y-auto">
       <StripedTable
-        widthClass={StripedTableWidthClass}
-        heightClass={StripedTableHeightClass}
-        columnsName={StripedTableColumnsName}
-        rows={StripedTableRows}
+        widthClass="w-full"
+        heightClass="h-full"
+        columnsName={["Team Members", "", "Role", "Options "]}
+        rows={teamMembers.map((teamMember) => [
+          teamMember.name,
+          teamMember.profilePictureUrl ? (
+            <FaPen
+              className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200"
+              onClick={() => openModalHandlerProfileUrl(teamMember.profilePictureUrl)}
+            />
+          ) : (
+            <Button color="primary" className="mx-auto" onClick={() => openModalHandlerProfileUrl(teamMember.profilePictureUrl)}>
+              Add Photo
+            </Button>
+          ),
+          teamMember.userTypeId === 1
+            ? "Player"
+            : teamMember.userTypeId === 3
+            ? "Coach"
+            : teamMember.userTypeId === 4
+            ? "Personal Trainer"
+            : "Unknown",
+          teamMember.registrationCode ? (
+            <div className="flex justify-center items-center space-x-4">
+              <FaRegCopy 
+                className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200" 
+                onClick={async () => {
+                  const newCode = await refreshRegistrationCode(
+                    auth.axiosInstance,
+                    teamMember.registrationCode
+                  );
+                  
+                  openModalHandlerRegistrationCode(newCode);
+                  try {
+                    const response = await getTeamMembers(
+                      auth.axiosInstance,
+                      user.teamId
+                    );
+                    setTeamMembers(response);
+                  } catch (error) {
+                    console.error("Error fetching team members:", error);
+                  }
+                }}
+              />
+              <FaTrashCan
+                className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200"
+                onClick={async () => {
+                  await deleteRegistrationCode(
+                    auth.axiosInstance,
+                    teamMember.registrationCode
+                  );
+                  try {
+                    const response = await getTeamMembers(
+                      auth.axiosInstance,
+                      user.teamId
+                    );
+                    setTeamMembers(response);
+                  } catch (error) {
+                    console.error("Error fetching team members:", error);
+                  }
+                }}
+              />
+            </div>
+          ) : (
+            <FaUserMinus
+              className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200"
+              onClick={async () => {
+                await deleteUser(auth.axiosInstance, teamMember.id);
+                try {
+                  const response = await getTeamMembers(
+                    auth.axiosInstance,
+                    user.teamId
+                  );
+                  setTeamMembers(response);
+                } catch (error) {
+                  console.error("Error fetching team members:", error);
+                }
+              }}
+            />
+          ),
+        ])}
       />
     </div>
   );
@@ -176,13 +204,59 @@ export default function TeamDirectorTeamManagingPage() {
             <h2 className="text-3xl mb-6 text-left">Team Managing</h2>
           </div>
           <ConfigurationCard
-            widthClass={configurationCardWidthClass}
-            heightClass={configurationCardHeightClass}
-            name={configurationCardName}
+            widthClass="w-[80rem]"
+            heightClass="h-[50rem]"
+            name={user.name}
             rightContent={configurationCardRightContent}
           />
         </div>
       </div>
+      <SimpleModal
+        show={openModalProfileUrl}
+        onClose={() => {
+          setOpenModalProfileUrl(false);
+        }}
+        content={
+          <>
+            <h2 className="text-center font-bold text-lg">
+              Profile Picture Url
+            </h2>
+            <form className="max-w-sm mx-auto">
+              <label
+                htmlFor="profilePictureUrl"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Edit URL
+              </label>
+              <input
+                id="profilePictureUrl"
+                type="text"
+                value={profilePictureUrl}
+                onChange={(e) => setProfilePictureUrl(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Enter profile picture URL"
+              />
+            </form>
+          </>
+        }
+        buttonText="Change Url"
+        buttonClass={"bg-gray-600"}
+        onConfirm={handleConfirmProfileUrl}
+      />
+      <SimpleModal
+        show={openModalRegistrationCode}
+        onClose={() => {
+          setOpenModalRegistrationCode(false);
+        }}
+        content={
+            <h2 className="text-center font-bold text-lg">
+              New Registration Code: {registrationCode}
+            </h2>
+        }
+        buttonText="Ok"
+        buttonClass={"bg-gray-600"}
+        onConfirm={handleConfirmRegistrationCode}
+      />
     </div>
   );
 }
