@@ -3,7 +3,7 @@ import { FaChartBar, FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { getTeamPlayersAvailableReaTimeInfo, RealTimeInfo } from "../../api";
+import { getTeamPlayersAvailableReaTimeInfo, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo } from "../../api";
 import { Checkbox, Label } from "flowbite-react";
 
 export default function CoachStartSessionPage() {
@@ -20,10 +20,14 @@ export default function CoachStartSessionPage() {
   const location = useLocation();
   const [playersRealTimeInfo, setPlayersRealTimeInfo] = useState<RealTimeInfo[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
+  const [sessionName, setSessionName] = useState("");
+  const [opponentTeam, setOpponentTeam] = useState("");
+  const [type, setType] = useState("");
+  const [locationMatch, setLocationMatch] = useState("");
+  const [weather, setWeather] = useState("");
 
   const searchParams = new URLSearchParams(location.search);
   const isMatch = searchParams.get("match");
-
 
   useEffect(() => {
     if (user?.username === "") {
@@ -80,6 +84,37 @@ export default function CoachStartSessionPage() {
     }
   };
 
+  const createSession = () => {
+    if (user?.teamId) {
+      let sessionId = 0;
+      if (isMatch === "true") {
+        postMatch(auth.axiosInstance, sessionName, user.userId, opponentTeam, type, locationMatch, weather)
+          .then((s) => {
+            sessionId = s;
+          })
+          .catch((error) => {
+            console.error("Error creating match:", error);
+          });
+      } else {
+        postSessions(auth.axiosInstance, sessionName, user.userId)
+          .then((s) => {
+            sessionId = s;
+          })
+          .catch((error) => {
+            console.error("Error creating session:", error);
+          });
+      }
+      selectedPlayers.forEach((playerId) => {
+        postSessionsAssignPlayer(auth.axiosInstance, sessionId, parseInt(playerId))
+          .catch((error) => {
+            console.error("Error assigning player to session:", error);
+          });
+      });
+
+      navigate("/coach/sessions/" + sessionId);
+    }
+  }
+
   return (
     <div className="flex min-h-screen">
       <SideBar avatarUrl={avatarUrl} navLinks={navLinks} activePath={location.pathname} />
@@ -111,7 +146,7 @@ export default function CoachStartSessionPage() {
                   playerName: player.playerName,
                   playerId: player.playerId.toString(),
                   singleValue: player.heartRateData.length > 0 ? player.heartRateData[player.heartRateData.length - 1].value?.toString() || "N/A" : "N/A",
-                  actualState: player.heartRate < heartRateThreshold  ? "Normal" : "Critical",
+                  actualState: player.heartRateData.length > 0 ? player.heartRateData[player.heartRateData.length - 1].value > heartRateThreshold ? "Critical" : "Normal" : "N/A",
                   color: "red",
                   values: player.heartRateData.map((data) => data.value.toString()),
                   metric: "bpm"
@@ -129,7 +164,10 @@ export default function CoachStartSessionPage() {
                     </h1>
               </div>
             </div>
-            <form className="flex flex-col items-center justify-center w-full mx-auto space-y-8">
+            <form 
+              className="flex flex-col items-center justify-center w-full mx-auto space-y-8"
+              onSubmit={() => createSession()}
+              >
               <div className="flex flex-col w-full">
                 <label className="text-base text-gray-700" htmlFor="teamName">
                   Session Name
@@ -138,55 +176,65 @@ export default function CoachStartSessionPage() {
                   id="teamName"
                   type="text"
                   placeholder="Text"
+                  value={sessionName}
+                  onChange={(e) => setSessionName(e.target.value)}
                   className="w-full p-3 border rounded-lg bg-green-50 placeholder-gray-400"
                 />
               </div>
               { isMatch ? 
               <>
                 <div className="flex flex-col w-full">
-                  <label className="text-base text-gray-700" htmlFor="teamName">
+                  <label className="text-base text-gray-700" htmlFor="opponentTeam">
                     Opponent Team
                   </label>
                   <input
-                    id="teamName"
+                    id="opponentTeam"
                     type="text"
                     placeholder="Text"
+                    value={opponentTeam}
+                    onChange={(e) => setOpponentTeam(e.target.value)}
                     className="w-full p-3 border rounded-lg bg-green-50 placeholder-gray-400"
                   />
                 </div>
 
                 <div className="flex flex-col w-full">
-                  <label className="text-base text-gray-700" htmlFor="teamName">
+                  <label className="text-base text-gray-700" htmlFor="type">
                     Type (Friendly or Tournament Match)
                   </label>
                   <input
-                    id="teamName"
+                    id="type"
                     type="text"
                     placeholder="Text"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
                     className="w-full p-3 border rounded-lg bg-green-50 placeholder-gray-400"
                   />
                 </div>
 
                 <div className="flex flex-col w-full">
-                  <label className="text-base text-gray-700" htmlFor="teamName">
+                  <label className="text-base text-gray-700" htmlFor="location">
                     Location
                   </label>
                   <input
-                    id="teamName"
+                    id="location"
                     type="text"
                     placeholder="Text"
+                    value={locationMatch}
+                    onChange={(e) => setLocationMatch(e.target.value)}
                     className="w-full p-3 border rounded-lg bg-green-50 placeholder-gray-400"
                   />
                 </div>
 
                 <div className="flex flex-col w-full">
-                  <label className="text-base text-gray-700" htmlFor="teamName">
+                  <label className="text-base text-gray-700" htmlFor="weather">
                     Weather
                   </label>
                   <input
-                    id="teamName"
+                    id="weather"
                     type="text"
                     placeholder="Text"
+                    value={weather}
+                    onChange={(e) => setWeather(e.target.value)}
                     className="w-full p-3 border rounded-lg bg-green-50 placeholder-gray-400"
                   />
                 </div>
