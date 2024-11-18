@@ -4,5 +4,5 @@ COPY ./react-app/package*.json ./
 RUN npm install
 COPY ./react-app .
 RUN npm run build
-EXPOSE 5173
+# EXPOSE 3000 -> Not needed since we are already specifying the port in compose file
 CMD ["npm", "run", "dev", "--", "--host"]

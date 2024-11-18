@@ -97,6 +97,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getSensorById(sensorId);
     }
 
+    public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException {
+        return relationalQueries.getTeamDirectorById(teamDirectorId);
+    }
+
 
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException {
@@ -196,6 +200,13 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
 
     public void deleteTeam(Long teamId) {
         relationalQueries.deleteTeam(teamId);
+    }
+
+    // --- Update methods ---
+    public User updateUser(Long userId, String profilePictureUrl) throws ResourceNotFoundException {
+        User user = relationalQueries.getUserById(userId);
+        user.setProfilePictureUrl(profilePictureUrl);
+        return relationalQueries.updateUser(user);
     }
 
 }

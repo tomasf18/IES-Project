@@ -15,7 +15,9 @@ export { default as ConfigurationCard } from "./ConfigurationCard/ConfigurationC
 export { default as SimpleModal } from "./SimpleModal/SimpleModal";
 export { default as TeamUniqueCard } from "./TeamsCard/TeamUniqueCard";
 export { default as TeamsCard } from "./TeamsCard/TeamsCard";
-export { default as PlayersCard } from "./PlayersCard/PlayerUniqueCard";
-export { default as PlayerUniqueCard } from "./PlayersCard/PlayersCard";
+export { default as PlayerUniqueCard } from "./PlayersCard/PlayerUniqueCard";
+export { default as PlayersCard } from "./PlayersCard/PlayersCard";
 export { default as ButtonWithIcon } from "./ButtonWithIcon/ButtonWithIcon";
 export { default as Navbar } from "./Navbar/Navbar";
+export { default as SessionMatchInfo } from "./SessionMatchInfo/SessionMatchInfo";
+export type { Player } from "./PlayersCard/PlayersCard";

@@ -6,13 +6,14 @@ import {
   SignUpPage,
   TestPage,
   PlayerHomePage,
+  PlayerSessionInfo,
   AdminEndpointsPage,
   AdminSensorsTrackingPage,
   AdminTeamsManagingPage,
   TeamDirectorTeamManagingPage,
   TeamDirectorSensorsManagingPage,
   CoachSessionsPage,
-  CoachStartMatchPage,
+  CoachStartSessionPage,
   CoachSensorsPage,
   PersonalTrainerStartSessionPage,
   PersonalTrainerSensorsPage,
@@ -29,13 +30,16 @@ export default function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
 
+      {/* TODO: Remove this route */}
+      <Route path="/test" element={<TestPage />} />
+
       {/* Private Routes */}
       <Route element={<PrivateRoute/>}>
-        <Route path="/test" element={<TestPage />} />
 
         {/* Player Routes Group */}
         <Route path="/player">
           <Route path="home" element={<PlayerHomePage />} />
+          <Route path="session/:sessionId" element={<PlayerSessionInfo />} />
         </Route>
 
         {/* Admin Routes Group */}
@@ -57,7 +61,7 @@ export default function AppRoutes() {
         {/* Coach Routes Group */}
         <Route path="/coach">
           <Route path="sessions" element={<CoachSessionsPage />} />
-          <Route path="start-match" element={<CoachStartMatchPage />} />
+          <Route path="start-session" element={<CoachStartSessionPage />} />
           <Route path="sensors" element={<CoachSensorsPage />} />
         </Route>
 

@@ -2,6 +2,8 @@ package sts.backend.core_app.services.business;
 
 import java.util.Set;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -148,6 +150,52 @@ public class AuthService {
         authResponse.setEmail(user.getEmail());
         authResponse.setProfilePictureUrl(user.getProfilePictureUrl());
         authResponse.setRoles(user.getRoles());
+
+        if (user.getRoles().contains("ROLE_ADMIN")) {
+            authResponse.setTeamId(null);
+
+        } else if (user.getRoles().contains("ROLE_PLAYER")) {
+            authResponse.setTeamId(basicDataAnalysis.getPlayerById(user.getUserId()).getTeam().getTeamId());
+
+        } else if (user.getRoles().contains("ROLE_TEAM_DIRECTOR")) {
+            authResponse.setTeamId(basicDataAnalysis.getTeamDirectorById(user.getUserId()).getTeam().getTeamId());
+
+        } else if (user.getRoles().contains("ROLE_COACH") || user.getRoles().contains("ROLE_PERSONAL_TRAINER")) {
+            authResponse.setTeamId(basicDataAnalysis.getTrainerById(user.getUserId()).getTeam().getTeamId());
+        }
+
+        return authResponse;
+    }
+
+    public AuthResponse me() throws ResourceNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        User user = basicDataAnalysis.getUserByUsername(currentUsername);
+
+        if (user == null) {
+            throw new ResourceNotFoundException("User not found");
+        }
+
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setUserId(user.getUserId());
+        authResponse.setName(user.getName());
+        authResponse.setUsername(user.getUsername());
+        authResponse.setEmail(user.getEmail());
+        authResponse.setProfilePictureUrl(user.getProfilePictureUrl());
+        authResponse.setRoles(user.getRoles());
+
+        if (user.getRoles().contains("ROLE_ADMIN")) {
+            authResponse.setTeamId(null);
+
+        } else if (user.getRoles().contains("ROLE_PLAYER")) {
+            authResponse.setTeamId(basicDataAnalysis.getPlayerById(user.getUserId()).getTeam().getTeamId());
+
+        } else if (user.getRoles().contains("ROLE_TEAM_DIRECTOR")) {
+            authResponse.setTeamId(basicDataAnalysis.getTeamDirectorById(user.getUserId()).getTeam().getTeamId());
+
+        } else if (user.getRoles().contains("ROLE_COACH") || user.getRoles().contains("ROLE_PERSONAL_TRAINER")) {
+            authResponse.setTeamId(basicDataAnalysis.getTrainerById(user.getUserId()).getTeam().getTeamId());
+        }
 
         return authResponse;
     }

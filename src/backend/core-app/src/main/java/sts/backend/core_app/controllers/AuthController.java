@@ -1,5 +1,6 @@
 package sts.backend.core_app.controllers;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,11 @@ public class AuthController {
         this.teamService = teamService;
     }
 
+    @GetMapping("/auth/me")
+    public AuthResponse api_auth_me() throws ResourceNotFoundException {
+        return authService.me(); // with token from cookie
+    }
+    
     @PostMapping("/auth/sign-in")
     public AuthResponse api_sign_in(@RequestBody AuthRequest authRequest) throws ResourceNotFoundException {
         return authService.signIn(authRequest); 

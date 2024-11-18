@@ -40,6 +40,7 @@ public interface BasicDataAnalysis {
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException;
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
     public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException;
+    public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException;
     
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
@@ -67,5 +68,8 @@ public interface BasicDataAnalysis {
     // --- Assign methods ---
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;
     public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
+
+    // --- Update methods ---
+    public User updateUser(Long userId, String profilePictureUrl) throws ResourceNotFoundException;
 
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Checkbox, Label, TextInput } from "flowbite-react";
 import { Button } from "../../components";
 import { Google } from "../../assets";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useAuth } from "../../hooks/AuthProvider";
+import { useAuth, useUser } from "../../hooks";
 
 export default function Component() {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +16,7 @@ export default function Component() {
   });
 
   const auth = useAuth();
-  const navigate = useNavigate();
+  const user = useUser();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,8 +41,18 @@ export default function Component() {
 
   // check if the token is available, if so, redirect
   useEffect(() => {
-    auth.redirectByToken();
-  }, [auth.token, navigate]);
+    if (auth.token) {
+      if (user.username === "") {
+        auth.authMe();
+      }
+    }
+  }, [auth.token]);
+
+  useEffect(() => {
+    if (user.username !== "") {
+      user.redirectHomeByUserType();
+    }
+  }, [user.username]);
 
   return (
     <form className="flex w-full max-w-xl flex-col gap-4 mx-auto" onSubmit={handleSubmitEvent}>

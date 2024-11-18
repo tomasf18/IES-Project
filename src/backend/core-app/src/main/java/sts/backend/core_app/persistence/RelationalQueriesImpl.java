@@ -148,6 +148,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Session with ID " + sessionId + " not found"));
     }
 
+    public Session getSessionByTrainerId(Long trainerId) throws ResourceNotFoundException {
+        return sessionRepository.findByTrainerUserIdAndEndTimeIsNull(trainerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Open Session with Trainer ID " + trainerId + " not found"));
+    }
+
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
         return playerRepository.findById(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Player with ID " + playerId + " not found"));
@@ -235,6 +240,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
                 result.add(player);
             }
         }
+        result.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
         return result;
     }
 
@@ -325,6 +331,14 @@ public class RelationalQueriesImpl implements RelationalQueries {
     @Override
     public List<Long> getPlayerIdsBySessionId(Long sessionId) {
         return playerSessionRepository.findPlayerUserIdsBySessionSessionId(sessionId);
+    }
+
+    // --- Update methods ---
+    public User updateUser(User user) throws ResourceNotFoundException  {
+        if (!userRepository.existsById(user.getUserId())) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        return userRepository.save(user);
     }
 
 }

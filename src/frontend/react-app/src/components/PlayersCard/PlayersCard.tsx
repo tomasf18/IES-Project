@@ -36,3 +36,5 @@ export default function PlayersCard({ players, handlePlayerManagement }: Players
         </div>
     );
 }
+
+export type { Player };

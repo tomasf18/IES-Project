@@ -5,7 +5,7 @@ import customHeaderTheme from "./CustomHeaderTheme";
 
 interface HeaderProps {
   links?: { href: string; label: string }[];
-  buttons?: { to: string; label: string; color: "primary" | "secondary" }[];
+  buttons?: { to: string; label: string; color: "primary" | "secondary"; onClick?: () => void }[];
 }
 
 export default function Header({ links = [], buttons = [] }: HeaderProps) {
@@ -21,7 +21,7 @@ export default function Header({ links = [], buttons = [] }: HeaderProps) {
       {/* Buttons */}
       <div className="flex md:order-2 space-x-2">
         {buttons.map((button, index) => (
-          <Link to={button.to} key={index}>
+          <Link to={button.to} key={index} onClick={button.onClick}>
             <Button color={button.color}>{button.label}</Button>
           </Link>
         ))}

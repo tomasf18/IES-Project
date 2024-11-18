@@ -15,11 +15,13 @@ import {
   Cell,
 } from "recharts";
 import { AreaChart, Area } from 'recharts';
-
+import { useAuth } from "../../hooks";
 import { useState } from 'react';
 
 
 export default function AdminEndpointsPage() {
+  const auth = useAuth();
+
   const data = [
     {
       day: "Oct 11",
@@ -82,7 +84,8 @@ export default function AdminEndpointsPage() {
     to: string;
     label: string;
     color: "primary" | "secondary";
-  }[] = [{ to: "/", label: "Sign Out", color: "primary" }];
+    onClick?: () => void;
+  }[] = [{ to: "#", label: "Sign Out", color: "primary", onClick:() => auth.logOut() }];
 
   let StripedTableWidthClass = "w-3/4";
   let StripedTableHeightClass = "h-full";
@@ -222,8 +225,5 @@ export default function AdminEndpointsPage() {
   </div>
 );
 
-}
-function useEffect(arg0: () => void, arg1: { day: string; accesses: number; chartData: { hour: number; accesses: number; }[]; }[][]) {
-  throw new Error("Function not implemented.");
 }
 
