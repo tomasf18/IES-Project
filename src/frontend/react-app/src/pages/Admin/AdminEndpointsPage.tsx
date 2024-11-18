@@ -48,7 +48,7 @@ export default function AdminEndpointsPage() {
     }
   ];
 
-    const [selectedDay, setSelectedDay] = useState<number | null>(null);
+    const [selectedDay, setSelectedDay] = useState(data.length - 1);
 
     const color = "#82ca9d"; // Highlight color for the selected bar
 
@@ -73,6 +73,7 @@ export default function AdminEndpointsPage() {
       to: "/admin/teams-managing",
       label: "Teams Managing",
     },
+    
   ];
 
   const location = useLocation();
@@ -101,7 +102,7 @@ export default function AdminEndpointsPage() {
       "/admin/endpoints",
       "Normal",
       "1"
-    ],
+    ]
   ];
 
   return (
@@ -115,82 +116,96 @@ export default function AdminEndpointsPage() {
         activePath={location.pathname}
       />
       {/* Main Content */}
-      <div className="flex-grow p-8 grid grid-cols-3 gap-4">{/* Content */}
+      <div className="flex-grow p-8 grid grid-cols-10 gap-4">{/* Content */}
 
-        <div className="items-center col-span-1 flex flex-col space-y-2">
+        <div className="items-center col-span-4 flex flex-col space-y-2">
           
-        <div className="flex flex-col mt-3">
-          
-          <div className="flex space-x-4">
-            <FaChartBar className="text-3xl text-black-600" />
-            <h1 className="text-3xl font-bold text-black-800">Total Requests</h1>
-          </div>
-          
-          <p className="text-sm text-gray-500">
-            Balance of accesses of the last 5 days in the company
-          </p>
+          <div className="flex flex-col mt-3">
+            
+            <div className="flex space-x-4">
+              <FaChartBar className="text-3xl text-black-600" />
+              <h1 className="text-3xl font-bold text-black-800">Total Requests</h1>
+            </div>
+            
+              <p className="text-xl text-gray-600">
+              Balance of accesses of the last 5 days
+              </p>
+              <p className="text-xl text-gray-600">
+              in the company
+              </p>
 
-          <>
-      {/* BarChart */}
-      <ResponsiveContainer width={"100%"} height={300} className="mt-4">
-        <BarChart
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <XAxis dataKey="day" />
-          <Tooltip />
-          <Bar dataKey="accesses" >
-            {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={index === selectedDay ? color : "#d3d3d3"}
-                onClick={() => handleBarClick(index)}
-              />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+                  <>
+              {/* BarChart */}
+              <ResponsiveContainer width={"100%"} height={350} className="mt-10">
+                <BarChart
+                  data={data}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <XAxis dataKey="day" />
+                  <Tooltip cursor={{fill: 'transparent'}}/>
+                  <Bar dataKey="accesses" >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={index === selectedDay ? color : "#d3d3d3"}
+                        onClick={() => handleBarClick(index)}
+                      />
+                    ))}
+                  </Bar>
 
-      {/* AreaChart for the Selected Day */}
-      {selectedDay !== null && (
-        <div className="mt-4 w-full h-40">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={data[selectedDay].chartData}
-              margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
-            >
-              <defs>
-                {/* Gradient for diminishing color fill under the curve */}
-                <linearGradient id={`color${selectedDay}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={color} stopOpacity={0.6} />
-                  <stop offset="95%" stopColor={color} stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <XAxis hide />
-              <YAxis hide />
-              <Tooltip />
-              <Area
-                type="monotone"
-                dataKey="accesses"
-                stroke={color}
-                fillOpacity={1}
-                fill={`url(#color${selectedDay})`}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+
+                </BarChart>
+              </ResponsiveContainer>
+
+              {/* AreaChart for the Selected Day */}
+
+              {selectedDay !== null && (
+                <div className={`mt-10 flex flex-col overflow-hidden rounded-lg shadow-lg p-6 w-full bg-green-50 justify-center`}>
+
+                  {/* Title */}
+                  <h3 className="text-xl font-semibold text-center mb-4">
+                    Daily Comparison - Number of accesses per hour
+                  </h3>
+                  
+                  <div className=" w-full h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart
+                          data={data[selectedDay].chartData}
+                          margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+                        >
+                          <defs>
+                            {/* Gradient for diminishing color fill under the curve */}
+                            <linearGradient id={`color${selectedDay}`} x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor={color} stopOpacity={0.6} />
+                              <stop offset="95%" stopColor={color} stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <XAxis dataKey="hour" tick={false} label={{ value: "Hour of the day", position: "insideBottomRight" }} />
+                          <Tooltip />
+                          <Area
+                            type="monotone"
+                            dataKey="accesses"
+                            stroke={color}
+                            fillOpacity={1}
+                            fill={`url(#color${selectedDay})`}
+                          />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                </div>  
+              )}
+            </>
+
         </div>
-      )}
-    </>
-
-        </div>
         </div>
 
-        <div className="col-span-2">
+        <div className="col-span-6">
           <Navbar options={['GET', 'POST', 'PUT', 'DELETE']} color="purple" size='w-1/3'/>
           <div className="flex p-8 justify-center items-center">
             <StripedTable
@@ -208,3 +223,7 @@ export default function AdminEndpointsPage() {
 );
 
 }
+function useEffect(arg0: () => void, arg1: { day: string; accesses: number; chartData: { hour: number; accesses: number; }[]; }[][]) {
+  throw new Error("Function not implemented.");
+}
+
