@@ -15,16 +15,16 @@ public class RealTimeExtraDetailsResponse extends HistoricalInfoResponse {
     private String weather;
     
     // GET /sessions/real-time-extra-details
-    public RealTimeExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate) {
-        super(sessionName, date, time, participants, historicalDataPlayers);
+    public RealTimeExtraDetailsResponse(Long sessionId, String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate) {
+        super(sessionId, sessionName, date, time, participants, historicalDataPlayers);
         this.lastHeartRate = lastHeartRate;
         this.lastBodyTemperature = lastBodyTemperature;
         this.lastRespiratoryRate = lastRespiratoryRate;
     }
 
     // GET /sessions/real-time-extra-details
-    public RealTimeExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate, String opponentTeam, String type, String location, String weather) {
-        super(sessionName, date, time, participants, historicalDataPlayers);
+    public RealTimeExtraDetailsResponse(Long sessionId, String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double lastHeartRate, Double lastBodyTemperature, Double lastRespiratoryRate, String opponentTeam, String type, String location, String weather) {
+        super(sessionId, sessionName, date, time, participants, historicalDataPlayers);
         this.lastHeartRate = lastHeartRate;
         this.lastBodyTemperature = lastBodyTemperature;
         this.lastRespiratoryRate = lastRespiratoryRate;
