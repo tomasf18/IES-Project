@@ -4,6 +4,7 @@ import {
     SimpleModal,
     StripedTable,
 } from "../../components";
+
 import {
     FaChartBar,
     FaFutbol,

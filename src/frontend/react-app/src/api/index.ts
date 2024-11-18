@@ -4,3 +4,4 @@ export { getTeamMembers, deleteRegistrationCode, deleteUser, refreshRegistration
 export type { TeamMembers } from "./TeamDirectorConsumer";
 export { getSessionsPlayer, getSessionHistoricalInfo } from "./PlayerConsumer";
 export type { SessionHistoricalInfo } from "./PlayerConsumer";
+export { addTeamSensor } from "./AdminConsumer";
