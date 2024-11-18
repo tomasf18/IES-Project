@@ -207,7 +207,7 @@ export default function AdminEndpointsPage() {
 
         <div className="col-span-6">
           <Navbar options={['GET', 'POST', 'PUT', 'DELETE']} color="purple" size='w-1/3'/>
-          <div className="flex p-8 justify-center items-center">
+          <div className="flex p-8 justify-center items-center mt-4">
             <StripedTable
               widthClass={StripedTableWidthClass}
               heightClass={StripedTableHeightClass}
