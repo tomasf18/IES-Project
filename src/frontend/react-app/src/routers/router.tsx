@@ -6,6 +6,7 @@ import {
   SignUpPage,
   TestPage,
   PlayerHomePage,
+  PlayerSessionInfo,
   AdminEndpointsPage,
   AdminSensorsTrackingPage,
   AdminTeamsManagingPage,
@@ -38,6 +39,7 @@ export default function AppRoutes() {
         {/* Player Routes Group */}
         <Route path="/player">
           <Route path="home" element={<PlayerHomePage />} />
+          <Route path="session/:sessionId" element={<PlayerSessionInfo />} />
         </Route>
 
         {/* Admin Routes Group */}

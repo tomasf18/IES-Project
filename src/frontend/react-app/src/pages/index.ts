@@ -3,6 +3,7 @@ export { default as LoginPage } from "./LoginPage";
 export { default as SignUpPage } from "./SignUpPage";
 export { default as TestPage } from "./TestPage";
 export { default as PlayerHomePage } from "./Player/PlayerHomePage";
+export { default as PlayerSessionInfo } from "./Player/PlayerSessionInfo";
 export { default as AdminEndpointsPage } from "./Admin/AdminEndpointsPage";
 export { default as AdminSensorsTrackingPage } from "./Admin/AdminSensorsTrackingPage";
 export { default as AdminTeamsManagingPage } from "./Admin/AdminTeamsManagingPage";

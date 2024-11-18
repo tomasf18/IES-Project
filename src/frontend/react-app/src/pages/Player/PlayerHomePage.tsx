@@ -1,6 +1,6 @@
 import { SideBar, StripedTable } from "../../components";
 import { FaHome, FaEye, FaCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
 import { getSessionsPlayer, Session } from "../../api/PlayerConsumer";
@@ -51,7 +51,7 @@ export default function PlayerHomePage() {
         />
         {/* Content */}
         <div className="flex-grow flex flex-col p-8 jsutify-center items-center">
-          <div className="w-full max-w-[80rem] flex justify-between items-center mb-6">
+          <div className="w-4/5 flex justify-between items-center mb-6">
             <h2 className="text-3xl font-bold text-left pb-5">Sessions</h2>
           </div>
           <div className="w-full flex flex-col h-full">
@@ -108,7 +108,9 @@ export default function PlayerHomePage() {
                         <p>Open</p>
                       </div>
                     ),
-                    <FaEye className="text-blue-primary cursor-pointer text-xl mx-auto hover:text-blue-darker hover:scale-125 transition-transform duration-200" />,
+                    <Link to = {`/player/session/${session.sessionId}`}>
+                      <FaEye className="text-blue-primary cursor-pointer text-xl mx-auto hover:text-blue-darker hover:scale-125 transition-transform duration-200" />
+                    </Link>,
                   ];
                 })}
               />
