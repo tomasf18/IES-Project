@@ -8,6 +8,7 @@ import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
 import sts.backend.core_app.dto.session.NotificationResponse;
+import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 
@@ -22,4 +23,7 @@ public interface RealTimeAnalysis {
 
     public Set<NotificationResponse> getNotifications(Long sessionId) throws ResourceNotFoundException;
 
+    public RealTimeInfoResponse getRealTimeInfo(Long sessionId) throws ResourceNotFoundException; 
+
+    public RealTimeInfoResponse getRealTimeInfoTrainer(Long trainerId) throws ResourceNotFoundException;
 }

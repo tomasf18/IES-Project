@@ -1,0 +1,227 @@
+import React, { useState, useEffect } from "react";
+import { SideBar, PlayerUniqueCard } from "../../components"; // Ensure these components exist
+import { FaChartBar, FaHeartPulse } from "react-icons/fa6";
+import { useLocation } from "react-router-dom";
+import { useAuth, useUser } from "../../hooks";
+import { getSessionRealTimeData, SessionRealTimeData } from "../../api";
+
+export default function PersonalTrainerRealTimeData() {
+    const navLinks = [
+        { icon: <FaChartBar />, to: "/personal-trainer/start-session" },
+        { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
+    ];
+
+    let refreshRate = 1000;
+    let heartRateThreshold = 200;
+    let bodyTemperatureThreshold = 60;
+    let respiratoryRateThreshold = 30;
+
+    const user = useUser();
+    const auth = useAuth();
+
+    const [sessionRealTimeData, setSessionRealTimeData] =
+        useState<SessionRealTimeData>();
+
+    useEffect(() => {
+        if (user?.username === "") {
+            auth.authMe();
+        }
+    }, [user, auth]);
+
+    const avatarUrl = user.profilePictureUrl;
+    const location = useLocation();
+
+    // Fetch session real-time data
+    useEffect(() => {
+        if (user?.teamId) {
+            getSessionRealTimeData(auth.axiosInstance, user.userId)
+                .then((response) => {
+                    if (response) {
+                        setSessionRealTimeData(response);
+                        console.log(response);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error fetching team sensors:", error);
+                });
+        }
+    }, [auth.axiosInstance, user?.teamId, user?.userId]);
+
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //       if (user?.teamId) {
+    //         getSessionRealTimeData(auth.axiosInstance, user.teamId)
+    //           .then((response) => {
+    //             if (response) {
+    //                 setSessionRealTimeData(response);
+    //                 console.log(response);
+    //             }
+    //           })
+    //           .catch((error) => {
+    //             console.error("Error fetching team sensors:", error);
+    //           });
+    //       }
+    //     }, refreshRate);
+
+    //     return () => clearInterval(interval);
+    //   }, [auth.axiosInstance, user?.teamId, refreshRate]);
+
+    const handlePlayerManagement = (playerId: string) => {
+        console.log(`Player with id: ${playerId}`);
+    };
+
+    return (
+        <div className="flex min-h-screen">
+            <SideBar
+                avatarUrl={avatarUrl}
+                navLinks={navLinks}
+                activePath={location.pathname}
+            />
+
+            {/* Main Content */}
+            <div className="flex-grow p-8">
+                {/* Logo */}
+                <img
+                    src="/logo.png"
+                    alt="Logo"
+                    className="absolute top-8 right-8 h-24"
+                />
+                <div className="w-full pl-2 pr-20">
+                    {/* Header */}
+                    <button className="bg-red-500 text-white px-4 py-2 rounded-lg my-5">
+                        End Session
+                    </button>
+                    <div className="w-full flex justify-between mb-6 text-2xl">
+                        <div>
+                            <h1 className="font-bold">
+                                Real-time Players Data
+                            </h1>
+                        </div>
+                        <div>
+                            <p>
+                                <span className="font-bold">Name:</span>{" "}
+                                {sessionRealTimeData?.sessionName || "Unknown"}
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                <span className="font-bold">Date:</span>{" "}
+                                {sessionRealTimeData?.date || "Unknown"}
+                            </p>
+                        </div>
+                        <div>
+                            <p>
+                                <span className="font-bold">Participants:</span>{" "}
+                                {sessionRealTimeData?.historicalDataPlayers
+                                    .length || 0}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Players Cards */}
+                    <div className="grid grid-cols-2 gap-6">
+                        {sessionRealTimeData?.historicalDataPlayers.map(
+                            (player) => (
+                                <div
+                                    key={player.playerId} // Unique for each player
+                                    className="w-full m-3"
+                                >
+                                    <h2 className="text-xl font-bold">
+                                        {player.playerName}
+                                    </h2>
+                                    <div className="w-full flex justify-start gap-4">
+                                        {/* Heart Rate Card */}
+                                        <PlayerUniqueCard
+                                            key={`${player.playerId}-heart`} // Unique key for Heart Rate Card
+                                            playerPhotoURL="https://via.placeholder.com/100" // Replace with actual photo URL if available
+                                            playerName="Heart Rate"
+                                            playerId={player.playerId.toString()}
+                                            singleValue={
+                                                player.heartRateData
+                                                    .at(-1)
+                                                    ?.value?.toString() || "N/A"
+                                            }
+                                            actualState={
+                                                (player.heartRateData.at(-1)
+                                                    ?.value ?? 0) >
+                                                heartRateThreshold
+                                                    ? "Critical"
+                                                    : "Normal"
+                                            }
+                                            color="red"
+                                            values={player.heartRateData.map(
+                                                (d) => d.value.toString()
+                                            )}
+                                            metric="bpm"
+                                            handlePlayerManagement={
+                                                handlePlayerManagement
+                                            }
+                                        />
+
+                                        {/* Body Temperature Card */}
+                                        <PlayerUniqueCard
+                                            key={`${player.playerId}-temperature`} // Unique key for Body Temperature Card
+                                            playerPhotoURL="https://via.placeholder.com/100"
+                                            playerName="Body Temperature"
+                                            playerId={player.playerId.toString()}
+                                            singleValue={
+                                                player.bodyTemperatureData
+                                                    .at(-1)
+                                                    ?.value.toString() || "N/A"
+                                            }
+                                            actualState={
+                                                (player.bodyTemperatureData.at(
+                                                    -1
+                                                )?.value ?? 0) >
+                                                bodyTemperatureThreshold
+                                                    ? "Critical"
+                                                    : "Normal"
+                                            }
+                                            color="blue"
+                                            values={player.bodyTemperatureData.map(
+                                                (d) => d.value.toString()
+                                            )}
+                                            metric="°C"
+                                            handlePlayerManagement={
+                                                handlePlayerManagement
+                                            }
+                                        />
+
+                                        {/* Respiratory Rate Card */}
+                                        <PlayerUniqueCard
+                                            key={`${player.playerId}-respiratory`} // Unique key for Respiratory Rate Card
+                                            playerPhotoURL="https://via.placeholder.com/100"
+                                            playerName="Respiratory Rate"
+                                            playerId={player.playerId.toString()}
+                                            singleValue={
+                                                player.respiratoryRateData
+                                                    .at(-1)
+                                                    ?.value.toString() || "N/A"
+                                            }
+                                            actualState={
+                                                (player.respiratoryRateData.at(
+                                                    -1
+                                                )?.value ?? 0) >
+                                                respiratoryRateThreshold
+                                                    ? "Critical"
+                                                    : "Normal"
+                                            }
+                                            color="Orange"
+                                            values={player.respiratoryRateData.map(
+                                                (d) => d.value.toString()
+                                            )}
+                                            metric="rpm"
+                                            handlePlayerManagement={
+                                                handlePlayerManagement
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

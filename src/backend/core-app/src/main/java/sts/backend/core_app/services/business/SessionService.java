@@ -92,6 +92,10 @@ public class SessionService {
         return realTimeAnalysisImpl.getRealTimeInfo(sessionId);
     }
 
+    public RealTimeInfoResponse getRealTimeInfoTrainer(Long trainerId) throws ResourceNotFoundException {
+        return realTimeAnalysisImpl.getRealTimeInfoTrainer(trainerId);
+    }
+
     public RealTimeExtraDetailsResponse getRealTimeExtraDetails(Long sessionId, Long playerId) throws ResourceNotFoundException {
         return realTimeAnalysisImpl.getRealTimeExtraDetails(sessionId, playerId);
     }
