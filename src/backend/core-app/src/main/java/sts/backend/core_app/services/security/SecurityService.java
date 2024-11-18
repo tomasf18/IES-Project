@@ -71,26 +71,57 @@ public class SecurityService {
         String currentUsername = authentication.getName();
         Set<String> roles = getRolesFromAuthentication(authentication);
 
-        Trainer trainer = basicDataAnalysis.getTrainerByUsername(currentUsername);
-
-        if (trainer == null) {
-            return false;
-        }
-
         Session session = basicDataAnalysis.getSessionById(sessionId);
 
         if (session == null) {
             return false;
         }
 
-        // Coaches can access any session of their team
-        if (roles.contains("ROLE_COACH")) {
-            return session.getTrainer().getTeam().getTeamId().equals(trainer.getTeam().getTeamId());
-        } else if (roles.contains("ROLE_PERSONAL_TRAINER")) {
-            return session.getTrainer().getUserId().equals(trainer.getUserId());
+        try {
+            Trainer trainer = basicDataAnalysis.getTrainerByUsername(currentUsername);
+            
+            // Coaches can access any session of their team
+            if (roles.contains("ROLE_COACH")) {
+                return session.getTrainer().getTeam().getTeamId().equals(trainer.getTeam().getTeamId());
+            } else if (roles.contains("ROLE_PERSONAL_TRAINER")) {
+                return session.getTrainer().getUserId().equals(trainer.getUserId());
+            }
+        } catch (ResourceNotFoundException e) {
+            if (roles.contains("ROLE_PLAYER")) {
+                Player player = basicDataAnalysis.getPlayerByUsername(currentUsername);
+                System.out.println("player is null"+ player);
+                basicDataAnalysis.getPlayersInSessionBySessionId(sessionId).forEach(System.out::println);
+                return basicDataAnalysis.getPlayersInSessionBySessionId(sessionId).stream()
+                        .anyMatch(p -> p.getUserId().equals(player.getUserId()));
+            }
         }
 
         return false;
+    }
+
+    public boolean hasAccessToSessionPersonalTrainer(Long trainerId) throws ResourceNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUsername = authentication.getName();
+        Set<String> roles = getRolesFromAuthentication(authentication);
+
+        Trainer trainer = basicDataAnalysis.getTrainerByUsername(currentUsername);
+
+        if (trainer == null) {
+            return false;
+        }
+
+        Session session = basicDataAnalysis.getSessionById(trainerId);
+
+        if (session == null) {
+            return false;
+        }
+            
+        // Personal trainers can access any session they created
+        if (roles.contains("ROLE_PERSONAL_TRAINER")) {
+            return session.getTrainer().getUserId().equals(trainer.getUserId());
+        }
+
+        return trainer.getUserId().equals(trainerId);
     }
 
     public boolean hasAccessToNewSession(Long sessionId) throws ResourceNotFoundException {
@@ -100,15 +131,17 @@ public class SecurityService {
         Trainer trainer = basicDataAnalysis.getTrainerByUsername(currentUsername);
 
         if (trainer == null) {
+            System.out.println("trainer is null"+ currentUsername);
             return false;
         }
 
         Session session = basicDataAnalysis.getSessionById(sessionId);
 
         if (session == null || session.getEndTime() != null) {
+            System.out.println("session is null or ended"+ sessionId);
             return false;
         }
-
+        System.out.println("trainer.getTeam().getTeamId()"+ trainer.getTeam().getTeamId());
         return session.getTrainer().getUserId().equals(trainer.getUserId());
     }
 

@@ -40,7 +40,7 @@ public class SessionController {
     }
 
     @PostMapping("/sessions/match")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('COACH') and @securityService.hasAccessToTrainer(#sessionRequest.getTrainerId()))")
+    @PreAuthorize("hasRole('ADMIN') or (hasRole('COACH') and @securityService.hasAccessToTrainer(#matchRequest.getTrainerId()))")
     public Session api_create_match_session(@RequestBody MatchRequest matchRequest) throws ResourceNotFoundException {
         return sessionService.createMatch(matchRequest);
     }
@@ -76,7 +76,7 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/real-time-info-trainer")
-    // @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#trainerId)")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSessionPersonalTrainer(#trainerId)")
     public RealTimeInfoResponse api_get_real_time_info_trainer(@RequestParam Long trainerId) throws ResourceNotFoundException {
         return sessionService.getRealTimeInfoTrainer(trainerId);
     }
