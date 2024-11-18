@@ -13,6 +13,7 @@ export { default as CoachStartSessionPage } from "./Coach/CoachStartSessionPage"
 export { default as CoachSensorsPage } from "./Coach/CoachSensorsPage";
 export { default as PersonalTrainerStartSessionPage } from "./PersonalTrainer/PersonalTrainerStartSessionPage";
 export { default as PersonalTrainerSensorsPage } from "./PersonalTrainer/PersonalTrainerSensorsPage";
+export { default as PersonalTrainerRealTimeData } from "./PersonalTrainer/PersonalTrainerRealTimeData";
 export { default as AdminAddTeam } from "./Admin/AdminAddTeam";
 export { default as AdminManageTeam } from "./Admin/AdminManageTeam";
 export { default as AdminSensorsManaging } from "./Admin/AdminSensorsManaging";

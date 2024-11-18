@@ -75,6 +75,12 @@ public class SessionController {
         return sessionService.getRealTimeInfo(sessionId);
     }
 
+    @GetMapping("/sessions/real-time-info-trainer")
+    // @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#trainerId)")
+    public RealTimeInfoResponse api_get_real_time_info_trainer(@RequestParam Long trainerId) throws ResourceNotFoundException {
+        return sessionService.getRealTimeInfoTrainer(trainerId);
+    }
+
     @GetMapping("/sessions/real-time-extra-details")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
     public RealTimeExtraDetailsResponse api_get_real_time_extra_details(@RequestParam Long sessionId, @RequestParam Long playerId) throws ResourceNotFoundException {

@@ -1,8 +1,8 @@
-import { PersonalTrainerSensorsPage } from "../pages";
+import { PersonalTrainerRealTimeData} from "../pages";
 
 export default function TestPage() {
 
     return (
-		<PersonalTrainerSensorsPage />
+		<PersonalTrainerRealTimeData />
     );
 }

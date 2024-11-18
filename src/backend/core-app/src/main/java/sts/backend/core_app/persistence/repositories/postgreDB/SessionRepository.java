@@ -14,6 +14,10 @@ import sts.backend.core_app.models.Team;
 
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
+
+    // Get session by trainerId and is open (endtime null)
+    Optional<Session> findByTrainerUserIdAndEndTimeIsNull(Long trainerId);
+    
     @Query("""
             SELECT  s.id AS sessionId, 
                     s.startTime as startTime,

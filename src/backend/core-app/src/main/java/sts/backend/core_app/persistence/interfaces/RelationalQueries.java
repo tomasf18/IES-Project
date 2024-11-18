@@ -42,6 +42,7 @@ public interface RelationalQueries {
     public Trainer getTrainerById(Long trainerId) throws ResourceNotFoundException;
     public Match getMatchById(Long matchId) throws ResourceNotFoundException;
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException;
+    public Session getSessionByTrainerId(Long trainerId) throws ResourceNotFoundException;
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
     public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException;
     public PlayerSession getPlayerSessionById(PlayerSessionId playerSessionId) throws ResourceNotFoundException;
