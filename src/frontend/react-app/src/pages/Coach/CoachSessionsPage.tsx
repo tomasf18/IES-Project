@@ -53,7 +53,7 @@ export default function CoachSessionPage() {
           className="absolute top-8 right-8 h-24"
         />
         {/* Content */}
-        <div className=" mt-28 flex-grow flex flex-col p-8 jsutify-center items-center">
+        <div className=" mt-10 flex-grow flex flex-col p-8 jsutify-center items-center">
             <div className="w-full max-w-[80rem] flex justify-between items-center mb-6">
               <h2 className="text-3xl font-bold text-left pb-5">Sessions</h2>
                 <button className="mb-5 mx-10 bg-blue-primary text-lg rounded-3xl bg-green-t3 text-black px-12 py-2 hover:bg-green-t2 transition-colors duration-200 ml-auto"

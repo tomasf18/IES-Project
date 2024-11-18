@@ -18,6 +18,6 @@ export { default as TeamsCard } from "./TeamsCard/TeamsCard";
 export { default as PlayerUniqueCard } from "./PlayersCard/PlayerUniqueCard";
 export { default as PlayersCard } from "./PlayersCard/PlayersCard";
 export { default as ButtonWithIcon } from "./ButtonWithIcon/ButtonWithIcon";
+export { default as Navbar } from "./Navbar/Navbar";
 export { default as SessionMatchInfo } from "./SessionMatchInfo/SessionMatchInfo";
-
 export type { Player } from "./PlayersCard/PlayersCard";
