@@ -14,9 +14,10 @@ interface Player {
 interface PlayersCardProps {
     players: Player[];
     handlePlayerManagement: (playerId: string) => void;
+    selectedPlayers: string[];
 }
 
-export default function PlayersCard({ players, handlePlayerManagement }: PlayersCardProps) {
+export default function PlayersCard({ players, handlePlayerManagement, selectedPlayers = [] }: PlayersCardProps) {
     return (
         <div className="flex flex-wrap justify-center gap-16">
             {players.map((player) => (
@@ -30,6 +31,7 @@ export default function PlayersCard({ players, handlePlayerManagement }: Players
                     color={player.color}
                     values={player.values}
                     metric={player.metric}
+                    selected={ selectedPlayers.includes(player.playerId) ? true : false}
                     handlePlayerManagement={handlePlayerManagement}
                 />
             ))}

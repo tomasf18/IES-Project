@@ -9,6 +9,7 @@ interface PlayerCardProps {
     color: string;
     values: string[];
     metric: string;
+    selected: boolean;
     handlePlayerManagement: (playerId: string) => void;
 }
 
@@ -21,6 +22,7 @@ export default function PlayersCard({
     color,
     values,
     metric,
+    selected = false,
     handlePlayerManagement
 }: PlayerCardProps) {
     // Transform values array into data points for the chart
@@ -35,66 +37,66 @@ export default function PlayersCard({
     return (
         <div
             className={`flex flex-col overflow-hidden rounded-lg shadow-lg p-6 w-64 ${
-                actualState === "Critical" ? `bg-${color}-100` : ""
-            }`}
+            actualState === "Critical" ? `bg-${color}-100` : ""
+            } ${selected ? "border-2 border-green-t3" : ""}`}
             style={{
-                height: isEmptyValues ? "140px" : "auto", // Adjusted height if values array is empty
+            height: isEmptyValues ? "155px" : "auto", // Adjusted height if values array is empty
             }}
             onClick={() => handlePlayerManagement(playerId)}
         >
             <div className="flex items-center mb-4 justify-left" >
-                <img
-                    src={playerPhotoURL}
-                    alt={`${playerName} logo`}
-                    className="w-12 h-14 rounded bg-gray-100 p-2 mr-4"
-                    
-                />
-                <h3 className="text-lg font-bold">{playerName}</h3>
+            <img
+                src={playerPhotoURL}
+                alt={`${playerName} logo`}
+                className="w-12 h-14 rounded-2xl bg-gray-100 mr-4"
+                
+            />
+            <h3 className="text-lg font-bold">{playerName}</h3>
             </div>
             <p className="text-3xl font-semibold">
-                {singleValue}
-                <span className="text-gray-600 text-base"> {metric} </span>
+            {singleValue}
+            <span className="text-gray-600 text-base"> {metric} </span>
             </p>
             
             {/* Conditional rendering of actualState and chart */}
             {!isEmptyValues && (
-                <>
-                    {/* Display actual state with dynamic width */}
-                    <div
-                        className={`text-gray-600 text-base px-2 py-1 rounded inline-block w-100`}
-                        style={{
-                            backgroundColor: lightenColor(color, 200), // Apply lighter filter by adding opacity
-                            width: 'fit-content'
-                        }}
-                    >
-                        {actualState}
-                    </div>
+            <>
+                {/* Display actual state with dynamic width */}
+                <div
+                className={`text-gray-600 text-base px-2 py-1 rounded inline-block w-100`}
+                style={{
+                    backgroundColor: lightenColor(color, 200), // Apply lighter filter by adding opacity
+                    width: 'fit-content'
+                }}
+                >
+                {actualState}
+                </div>
 
-                    {/* Area chart with gradient fill */}
-                    <div className="mt-4 w-full h-20">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-                                <defs>
-                                    {/* Gradient for diminishing color fill under the curve */}
-                                    <linearGradient id={`color${color}`} x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor={color} stopOpacity={0.6} />
-                                        <stop offset="95%" stopColor={color} stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <XAxis dataKey="name" hide />
-                                <YAxis hide />
-                                <Tooltip />
-                                <Area
-                                    type="monotone"
-                                    dataKey="value"
-                                    stroke={color}
-                                    fillOpacity={1}
-                                    fill={`url(#color${color})`}
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </>
+                {/* Area chart with gradient fill */}
+                <div className="mt-4 w-full h-20">
+                <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={chartData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+                    <defs>
+                        {/* Gradient for diminishing red fill under the curve */}
+                        <linearGradient id={`color${color}`} x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={color} stopOpacity={0.6} />
+                        <stop offset="95%" stopColor={color} stopOpacity={0} />
+                        </linearGradient>
+                    </defs>
+                    <XAxis dataKey="name" hide />
+                    <YAxis hide />
+                    <Tooltip />
+                    <Area
+                        type="monotone"
+                        dataKey="value"
+                        stroke={color}
+                        fillOpacity={1}
+                        fill={`url(#color${color})`}
+                    />
+                    </AreaChart>
+                </ResponsiveContainer>
+                </div>
+            </>
             )}
         </div>
     );

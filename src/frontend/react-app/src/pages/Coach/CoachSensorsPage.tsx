@@ -27,7 +27,7 @@ import {
 export default function CoachSensorsPage() {
     const navLinks = [
         { icon: <FaChartBar />, to: "/coach/sessions" },
-        { icon: <FaFutbol />, to: "/coach/start-session" },
+        { icon: <FaFutbol />, to: "/coach/start-session?match=true" },
         { icon: <FaHeartPulse />, to: "/coach/sensors" },
     ];
 
@@ -151,7 +151,7 @@ export default function CoachSensorsPage() {
     );
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen h-lvh">
             <SideBar
                 avatarUrl={avatarUrl}
                 navLinks={navLinks}
@@ -159,7 +159,7 @@ export default function CoachSensorsPage() {
             />
 
             {/* Main Content */}
-            <div className="flex-grow p-8">
+            <div className="flex-grow p-8 overflow-y-auto h-full">
                 {/* Logo */}
                 <img
                     src="/logo.png"
