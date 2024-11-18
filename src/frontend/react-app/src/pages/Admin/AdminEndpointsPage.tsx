@@ -6,11 +6,7 @@ import {
   BarChart,
   Bar,
   XAxis,
-  YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
-  Rectangle,
   ResponsiveContainer,
   Cell,
 } from "recharts";
