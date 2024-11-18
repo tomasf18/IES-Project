@@ -108,7 +108,10 @@ export default function PlayerHomePage() {
                         <p>Open</p>
                       </div>
                     ),
-                    <Link to = {`/player/session/${session.sessionId}`}>
+                    <Link
+                      to={`/player/session/${session.sessionId}`}
+                      state={{ sessionState: session.state }}
+                    >
                       <FaEye className="text-blue-primary cursor-pointer text-xl mx-auto hover:text-blue-darker hover:scale-125 transition-transform duration-200" />
                     </Link>,
                   ];
@@ -117,9 +120,7 @@ export default function PlayerHomePage() {
             </div>
 
             {/* Lower Content */}
-            <div className="flex-grow flex items-center justify-center pt-4">
-              
-            </div>
+            <div className="flex-grow flex items-center justify-center pt-4"></div>
           </div>
         </div>
       </div>
