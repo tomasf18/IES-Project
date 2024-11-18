@@ -171,9 +171,9 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         }
 
         if (session instanceof Match) {
-            return new RealTimeExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, lastHeartRate, lastBodyTemperature, lastRespiratoryRate, opponentTeam, matchType, location, weather);
+            return new RealTimeExtraDetailsResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, lastHeartRate, lastBodyTemperature, lastRespiratoryRate, opponentTeam, matchType, location, weather);
         } 
-        return new RealTimeExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, lastHeartRate, lastBodyTemperature, lastRespiratoryRate);
+        return new RealTimeExtraDetailsResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, lastHeartRate, lastBodyTemperature, lastRespiratoryRate);
     }
 
     public RealTimeInfoResponse getRealTimeInfo(Long sessionId) throws ResourceNotFoundException {
@@ -244,15 +244,16 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         }
 
         if (session instanceof Match) {
-            return new RealTimeInfoResponse(sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
+            return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
         } 
-        return new RealTimeInfoResponse(sessionName, date, time, participants, historicalDataPlayers);
+        return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers);
     }
 
 
     public RealTimeInfoResponse getRealTimeInfoTrainer(Long trainerId) throws ResourceNotFoundException {
         // Get the session information
         Session session = relationalQueries.getSessionByTrainerId(trainerId);
+        Long sessionId = session.getSessionId();
 
         String sessionName = session.getName();
         LocalDateTime startTime = session.getStartTime();
@@ -318,8 +319,8 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         }
 
         if (session instanceof Match) {
-            return new RealTimeInfoResponse(sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
+            return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
         } 
-        return new RealTimeInfoResponse(sessionName, date, time, participants, historicalDataPlayers);
+        return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers);
     }
 }

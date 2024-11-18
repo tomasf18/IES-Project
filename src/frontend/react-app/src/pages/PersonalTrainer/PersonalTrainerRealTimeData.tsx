@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { SideBar, PlayerUniqueCard } from "../../components"; // Ensure these components exist
+import { useState, useEffect } from "react";
+import { SideBar, PlayerUniqueCard, SimpleModal } from "../../components"; // Ensure these components exist
 import { FaChartBar, FaHeartPulse } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
-import { getSessionRealTimeData, SessionRealTimeData } from "../../api";
+import {
+    getSessionRealTimeData,
+    SessionRealTimeData,
+    endSession,
+} from "../../api";
 
 export default function PersonalTrainerRealTimeData() {
     const navLinks = [
@@ -19,6 +23,7 @@ export default function PersonalTrainerRealTimeData() {
     const user = useUser();
     const auth = useAuth();
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [sessionRealTimeData, setSessionRealTimeData] =
         useState<SessionRealTimeData>();
 
@@ -30,6 +35,7 @@ export default function PersonalTrainerRealTimeData() {
 
     const avatarUrl = user.profilePictureUrl;
     const location = useLocation();
+    const navigate = useNavigate();
 
     // Fetch session real-time data
     useEffect(() => {
@@ -70,6 +76,35 @@ export default function PersonalTrainerRealTimeData() {
         console.log(`Player with id: ${playerId}`);
     };
 
+    // Handle "End Session" click
+    const handleEndSessionClick = () => {
+        setIsModalOpen(true); // Open the modal
+    };
+
+    // Handle modal close (cancel)
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
+
+    // Handle modal confirmation
+    const handleConfirmEndSession = () => {
+        setIsModalOpen(false); // Close the modal
+        const sessionId = sessionRealTimeData?.sessionId;
+        if (sessionId !== undefined) {
+            endSession(auth.axiosInstance, sessionId)
+                .then(() => {
+                    navigate("/personal-trainer/start-session");
+                })
+                .catch((error) => {
+                    console.error("Error ending session:", error);
+                    alert("Failed to end session. Please try again.");
+                });
+        } else {
+            console.error("Session ID is undefined");
+            alert("Failed to end session. Session ID is missing.");
+        }
+    };
+
     return (
         <div className="flex min-h-screen">
             <SideBar
@@ -88,9 +123,28 @@ export default function PersonalTrainerRealTimeData() {
                 />
                 <div className="w-full pl-2 pr-20">
                     {/* Header */}
-                    <button className="bg-red-500 text-white px-4 py-2 rounded-lg my-5">
-                        End Session
+                    {/* "End Session" Button */}
+                    <button
+                        onClick={handleEndSessionClick}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg my-5"
+                    >
+                        <strong>End Session</strong>
                     </button>
+
+                    {/* SimpleModal for confirmation */}
+                    <SimpleModal
+                        show={isModalOpen}
+                        onClose={handleModalClose}
+                        onConfirm={handleConfirmEndSession}
+                        content={
+                            <p className="text-lg font-semibold">
+                                Are you sure you want to end this session?
+                            </p>
+                        }
+                        buttonText="End Session"
+                        buttonClass="bg-red-500 text-white px-20 py-2 rounded-lg hover:bg-red-600"
+                    />
+
                     <div className="w-full flex justify-between mb-6 text-2xl">
                         <div>
                             <h1 className="font-bold">

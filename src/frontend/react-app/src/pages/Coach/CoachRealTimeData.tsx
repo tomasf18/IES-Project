@@ -1,9 +1,9 @@
-import { PlayersCard, SideBar, Player, PlayerUniqueCard } from "../../components";
+import { PlayersCard, SideBar, Player, PlayerUniqueCard, SimpleModal } from "../../components";
 import { FaChartBar, FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { getBySessionRealTimeData, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo, SessionRealTimeData } from "../../api";
+import { endSession, getBySessionRealTimeData, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo, SessionRealTimeData } from "../../api";
 import { Checkbox, Label } from "flowbite-react";
 
 export default function CoachStartSessionPage() {
@@ -23,6 +23,8 @@ export default function CoachStartSessionPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sessionRealTimeData, setSessionRealTimeData] = useState<SessionRealTimeData>();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (user?.username === "") {
@@ -69,6 +71,34 @@ export default function CoachStartSessionPage() {
     console.log(`Player with id: ${playerId}`);
   };
 
+  // Handle "End Session" click
+  const handleEndSessionClick = () => {
+      setIsModalOpen(true); // Open the modal
+  };
+
+  // Handle modal close (cancel)
+  const handleModalClose = () => {
+      setIsModalOpen(false);
+  };
+
+  // Handle modal confirmation
+  const handleConfirmEndSession = () => {
+      setIsModalOpen(false); // Close the modal
+      if (sessionId !== undefined) {
+          endSession(auth.axiosInstance, Number(sessionId))
+              .then(() => {
+                  navigate("/coach/sessions");
+              })
+              .catch((error) => {
+                  console.error("Error ending session:", error);
+                  alert("Failed to end session. Please try again.");
+              });
+      } else {
+          console.error("Session ID is undefined");
+          alert("Failed to end session. Session ID is missing.");
+      }
+  };
+
   return (
     <div className="flex min-h-screen">
       <SideBar
@@ -87,9 +117,28 @@ export default function CoachStartSessionPage() {
           />
           <div className="w-full pl-2 pr-20">
               {/* Header */}
-              <button className="bg-red-500 text-white px-4 py-2 rounded-lg my-5">
-                  End Session
+              <button
+                  onClick={handleEndSessionClick}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg my-5"
+              >
+                  <strong>End Session</strong>
               </button>
+
+              {/* SimpleModal for confirmation */}
+              <SimpleModal
+                show={isModalOpen}
+                onClose={handleModalClose}
+                onConfirm={handleConfirmEndSession}
+                content={
+                    <p className="text-lg font-semibold">
+                        Are you sure you want to end this session?
+                    </p>
+                }
+                buttonText="End Session"
+                buttonClass="bg-red-500 text-white px-20 py-2 rounded-lg hover:bg-red-600"
+            />
+
+
               <div className="w-full flex justify-between mb-6 text-2xl">
                   <div>
                       <h1 className="font-bold">

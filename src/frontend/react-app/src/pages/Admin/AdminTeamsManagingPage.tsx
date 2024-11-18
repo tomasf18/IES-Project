@@ -39,7 +39,7 @@ export default function AdminTeamsManagingPage() {
       teamName: "Real Madrid",
       numberTeamMembers: 10,
       teamPhotoURL: Google,
-      teamId: "team-1231",
+      teamId: "1",
     },
     {
       teamName: "Barcelona",

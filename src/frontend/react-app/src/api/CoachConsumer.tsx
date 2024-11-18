@@ -33,6 +33,7 @@ interface RealTimeInfo {
 }
 
 interface SessionRealTimeData {
+    sessionId: number;
     sessionName: string;
     date: string;
     time: number;
@@ -286,15 +287,31 @@ const getBySessionRealTimeData = async (
     try {
         const response = await axiosInstance.get(
             "/sessions/real-time-info?sessionId=" + sessionId
+        )
+
+            const authResponse = response.data as SessionRealTimeData;
+    
+            return authResponse;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+    
+const endSession = async (
+    axiosInstance: any,
+    sessionId: number
+) => {
+    try {
+        const response = await axiosInstance.post(
+            "/sessions/end?sessionId=" + sessionId
         );
 
         if (response) {
             console.log(response);
-            const authResponse = response.data as SessionRealTimeData;
-
-            return authResponse;
         }
-        return null;
+            
     } catch (error) {
         console.error(error);
     }
@@ -310,7 +327,8 @@ export {
     postSessionsAssignPlayer,
     getTeamPlayersAvailableReaTimeInfo,
     getSessionRealTimeData,
-    postMatch,
-    getBySessionRealTimeData
+    getBySessionRealTimeData,
+    endSession,
+    postMatch
 };
 export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData };
