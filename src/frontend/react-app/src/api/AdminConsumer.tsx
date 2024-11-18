@@ -7,19 +7,20 @@ interface SensorAssign {
 
 const addTeamSensor = async (axiosInstance: any, newSensorId: number ,teamId: number) => {
     try {
-        const response = await axiosInstance.post(
-            "/team/sensors?newSensorId" + newSensorId + "&teamId=" + teamId
-        );
+        const response = await axiosInstance.post("/team/sensors", {
+            sensorId: newSensorId,
+            teamId: teamId,
+        });
 
         if (response) {
-            const authResponse = response.data as SensorAssign[];
-
+            const authResponse = response.data;
             return authResponse;
         }
-        return [];
+        return null;
+
     } catch (error) {
-        console.error(error);
-        return [];
+        console.error("Error adding new sensor:", error);
+        return null;
     }
 };
 

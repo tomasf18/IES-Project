@@ -122,6 +122,7 @@ StripedTableRows.push([
       onClick={async () => {
           try {
               // Call the function to add a new sensor (ensure this function exists)
+              console.log("Adding new sensor:", newSensorId);
               await addTeamSensor(auth.axiosInstance, Number(newSensorId),  Number(teamID));
               // Refresh the sensors list
               const response = await getTeamSensors(auth.axiosInstance, Number(teamID));
