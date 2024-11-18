@@ -6,13 +6,15 @@ import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 
 public class HistoricalInfoResponse {
     
+    private Long sessionId;
     private String sessionName;
     private String date;
     private int time;
     private int participants;
     private List<RealTimeExtraDetailsPlayer> historicalDataPlayers;
 
-    public HistoricalInfoResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers) {
+    public HistoricalInfoResponse(Long sessionId, String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers) {
+        this.sessionId = sessionId;
         this.sessionName = sessionName;
         this.date = date;
         this.time = time;
@@ -21,6 +23,10 @@ public class HistoricalInfoResponse {
     }
 
     // Getters and Setters
+
+    public Long getSessionId() {
+        return sessionId;
+    }
 
     public String getSessionName() {
         return sessionName;

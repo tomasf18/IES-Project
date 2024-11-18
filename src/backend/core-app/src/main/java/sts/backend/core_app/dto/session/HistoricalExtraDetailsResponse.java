@@ -14,15 +14,15 @@ public class HistoricalExtraDetailsResponse extends HistoricalInfoResponse {
     private String location;
     private String weather;
     
-    public HistoricalExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate) {
-        super(sessionName, date, time, participants, historicalDataPlayers);
+    public HistoricalExtraDetailsResponse(Long sessionId, String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate) {
+        super(sessionId, sessionName, date, time, participants, historicalDataPlayers);
         this.averageHeartRate = averageHeartRate;
         this.averageBodyTemperature = averageBodyTemperature;
         this.averageRespiratoryRate = averageRespiratoryRate;
     }
 
-    public HistoricalExtraDetailsResponse(String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate, String opponentTeam, String type, String location, String weather) {
-        super(sessionName, date, time, participants, historicalDataPlayers);
+    public HistoricalExtraDetailsResponse(Long sessionId, String sessionName, String date, int time, int participants, List<RealTimeExtraDetailsPlayer> historicalDataPlayers, Double averageHeartRate, Double averageBodyTemperature, Double averageRespiratoryRate, String opponentTeam, String type, String location, String weather) {
+        super(sessionId, sessionName, date, time, participants, historicalDataPlayers);
         this.averageHeartRate = averageHeartRate;
         this.averageBodyTemperature = averageBodyTemperature;
         this.averageRespiratoryRate = averageRespiratoryRate;

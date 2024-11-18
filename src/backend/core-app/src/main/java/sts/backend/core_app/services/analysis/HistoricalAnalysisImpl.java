@@ -111,9 +111,9 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         }
 
         if (session instanceof Match) {
-            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather);
+            return new HistoricalExtraDetailsResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather);
         } 
-        return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
+        return new HistoricalExtraDetailsResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
     }
 
     public HistoricalExtraDetailsResponse getHistoricalInfo(Long sessionId) throws ResourceNotFoundException {
@@ -191,9 +191,9 @@ public class HistoricalAnalysisImpl implements HistoricalAnalysis {
         }
 
         if (session instanceof Match) {
-            return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather);
+            return new HistoricalExtraDetailsResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate, opponentTeam, matchType, location, weather);
         }
-        return new HistoricalExtraDetailsResponse(sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
+        return new HistoricalExtraDetailsResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, averageHeartRate, averageBodyTemperature, averageRespiratoryRate);
     }
 
     
