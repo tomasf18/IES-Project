@@ -31,6 +31,29 @@ interface SessionHistoricalInfo {
   weather: string;
 }
 
+interface SessionRealTimeInfo {
+  sessionName: string;
+  date: string;
+  time: number;
+  participants: number;
+  historicalDataPlayers: [
+    {
+      heartRateData: [];
+      bodyTemperatureData: [];
+      respiratoryRateData: [];
+      playerId: number;
+      playerName: string;
+    }
+  ];
+  lastHeartRate: number;
+  lastBodyTemperature: number;
+  lastRespiratoryRate: number;
+  opponentTeam: string;
+  type: string;
+  location: string;
+  weather: string;
+}
+
 const getSessionsPlayer = async (axiosInstance: any, playerId: number) => {
   try {
     const response = await axiosInstance.get(
@@ -50,28 +73,52 @@ const getSessionsPlayer = async (axiosInstance: any, playerId: number) => {
 };
 
 const getSessionHistoricalInfo = async (
-    axiosInstance: any,
-    sessionId: number,
-    playerId: number
-  ): Promise<SessionHistoricalInfo | null> => {
-    try {
-      const response = await axiosInstance.get(
-        "/sessions/historical-extra-details?sessionId=" +
-          sessionId +
-          "&playerId=" +
-          playerId
-      );
-  
-      if (response) {
-        const authResponse = response.data as SessionHistoricalInfo;
-        return authResponse;
-      }
-      return null;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
+  axiosInstance: any,
+  sessionId: number,
+  playerId: number
+): Promise<SessionHistoricalInfo | null> => {
+  try {
+    const response = await axiosInstance.get(
+      "/sessions/historical-extra-details?sessionId=" +
+        sessionId +
+        "&playerId=" +
+        playerId
+    );
 
-export { getSessionsPlayer, getSessionHistoricalInfo };
-export type { Session, SessionHistoricalInfo };
+    if (response) {
+      const authResponse = response.data as SessionHistoricalInfo;
+      return authResponse;
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const getSessionRealTimeInfo = async (
+  axiosInstance: any,
+  sessionId: number,
+  playerId: number
+): Promise<SessionRealTimeInfo | null> => {
+  try {
+    const response = await axiosInstance.get(
+      "/sessions/real-time-extra-details?sessionId=" +
+        sessionId +
+        "&playerId=" +
+        playerId
+    );
+
+    if (response) {
+      const authResponse = response.data as SessionRealTimeInfo;
+      return authResponse;
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo };
+export type { Session, SessionHistoricalInfo, SessionRealTimeInfo };

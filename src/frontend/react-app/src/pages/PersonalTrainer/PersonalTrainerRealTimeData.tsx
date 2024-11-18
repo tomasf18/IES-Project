@@ -156,6 +156,7 @@ export default function PersonalTrainerRealTimeData() {
                                             handlePlayerManagement={
                                                 handlePlayerManagement
                                             }
+                                            selected={false}
                                         />
 
                                         {/* Body Temperature Card */}
@@ -185,6 +186,7 @@ export default function PersonalTrainerRealTimeData() {
                                             handlePlayerManagement={
                                                 handlePlayerManagement
                                             }
+                                            selected={false}
                                         />
 
                                         {/* Respiratory Rate Card */}
@@ -214,6 +216,7 @@ export default function PersonalTrainerRealTimeData() {
                                             handlePlayerManagement={
                                                 handlePlayerManagement
                                             }
+                                            selected={false}
                                         />
                                     </div>
                                 </div>
