@@ -5,10 +5,10 @@ interface SensorAssign {
 }
 
 
-const addTeamSensor = async (axiosInstance: any, newSensorId: number ,teamId: number) => {
+const addTeamSensor = async (axiosInstance: any, sensorId: number ,teamId: number) => {
     try {
         const response = await axiosInstance.post("/team/sensors", {
-            sensorId: newSensorId,
+            sensorId: sensorId,
             teamId: teamId,
         });
 
@@ -24,4 +24,25 @@ const addTeamSensor = async (axiosInstance: any, newSensorId: number ,teamId: nu
     }
 };
 
-export { addTeamSensor };
+const deleteTeamSensor = async (
+    axiosInstance: any, 
+    sensorId: number 
+) => {
+    try {
+        console.log("Deleting sensor:", sensorId);
+
+        const response = await axiosInstance.delete(
+            "/team/sensors?sensorId=" + sensorId
+        );
+        
+        if (response) {
+            console.log(response);
+        }
+
+    } catch (error) {
+        console.error("Error deleting sensor :", sensorId);
+        return null;
+    }
+};
+
+export { addTeamSensor, deleteTeamSensor };

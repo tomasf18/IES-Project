@@ -9,6 +9,7 @@ import {
   getTeamSensors,
   SensorAssign,
   deleteTeamSensorsAssignPlayer,
+  deleteTeamSensor,
   addTeamSensor
 } from "../../api";
 
@@ -59,34 +60,14 @@ export default function AdminSensorsTrackingPage() {
   let StripedTableHeightClass = "h-full";
   let StripedTableColumnsName = ["SensorId", "Player", "Option"];
 
-  // let StripedTableRows = [
-  //   [
-  //     "9F2X4WQ8JH",
-  //     "Danilo Silva",
-  //     <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-  //   ],
-  //   [
-  //     "C8Y1Z7NDQK",
-  //     "João Silva",
-  //     <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-
-  //   ],
-    // [
-    //   <div className="w-full flex justify-center items-center">
-    //     <TextInput placeholder="Add new SensorId" />
-    //   </div>,
-    //   <MdOutlineSensors className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    // ],
-  // ];
-
   let StripedTableRows = sensorsAssign.map((sensorAssign) => [
     sensorAssign.sensorId,
     sensorAssign.name,
+    
     <button
         onClick={async () => {
-            await deleteTeamSensorsAssignPlayer(
+            await deleteTeamSensor(
                 auth.axiosInstance,
-                sensorAssign.playerId,
                 sensorAssign.sensorId
             );
             // refresh
