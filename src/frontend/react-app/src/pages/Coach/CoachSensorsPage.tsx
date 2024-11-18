@@ -26,7 +26,7 @@ import {
 export default function CoachSensorsPage() {
     const navLinks = [
         { icon: <FaChartBar />, to: "/coach/sessions" },
-        { icon: <FaFutbol />, to: "/coach/start-session" },
+        { icon: <FaFutbol />, to: "/coach/start-session?match=true" },
         { icon: <FaHeartPulse />, to: "/coach/sensors" },
     ];
 

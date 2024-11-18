@@ -10,7 +10,7 @@ import { FaCircle, FaEye } from "react-icons/fa";
 export default function CoachSessionPage() {
   const navLinks = [
     { icon: <FaChartBar />, to: "/coach/sessions" },
-    { icon: <FaFutbol />, to: "/coach/start-session" },
+    { icon: <FaFutbol />, to: "/coach/start-session?match=true" },
     { icon: <FaHeartPulse />, to: "/coach/sensors" },
   ];
   const user = useUser();
