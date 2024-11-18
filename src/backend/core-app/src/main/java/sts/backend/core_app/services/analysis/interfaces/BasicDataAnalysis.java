@@ -49,6 +49,7 @@ public interface BasicDataAnalysis {
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
     public List<User> getUsers() throws ResourceNotFoundException;
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException; 
+    public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException;
     public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException;
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
     public Player getPlayerByUsername(String username) throws ResourceNotFoundException;

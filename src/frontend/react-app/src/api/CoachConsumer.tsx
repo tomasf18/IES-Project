@@ -171,22 +171,53 @@ const postSensorPlayer = async (
 
 const postSessions = async (
     axiosInstance: any,
-    sessionName: string,
+    name: string,
     trainerId: number
 ) => {
     try {
         const response = await axiosInstance.post("/sessions", {
-            sessionName: sessionName,
+            name: name,
             trainerId: trainerId,
         });
 
         if (response) {
             console.log(response);
+            return response.data.sessionId;
         }
+
     } catch (error) {
         console.error(error);
     }
 };
+
+const postMatch = async (
+    axiosInstance: any,
+    name: string,
+    trainerId: number,
+    opponentTeam: string,
+    type: string,
+    location: string,
+    weather: string
+) => {
+    try {
+        const response = await axiosInstance.post("/sessions/match", {
+            name: name,
+            trainerId: trainerId,
+            opponentTeam: opponentTeam,
+            type: type,
+            location: location,
+            weather: weather
+        });
+
+        if (response) {
+            console.log(response);
+            return response.data.sessionId;
+        }
+
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const postSessionsAssignPlayer = async (
     axiosInstance: any,
@@ -276,6 +307,7 @@ export {
     postSessionsAssignPlayer,
     getTeamPlayersAvailableReaTimeInfo,
     getSessionRealTimeData,
-    endSession
+    endSession,
+    postMatch
 };
 export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData };

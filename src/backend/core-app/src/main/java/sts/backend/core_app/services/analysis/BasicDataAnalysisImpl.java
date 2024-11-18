@@ -135,6 +135,10 @@ public class BasicDataAnalysisImpl implements BasicDataAnalysis{
         return relationalQueries.getPlayersWithoutSensorsByTeamId(teamId);
     }
 
+    public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException {
+        return relationalQueries.getPlayersInSessionBySessionId(sessionId);
+    }
+
     public Player getPlayerByUsername(String username) throws ResourceNotFoundException {
         return relationalQueries.getPlayerByUsername(username);
     }

@@ -8,7 +8,12 @@ import {
 import { useLocation, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { getSessionHistoricalInfo, SessionHistoricalInfo } from "../../api";
+import {
+  getSessionHistoricalInfo,
+  SessionHistoricalInfo,
+  getSessionRealTimeInfo,
+  SessionRealTimeInfo,
+} from "../../api";
 
 import {
   LineChart,
@@ -25,13 +30,14 @@ export default function PlayerSessionInfo() {
   const user = useUser();
   const auth = useAuth();
   const location = useLocation();
+  const { sessionState } = location.state || {};
   const avatarUrl = user.profilePictureUrl;
   const { sessionId } = useParams();
   // parse sessionId to int
   const sessionIdInt = sessionId ? parseInt(sessionId) : null;
-  const [sessionInfo, setSessionInfo] = useState<SessionHistoricalInfo | null>(
-    null
-  );
+  const [sessionInfo, setSessionInfo] = useState<
+    SessionHistoricalInfo | SessionRealTimeInfo | null
+  >(null);
 
   useEffect(() => {
     if (user?.username === "") {
@@ -41,23 +47,51 @@ export default function PlayerSessionInfo() {
 
   // Fetch display data
   useEffect(() => {
-    if (user?.userId && sessionId) {
-      if (sessionIdInt !== null) {
-        getSessionHistoricalInfo(auth.axiosInstance, sessionIdInt, user.userId)
-          .then((response) => {
-            if (response) {
-              setSessionInfo(response);
-            } else {
-              setSessionInfo(null);
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching player sessions:", error);
-            setSessionInfo(null);
-          });
+    let interval: NodeJS.Timeout | null = null;
+
+    const fetchHistoricalData = async () => {
+      try {
+        const response = await getSessionHistoricalInfo(
+          auth.axiosInstance,
+          sessionIdInt!,
+          user.userId
+        );
+        setSessionInfo(response);
+      } catch (error) {
+        console.error("Error fetching historical session info:", error);
+        setSessionInfo(null);
+      }
+    };
+
+    const fetchRealTimeData = async () => {
+      try {
+        const response = await getSessionRealTimeInfo(
+          auth.axiosInstance,
+          sessionIdInt!,
+          user.userId
+        );
+        setSessionInfo(response);
+      } catch (error) {
+        console.error("Error fetching real-time session info:", error);
+        setSessionInfo(null);
+      }
+    };
+
+    if (sessionIdInt !== null) {
+      if (sessionState === "Closed") {
+        fetchHistoricalData();
+      } else {
+        fetchRealTimeData(); // Fetch initial data
+        interval = setInterval(fetchRealTimeData, 2000);
       }
     }
-  }, [auth.axiosInstance, user?.userId, sessionIdInt]);
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [auth.axiosInstance, user.userId, sessionIdInt, sessionState]);
 
   const heartRateData = sessionInfo?.historicalDataPlayers[0].heartRateData.map(
     (item: { value: number }, index: number) => ({
@@ -100,7 +134,7 @@ export default function PlayerSessionInfo() {
         />
         {/* Content */}
         <div className="flex-grow flex p-6 flex-col jsutify-center items-center">
-          <div className="border-4 w-4/5 p-6 mb-12">
+          <div className="border-4 w-4/5 p-6 mb-40">
             <StripedTable
               widthClass="justify-center mx-auto"
               heightClass="h-full"
@@ -124,23 +158,28 @@ export default function PlayerSessionInfo() {
               }
             />
           </div>
-          {/* Sec */}
+
           <div className="w-full space-y-6">
-            {/* Seção 1 */}
+            {/* heartRateData */}
             <div className="flex items-center p-4">
               {/* Card Heart Rate */}
               <div className="w-1/6 flex flex-col p-4 bg-white rounded-lg shadow-xl">
                 <div className="flex items-center">
                   <FaHeart className="text-red-primary text-5xl mr-4" />
                   <h2 className="text-2xl font-bold text-gray-800">
-                    Average Heart Rate
+                    {sessionState === "Closed"
+                      ? "Average Heart Rate"
+                      : "Heart Rate"}
                   </h2>
                 </div>
                 <h2 className="mt-4 text-3xl font-bold text-gray-800">
-                  {parseInt(
-                    sessionInfo?.averageHeartRate?.toString() || "0",
-                    10
-                  )}{" "}
+                  {sessionInfo &&
+                  sessionState === "Closed" &&
+                  "averageHeartRate" in sessionInfo
+                    ? parseInt(sessionInfo.averageHeartRate.toString(), 10)
+                    : sessionInfo && "lastHeartRate" in sessionInfo
+                    ? parseInt(sessionInfo.lastHeartRate.toString(), 10)
+                    : 0}{" "}
                   bpm
                 </h2>
               </div>
@@ -148,12 +187,18 @@ export default function PlayerSessionInfo() {
               {/* Graphic */}
               <div className="flex-grow p-4 ml-20">
                 {heartRateData && heartRateData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={700}>
                     <LineChart data={heartRateData}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
+                      <XAxis dataKey="name" strokeWidth={2} />
+                      <YAxis strokeWidth={2} />
                       <Tooltip />
-                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <Line
+                        type="natural"
+                        dataKey="value"
+                        stroke="#E46C6C"
+                        strokeWidth={3}
+                        dot={false}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
@@ -162,22 +207,26 @@ export default function PlayerSessionInfo() {
               </div>
             </div>
 
-            {/* Seção 2 */}
+            {/* bodyTemperatureData */}
             <div className="flex items-center bg-gray-100 p-4">
               {/* Card Body Temperature */}
               <div className="w-1/6 flex flex-col p-4 bg-white rounded-lg shadow-xl">
                 <div className="flex items-center">
                   <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
                   <h2 className="text-2xl font-bold text-gray-800">
-                    Average Body Temperature
+                    {sessionState === "Closed"
+                      ? "Average Body Temperature"
+                      : "Body Temperature"}
                   </h2>
                 </div>
                 <h2 className="mt-4 text-3xl font-bold text-gray-800">
-                  {sessionInfo?.averageBodyTemperature
-                    ? parseFloat(
-                        sessionInfo.averageBodyTemperature.toString()
-                      ).toFixed(1)
-                    : 0.0}{" "}
+                  {sessionInfo &&
+                  sessionState === "Closed" &&
+                  "averageBodyTemperature" in sessionInfo
+                    ? parseInt(sessionInfo.averageBodyTemperature.toString(), 10)
+                    : sessionInfo && "lastBodyTemperature" in sessionInfo
+                    ? parseInt(sessionInfo.lastBodyTemperature.toString(), 10)
+                    : 0}{" "}
                   °C
                 </h2>
               </div>
@@ -185,12 +234,18 @@ export default function PlayerSessionInfo() {
               {/* Graphic */}
               <div className="flex-grow p-4 ml-20">
                 {bodyTemperatureData && bodyTemperatureData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={700}>
                     <LineChart data={bodyTemperatureData}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
+                      <XAxis dataKey="name" strokeWidth={2} />
+                      <YAxis strokeWidth={2} />
                       <Tooltip />
-                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <Line
+                        type="natural"
+                        dataKey="value"
+                        stroke="#25bfd9"
+                        strokeWidth={3}
+                        dot={false}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
@@ -199,20 +254,26 @@ export default function PlayerSessionInfo() {
               </div>
             </div>
 
-            {/* Seção 3 */}
+            {/* respiratoryRateData */}
             <div className="flex items-center p-4">
+              {/* Card Respiratory Rate */}
               <div className="w-1/6 flex flex-col p-4 bg-white rounded-lg shadow-xl">
                 <div className="flex items-center">
                   <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
                   <h2 className="text-2xl font-bold text-gray-800">
-                    Average Respiratory Rate
+                    {sessionState === "Closed"
+                      ? "Average Respiratory Rate"
+                      : "Respiratory Rate"}
                   </h2>
                 </div>
                 <h2 className="mt-4 text-3xl font-bold text-gray-800">
-                  {parseInt(
-                    sessionInfo?.averageRespiratoryRate?.toString() || "0",
-                    10
-                  )}{" "}
+                  {sessionInfo &&
+                  sessionState === "Closed" &&
+                  "averageRespiratoryRate" in sessionInfo
+                    ? parseInt(sessionInfo.averageRespiratoryRate.toString(), 10)
+                    : sessionInfo && "lastRespiratoryRate" in sessionInfo
+                    ? parseInt(sessionInfo.lastRespiratoryRate.toString(), 10)
+                    : 0}{" "}
                   rpm
                 </h2>
               </div>
@@ -220,12 +281,18 @@ export default function PlayerSessionInfo() {
               {/* Graphic */}
               <div className="flex-grow p-4 ml-20">
                 {respiratoryRateData && respiratoryRateData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={300}>
+                  <ResponsiveContainer width="100%" height={700}>
                     <LineChart data={respiratoryRateData}>
-                      <XAxis dataKey="name" />
-                      <YAxis />
+                      <XAxis dataKey="name" strokeWidth={2} />
+                      <YAxis strokeWidth={2} />
                       <Tooltip />
-                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                      <Line
+                        type="natural"
+                        dataKey="value"
+                        stroke="#8884d8"
+                        strokeWidth={3}
+                        dot={false}
+                      />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (

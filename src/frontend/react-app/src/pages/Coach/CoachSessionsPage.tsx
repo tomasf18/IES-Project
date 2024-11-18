@@ -10,7 +10,7 @@ import { FaCircle, FaEye } from "react-icons/fa";
 export default function CoachSessionPage() {
   const navLinks = [
     { icon: <FaChartBar />, to: "/coach/sessions" },
-    { icon: <FaFutbol />, to: "/coach/start-session" },
+    { icon: <FaFutbol />, to: "/coach/start-session?match=true" },
     { icon: <FaHeartPulse />, to: "/coach/sensors" },
   ];
   const user = useUser();
@@ -41,11 +41,11 @@ export default function CoachSessionPage() {
   const location = useLocation();
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen h-lvh">
       <SideBar avatarUrl={avatarUrl} navLinks={navLinks} activePath={location.pathname} />
 
       {/* Main Content */}
-      <div className="flex-grow p-8">
+      <div className="flex-grow p-8 overflow-y-auto h-full">
         {/* Logo */}
         <img
           src="/logo.png"
@@ -53,7 +53,7 @@ export default function CoachSessionPage() {
           className="absolute top-8 right-8 h-24"
         />
         {/* Content */}
-        <div className="mt-28 flex-grow flex flex-col p-8 jsutify-center items-center">
+        <div className=" mt-10 flex-grow flex flex-col p-8 jsutify-center items-center">
             <div className="w-full max-w-[80rem] flex justify-between items-center mb-6">
               <h2 className="text-3xl font-bold text-left pb-5">Sessions</h2>
                 <button className="mb-5 mx-10 bg-blue-primary text-lg rounded-3xl bg-green-t3 text-black px-12 py-2 hover:bg-green-t2 transition-colors duration-200 ml-auto"
@@ -84,7 +84,7 @@ export default function CoachSessionPage() {
                           <div className={` ${ session.isMatch ? "text-red-primary font-bold text-xl" : "text-blue-primary" }`}>
                             {session.sessionName}
                           </div>,
-                          session.sessionId,
+                          new Date(session.startTime).toLocaleDateString("en-GB", { month: "short", day: "numeric" }),
                           durationMinutes,
                           session.numParticipants,
                           session.state === "Closed" ? 
