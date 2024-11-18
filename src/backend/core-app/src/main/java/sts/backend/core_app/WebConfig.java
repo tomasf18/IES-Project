@@ -16,8 +16,11 @@ import java.util.Arrays;
 @Configuration
 public class WebConfig {
 
-    @Value("${frontend.local.port}")
+    @Value("${FRONTEND_LOCAL_PORT}")
     private String frontendLocalPort;
+
+    @Value("${FRONTEND_IP}")
+    private String frontendIp;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -25,7 +28,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                    .allowedOrigins("http://localhost:" + frontendLocalPort)
+                    .allowedOrigins("http://" + frontendIp + ":" + frontendLocalPort)
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
@@ -65,7 +68,7 @@ public class WebConfig {
     @Bean
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:" + frontendLocalPort)); 
+        configuration.setAllowedOrigins(Arrays.asList("http://" + frontendIp + ":" + frontendLocalPort)); 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -77,7 +80,7 @@ public class WebConfig {
     @Bean
     UrlBasedCorsConfigurationSource myWebsiteConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:" + frontendLocalPort));
+        configuration.setAllowedOrigins(Arrays.asList("http://" + frontendIp + ":" + frontendLocalPort));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
