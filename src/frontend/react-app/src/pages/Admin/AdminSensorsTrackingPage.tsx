@@ -101,6 +101,36 @@ export default function AdminSensorsTrackingPage() {
       "Team 3",
       "Normal",
       "1"
+    ],
+    [
+      "Team 4",
+      "Critical",
+      "10"
+    ],
+    [
+      "Team 5",
+      "Flooded",
+      "7"
+    ],
+    [
+      "Team 6",
+      "Normal",
+      "1"
+    ],
+    [
+      "Team 7",
+      "Critical",
+      "10"
+    ],
+    [
+      "Team 8",
+      "Flooded",
+      "7"
+    ],
+    [
+      "Team 9",
+      "Normal",
+      "1"
     ]
   ];
 
@@ -205,15 +235,13 @@ export default function AdminSensorsTrackingPage() {
         </div>
 
         <div className="col-span-6">
-          <Navbar options={['GET', 'POST', 'PUT', 'DELETE']} color="purple" size='w-1/3'/>
-          <div className="flex p-8 justify-center items-center mt-4">
+          
             <StripedTable
               widthClass={StripedTableWidthClass}
               heightClass={StripedTableHeightClass}
               columnsName={StripedTableColumnsName}
               rows={StripedTableRows}
             />
-          </div>
         </div>
 
       </div>
