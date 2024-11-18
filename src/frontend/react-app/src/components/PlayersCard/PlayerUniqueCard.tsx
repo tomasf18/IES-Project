@@ -13,10 +13,6 @@ interface PlayerCardProps {
     handlePlayerManagement: (playerId: string) => void;
 }
 
-PlayersCard.defaultProps = {
-    selected: false,
-};
-
 export default function PlayersCard({
     playerPhotoURL,
     playerName,
@@ -26,7 +22,7 @@ export default function PlayersCard({
     color,
     values,
     metric,
-    selected,
+    selected = false,
     handlePlayerManagement
 }: PlayerCardProps) {
     // Transform values array into data points for the chart

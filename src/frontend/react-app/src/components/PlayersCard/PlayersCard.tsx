@@ -11,17 +11,13 @@ interface Player {
     metric: string;
 }
 
-PlayersCard.defaultProps = {
-    selectedPlayers: [],
-};
-
 interface PlayersCardProps {
     players: Player[];
     handlePlayerManagement: (playerId: string) => void;
     selectedPlayers: string[];
 }
 
-export default function PlayersCard({ players, handlePlayerManagement, selectedPlayers }: PlayersCardProps) {
+export default function PlayersCard({ players, handlePlayerManagement, selectedPlayers = [] }: PlayersCardProps) {
     return (
         <div className="flex flex-wrap justify-center gap-16">
             {players.map((player) => (

@@ -72,8 +72,6 @@ export default function CoachStartSessionPage() {
         ? prevSelected.filter((id) => id !== playerId)
         : [...prevSelected, playerId]
     );
-    console.log(selectedPlayers)
-
   };
 
   const handleSelectAllPlayers = () => {
@@ -84,22 +82,16 @@ export default function CoachStartSessionPage() {
     }
   };
 
-  const createSession = () => {
+  const createSession = async () => {
     if (user?.teamId) {
-      let sessionId = 0;
+      var sessionId = 0;
       if (isMatch === "true") {
-        postMatch(auth.axiosInstance, sessionName, user.userId, opponentTeam, type, locationMatch, weather)
-          .then((s) => {
-            sessionId = s;
-          })
+        sessionId = await postMatch(auth.axiosInstance, sessionName, user.userId, opponentTeam, type, locationMatch, weather)
           .catch((error) => {
             console.error("Error creating match:", error);
           });
       } else {
-        postSessions(auth.axiosInstance, sessionName, user.userId)
-          .then((s) => {
-            sessionId = s;
-          })
+        sessionId = await postSessions(auth.axiosInstance, sessionName, user.userId)
           .catch((error) => {
             console.error("Error creating session:", error);
           });
@@ -120,7 +112,7 @@ export default function CoachStartSessionPage() {
       <SideBar avatarUrl={avatarUrl} navLinks={navLinks} activePath={location.pathname} />
 
       {/* Main Content */}
-      <div className="flex-grow p-8">
+      <div className="flex-grow p-8 overflow-y-auto h-full">
         {/* Logo */}
         <img
           src="/logo.png"
@@ -138,23 +130,28 @@ export default function CoachStartSessionPage() {
                     </h1>
                 </div>
             </div>
-
-            <PlayersCard 
-              players={
-                playersRealTimeInfo.map((player) => ({
-                  playerPhotoURL: player.playerProfilePictureUrl,
-                  playerName: player.playerName,
-                  playerId: player.playerId.toString(),
-                  singleValue: player.heartRateData.length > 0 ? player.heartRateData[player.heartRateData.length - 1].value?.toString() || "N/A" : "N/A",
-                  actualState: player.heartRateData.length > 0 ? player.heartRateData[player.heartRateData.length - 1].value > heartRateThreshold ? "Critical" : "Normal" : "N/A",
-                  color: "red",
-                  values: player.heartRateData.map((data) => data.value.toString()),
-                  metric: "bpm"
-                } as Player))
-              } 
-              handlePlayerManagement={handlePlayerManagement}
-              selectedPlayers={selectedPlayers}
-            />
+            { playersRealTimeInfo.length === 0 ?
+              <div className="flex justify-center items-center h-96">
+                <h1 className="text-2xl font-bold text-gray-400">No players available</h1>
+              </div>
+              :    
+              <PlayersCard 
+                players={
+                  playersRealTimeInfo.map((player) => ({
+                    playerPhotoURL: player.playerProfilePictureUrl,
+                    playerName: player.playerName,
+                    playerId: player.playerId.toString(),
+                    singleValue: player.heartRateData.length > 0 ? player.heartRateData[player.heartRateData.length - 1].value?.toString() || "N/A" : "N/A",
+                    actualState: player.heartRateData.length > 0 ? player.heartRateData[player.heartRateData.length - 1].value > heartRateThreshold ? "Critical" : "Normal" : "N/A",
+                    color: "red",
+                    values: player.heartRateData.map((data) => data.value.toString()),
+                    metric: "bpm"
+                  } as Player))
+                } 
+                handlePlayerManagement={handlePlayerManagement}
+                selectedPlayers={selectedPlayers}
+              />
+          }
           </div>
           <div className="col-span-2 mx-10 mt-2">
             <div className="w-full flex justify-between mb-6 text-2xl">
@@ -166,7 +163,10 @@ export default function CoachStartSessionPage() {
             </div>
             <form 
               className="flex flex-col items-center justify-center w-full mx-auto space-y-8"
-              onSubmit={() => createSession()}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await createSession();
+              }}
               >
               <div className="flex flex-col w-full">
                 <label className="text-base text-gray-700" htmlFor="teamName">
