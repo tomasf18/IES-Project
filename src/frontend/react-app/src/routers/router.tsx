@@ -20,6 +20,7 @@ import {
   AdminAddTeam,
   AdminManageTeam,
   AdminSensorsManaging,
+  CoachRealTimeData,
 } from "../pages";
 
 export default function AppRoutes() {
@@ -63,6 +64,7 @@ export default function AppRoutes() {
           <Route path="sessions" element={<CoachSessionsPage />} />
           <Route path="start-session" element={<CoachStartSessionPage />} />
           <Route path="sensors" element={<CoachSensorsPage />} />
+          <Route path="sessions/:sessionId" element={<CoachRealTimeData />} />
         </Route>
 
         {/* Personal Trainer Routes Group */}

@@ -1,4 +1,4 @@
-export { getSessionsTeam, postMatch, getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer, postSessions, postSessionsAssignPlayer, getTeamPlayersAvailableReaTimeInfo, getSessionRealTimeData } from "./CoachConsumer";
+export { getSessionsTeam, postMatch, getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer, postSessions, postSessionsAssignPlayer, getTeamPlayersAvailableReaTimeInfo, getSessionRealTimeData, getBySessionRealTimeData } from "./CoachConsumer";
 export type { SensorAssign, PlayersWithoutSensor, Session, RealTimeInfo, SessionRealTimeData } from "./CoachConsumer";
 export { getTeamMembers, deleteRegistrationCode, deleteUser, refreshRegistrationCode, changeProfilePictureUrl } from "./TeamDirectorConsumer";
 export type { TeamMembers } from "./TeamDirectorConsumer";

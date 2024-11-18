@@ -279,6 +279,27 @@ const getSessionRealTimeData = async (
     }
 }
 
+const getBySessionRealTimeData = async (
+    axiosInstance: any,
+    sessionId: number
+) => {
+    try {
+        const response = await axiosInstance.get(
+            "/sessions/real-time-info?sessionId=" + sessionId
+        );
+
+        if (response) {
+            console.log(response);
+            const authResponse = response.data as SessionRealTimeData;
+
+            return authResponse;
+        }
+        return null;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 export {
     getSessionsTeam,
     getTeamSensors,
@@ -289,6 +310,7 @@ export {
     postSessionsAssignPlayer,
     getTeamPlayersAvailableReaTimeInfo,
     getSessionRealTimeData,
-    postMatch
+    postMatch,
+    getBySessionRealTimeData
 };
 export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData };
