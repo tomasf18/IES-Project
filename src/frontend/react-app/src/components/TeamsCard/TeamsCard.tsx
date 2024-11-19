@@ -22,7 +22,6 @@ export default function TeamsCard({ teams}: TeamsCardProps) {
             key={team.teamId}
             teamName={team.teamName}
             numberTeamMembers={team.numberTeamMembers}
-            teamPhotoURL={team.teamPhotoURL}
             teamId={team.teamId}
           />
         ))}

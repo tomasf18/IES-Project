@@ -3,6 +3,8 @@ import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks";
 import { Google } from "../../assets";
+import { getTeamsInfo } from "../../api";
+import { useEffect, useState } from "react";
 
 export default function AdminTeamsManagingPage() {
   const auth = useAuth();
@@ -24,6 +26,8 @@ export default function AdminTeamsManagingPage() {
     },
   ];
 
+  const [teams, setTeams] = useState([]);
+
   const location = useLocation();
 
   const headerButtons: {
@@ -33,51 +37,23 @@ export default function AdminTeamsManagingPage() {
     onClick?: () => void;
   }[] = [{ to: "#", label: "Sign Out", color: "primary", onClick:() => auth.logOut() }];
 
-  // Add teams array
-  const teams = [
-    {
-      teamName: "Real Madrid",
-      numberTeamMembers: 10,
-      teamPhotoURL: Google,
-      teamId: "1",
-    },
-    {
-      teamName: "Barcelona",
-      numberTeamMembers: 12,
-      teamPhotoURL: Google,
-      teamId: "team-1232",
-    },
-    {
-      teamName: "Atletico Madrid",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1233",
-    },
-    {
-      teamName: "Porto",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1239",
-    },
-    {
-      teamName: "Benfica",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1237",
-    },
-    {
-      teamName: "Sporting",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1254",
-    },
-    {
-      teamName: "Bayern Munich",
-      numberTeamMembers: 8,
-      teamPhotoURL: Google,
-      teamId: "team-1223",
-    },
-  ];
+  // Fetch display data
+  useEffect(() => {
+    getTeamsInfo(auth.axiosInstance)
+      .then((response) => {
+        const mappedTeams = response.map((team: any) => ({
+          teamName: team.name,
+          numberTeamMembers: team.numberOfMembers,
+          teamId: team.teamId.toString(), // Convert to string if necessary
+        }));
+        setTeams(mappedTeams);
+        console.log("Mapped Teams:", mappedTeams);
+      })
+      .catch((error) => {
+        console.error("Error fetching team sensors:", error);
+      });
+  }
+  , [auth.axiosInstance]);
 
   return (
     <div className="flex flex-col min-h-screen">
