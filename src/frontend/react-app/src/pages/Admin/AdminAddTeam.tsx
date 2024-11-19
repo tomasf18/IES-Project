@@ -1,8 +1,12 @@
 import { SideBar, Header, ConfigurationCard } from "../../components";
 import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../../hooks";
+import { createTeam } from "../../api";
 
 export default function AdminAddTeam() {
+
   const navLinks = [
     {
       icon: <FaCode />,
@@ -21,6 +25,7 @@ export default function AdminAddTeam() {
     },
   ];
 
+  const auth = useAuth();
   const location = useLocation();
 
   const headerButtons: {
@@ -33,10 +38,24 @@ export default function AdminAddTeam() {
   let configurationCardHeightClass = "h-[50rem]";
   let configurationCardName = "Add Team";
 
+  const navigate = useNavigate();
+
+  const [teamName, setTeamName] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await createTeam(auth.axiosInstance, teamName);
+    if (response) {
+        navigate("/admin/teams-managing");
+    } else {
+        console.error("Error creating new team");
+    }
+};
+
   // Updated configurationCardRightContent
   let configurationCardRightContent = (
 
-      <form className="flex flex-col items-center justify-center w-1/2 mx-auto space-y-8">
+      <form className="flex flex-col items-center justify-center w-1/2 mx-auto space-y-8"  onSubmit={handleSubmit}>
 
         {/* Team Name Label and Input */}
         <div className="flex flex-col w-full">
@@ -48,6 +67,9 @@ export default function AdminAddTeam() {
             type="text"
             placeholder="Text"
             className="w-full p-3 border rounded-lg bg-green-50 placeholder-gray-400"
+            value={teamName}
+            onChange={(e) => setTeamName(e.target.value)}
+            required
           />
         </div>
   
