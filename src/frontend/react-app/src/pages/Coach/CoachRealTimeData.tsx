@@ -3,7 +3,7 @@ import { FaChartBar, FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { endSession, getBySessionRealTimeData, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo, SessionRealTimeData } from "../../api";
+import { endSession, getBySessionHistoricalData, getBySessionRealTimeData, getSessionInfo, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo, SessionRealTimeData } from "../../api";
 import { Checkbox, Label } from "flowbite-react";
 
 export default function CoachStartSessionPage() {
@@ -25,6 +25,7 @@ export default function CoachStartSessionPage() {
   const [sessionRealTimeData, setSessionRealTimeData] = useState<SessionRealTimeData>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isHistorical, setIsHistorical] = useState(false);
 
   useEffect(() => {
     if (user?.username === "") {
@@ -34,20 +35,46 @@ export default function CoachStartSessionPage() {
 
   // Fetch display data
   useEffect(() => {
-    if (user?.teamId && sessionId) {
-      getBySessionRealTimeData(auth.axiosInstance, Number(sessionId))
-        .then((response) => {
-          if (response) {
-            setSessionRealTimeData(response);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching team sensors:", error);
-        });
-    }
+    const fetchData = async () => {
+      if (user?.teamId && sessionId) {
+        var sessionInfo = await getSessionInfo(auth.axiosInstance, Number(sessionId));
+
+        if (sessionInfo?.endTime === null) {
+          // run-time data
+          setIsHistorical(false);
+          getBySessionRealTimeData(auth.axiosInstance, Number(sessionId))
+            .then((response) => {
+              if (response) {
+                setSessionRealTimeData(response);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching team sensors:", error);
+            });
+        } else {
+          // historical data
+          setIsHistorical(true);
+          getBySessionHistoricalData(auth.axiosInstance, Number(sessionId))
+            .then((response) => {
+              if (response) {
+                setSessionRealTimeData(response);
+                  }
+              }
+            )
+            .catch((error) => {
+              console.error("Error fetching team sensors:", error);
+            });
+        }
+    };}
+
+    fetchData();
   }, [auth.axiosInstance, user?.teamId]);
 
   useEffect(() => {
+    if (isHistorical) {
+      return;
+    }
+
     const interval = setInterval(() => {
       if (user?.teamId && sessionId) {
         getBySessionRealTimeData(auth.axiosInstance, Number(sessionId))
@@ -182,19 +209,23 @@ export default function CoachStartSessionPage() {
                                   <PlayerUniqueCard
                                       key={`${player.playerId}-heart`} // Unique key for Heart Rate Card
                                       playerPhotoURL="https://via.placeholder.com/100" // Replace with actual photo URL if available
-                                      playerName="Heart Rate"
+                                      playerName={!isHistorical ? "Heart Rate" : "Average Heart Rate"}
                                       playerId={player.playerId.toString()}
                                       singleValue={
+                                        !isHistorical?
                                           player.heartRateData
                                               .at(-1)
                                               ?.value?.toString() || "N/A"
+                                          :(player.heartRateData.length > 0 ? (player.heartRateData.reduce((acc, curr) => acc + curr.value, 0) / player.heartRateData.length).toString() : "N/A")
                                       }
                                       actualState={
+                                        !isHistorical?
                                           (player.heartRateData.at(-1)
                                               ?.value ?? 0) >
                                           heartRateThreshold
                                               ? "Critical"
                                               : "Normal"
+                                          : (player.heartRateData.length > 0 ? (player.heartRateData.reduce((acc, curr) => acc + curr.value, 0) / player.heartRateData.length) > heartRateThreshold ? "Critical" : "Normal" : "N/A")
                                       }
                                       color="red"
                                       values={player.heartRateData.map(
@@ -211,20 +242,24 @@ export default function CoachStartSessionPage() {
                                   <PlayerUniqueCard
                                       key={`${player.playerId}-temperature`} // Unique key for Body Temperature Card
                                       playerPhotoURL="https://via.placeholder.com/100"
-                                      playerName="Body Temperature"
+                                      playerName={!isHistorical ? "Body Temperature" : "Average Body Temperature"}
                                       playerId={player.playerId.toString()}
                                       singleValue={
+                                        !isHistorical?
                                           player.bodyTemperatureData
                                               .at(-1)
                                               ?.value.toString() || "N/A"
+                                          : (player.bodyTemperatureData.length > 0 ? (player.bodyTemperatureData.reduce((acc, curr) => acc + curr.value, 0) / player.bodyTemperatureData.length).toString() : "N/A")
                                       }
                                       actualState={
+                                        !isHistorical?
                                           (player.bodyTemperatureData.at(
                                               -1
                                           )?.value ?? 0) >
                                           bodyTemperatureThreshold
                                               ? "Critical"
                                               : "Normal"
+                                          : (player.bodyTemperatureData.length > 0 ? (player.bodyTemperatureData.reduce((acc, curr) => acc + curr.value, 0) / player.bodyTemperatureData.length) > bodyTemperatureThreshold ? "Critical" : "Normal" : "N/A")
                                       }
                                       color="blue"
                                       values={player.bodyTemperatureData.map(
@@ -241,20 +276,24 @@ export default function CoachStartSessionPage() {
                                   <PlayerUniqueCard
                                       key={`${player.playerId}-respiratory`} // Unique key for Respiratory Rate Card
                                       playerPhotoURL="https://via.placeholder.com/100"
-                                      playerName="Respiratory Rate"
+                                      playerName={!isHistorical ? "Respiratory Rate" : "Average Respiratory Rate"}
                                       playerId={player.playerId.toString()}
                                       singleValue={
+                                        !isHistorical?
                                           player.respiratoryRateData
                                               .at(-1)
                                               ?.value.toString() || "N/A"
+                                          : (player.respiratoryRateData.length > 0 ? (player.respiratoryRateData.reduce((acc, curr) => acc + curr.value, 0) / player.respiratoryRateData.length).toString() : "N/A")
                                       }
                                       actualState={
+                                        !isHistorical?
                                           (player.respiratoryRateData.at(
                                               -1
                                           )?.value ?? 0) >
                                           respiratoryRateThreshold
                                               ? "Critical"
                                               : "Normal"
+                                          : (player.respiratoryRateData.length > 0 ? (player.respiratoryRateData.reduce((acc, curr) => acc + curr.value, 0) / player.respiratoryRateData.length) > respiratoryRateThreshold ? "Critical" : "Normal" : "N/A")
                                       }
                                       color="Orange"
                                       values={player.respiratoryRateData.map(
