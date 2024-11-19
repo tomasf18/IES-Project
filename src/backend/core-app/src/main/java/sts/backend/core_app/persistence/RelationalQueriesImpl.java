@@ -2,6 +2,7 @@ package sts.backend.core_app.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -147,6 +148,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Session with ID " + sessionId + " not found"));
     }
 
+    public Session getSessionByTrainerId(Long trainerId) throws ResourceNotFoundException {
+        return sessionRepository.findByTrainerUserIdAndEndTimeIsNull(trainerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Open Session with Trainer ID " + trainerId + " not found"));
+    }
+
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
         return playerRepository.findById(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Player with ID " + playerId + " not found"));
@@ -177,6 +183,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
         return sessionRepository.findSessionInfoByPlayerId(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Sessions for player with ID " + playerId + " not found"));
+    }
+
+    public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException {
+        return playerRepository.findByPlayerSessionsSessionSessionId(sessionId)
+            .orElseThrow(() -> new ResourceNotFoundException("Players in session with ID " + sessionId + " not found"));
     }
 
     public RegistrationCode getRegistrationCode(String code) throws ResourceNotFoundException {
@@ -215,7 +226,47 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException {
-        return playerRepository.findPlayersWithoutSensorsByTeamId(teamId);
+        return playerRepository.findByTeamTeamIdAndPlayerSensorIsNull(teamId);
+    }
+
+    public List<Player> getAvailablePlayersByTeamId(Long teamId) throws ResourceNotFoundException {
+        List<Player> result = new ArrayList<>();
+        List<Player> playersWithSensor = playerRepository.findByTeamTeamIdAndPlayerSensorIsNotNull(teamId);
+        for (Player player : playersWithSensor) {
+            Optional<Set<SessionInfoView>> playerSessions = sessionRepository.findSessionInfoByPlayerId(player.getUserId());
+            
+            if (playerSessions.isEmpty() || 
+                playerSessions.get().stream().allMatch(session -> session.getState().equals("Closed"))) {
+                result.add(player);
+            }
+        }
+        result.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
+        return result;
+    }
+
+    public Player getPlayerByUsername(String username) throws ResourceNotFoundException {
+        return playerRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Player with username " + username + " not found"));
+    }
+
+    public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException {
+        return trainerRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Trainer with username " + username + " not found"));
+    }
+
+    public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException {
+        return teamDirectorRepository.findByUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Team director with username " + username + " not found"));
+    }
+
+    public User getUserByUsername(String currentUsername) throws ResourceNotFoundException {
+        return userRepository.findByUsername(currentUsername)
+            .orElseThrow(() -> new ResourceNotFoundException("User with username " + currentUsername + " not found"));
+    }
+
+    public User getUserByEmail(String email) throws ResourceNotFoundException {
+        return userRepository.findByEmail(email)
+            .orElseThrow(() -> new ResourceNotFoundException("User with email " + email + " not found"));
     }
 
     // --- Delete methods ---
@@ -250,7 +301,6 @@ public class RelationalQueriesImpl implements RelationalQueries {
         List<TeamMembersResponse> teamMembersResponses = teamRepository.findPendingUsersByTypeId(teamId, Set.of(1L,3L,4L));
         teamMembers.addAll(teamMembersResponses);
 
-
         return teamMembers;
     } 
 
@@ -276,6 +326,19 @@ public class RelationalQueriesImpl implements RelationalQueries {
 
     public void deleteTeam(Long teamId) {
         teamRepository.deleteById(teamId);
+    }
+
+    @Override
+    public List<Long> getPlayerIdsBySessionId(Long sessionId) {
+        return playerSessionRepository.findPlayerUserIdsBySessionSessionId(sessionId);
+    }
+
+    // --- Update methods ---
+    public User updateUser(User user) throws ResourceNotFoundException  {
+        if (!userRepository.existsById(user.getUserId())) {
+            throw new ResourceNotFoundException("User not found");
+        }
+        return userRepository.save(user);
     }
 
 }

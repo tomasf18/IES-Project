@@ -1,15 +1,61 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Checkbox, Label, TextInput } from "flowbite-react";
 import { Button } from "../../components";
 import { Google } from "../../assets";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useAuth, useUser } from "../../hooks";
 
 export default function Component() {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+
+  const [input, setInput] = useState({
+    usernameOrEmail: "",
+    password: "",
+  });
+
+  const auth = useAuth();
+  const user = useUser();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInput((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmitEvent = async (e: React.FormEvent<HTMLFormElement>) => {
+    setError("");
+    e.preventDefault();
+    if (input.usernameOrEmail !== "" && input.password !== "") {
+      const res = await auth.loginAction(input);
+      if (res) {
+        setError(res);
+      }
+      return;
+    }
+    setError("Please fill in all fields");
+  };
+
+  // check if the token is available, if so, redirect
+  useEffect(() => {
+    if (auth.token) {
+      if (user.username === "") {
+        auth.authMe();
+      }
+    }
+  }, [auth.token]);
+
+  useEffect(() => {
+    if (user.username !== "") {
+      user.redirectHomeByUserType();
+    }
+  }, [user.username]);
 
   return (
-    <form className="flex w-full max-w-xl flex-col gap-4 mx-auto">
+    <form className="flex w-full max-w-xl flex-col gap-4 mx-auto" onSubmit={handleSubmitEvent}>
       <h1 className="text-3xl font-semibold text-center text-gray-600 mb-4">
         Log In
       </h1>
@@ -31,17 +77,27 @@ export default function Component() {
       </div>
       <div>
         <div className="mb-2 block">
-          <Label htmlFor="email1" value="Email address or username" />
+          <Label htmlFor="usernameOrEmail" value="Email address or username" />
         </div>
-        <TextInput id="email1" type="email" required />
+        <TextInput
+          id="usernameOrEmail"
+          name="usernameOrEmail"
+          type="text"
+          value={input.usernameOrEmail}
+          onChange={handleChange}
+          required
+        />
       </div>
       <div className="relative">
         <div className="mb-2 block">
-          <Label htmlFor="password1" value="Password" />
+          <Label htmlFor="password" value="Password" />
         </div>
         <TextInput
-          id="password1"
+          id="password"
+          name="password"
           type={showPassword ? "text" : "password"}
+          value={input.password}
+          onChange={handleChange}
           required
         />
         <button
@@ -56,7 +112,13 @@ export default function Component() {
         <Checkbox id="remember" className="text-gray-800 focus:ring-gray-600" />
         <Label htmlFor="remember">Remember me</Label>
       </div>
-      <Button color="gray">Login</Button>
+      {error && <div className="text-red-500 font-bold text-center">{error}</div>}
+      <button
+        type="submit"
+        className="bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"
+      >
+        Log in
+      </button>
       <hr className="my-6 border-2 border-gray-300" />
       <h1 className="text-xl font-semibold text-center text-gray-600 mb-4">
         Don't have an account?

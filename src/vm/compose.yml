@@ -1,0 +1,43 @@
+services:
+  database:
+    image: timescale/timescaledb:latest-pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${DATABASE_LOCAL_PORT}:${DATABASE_CONTAINER_PORT}"
+    volumes:
+      - db_data:${DATABASE_VOLUME}
+    restart: unless-stopped
+
+  backend:
+    depends_on: 
+      - database
+    image: tomassf/ies-project-backend:latest
+    environment:
+      SPRING_APPLICATION_JSON: 
+        '{
+          "spring.datasource.url" : "jdbc:postgresql://database:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
+          "spring.datasource.username" : "${POSTGRES_USER}",
+          "spring.datasource.password" : "${POSTGRES_PASSWORD}",
+          "spring.jpa.show-sql" : "true",
+          "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+          "spring.jpa.hibernate.ddl-auto" : "update"
+        }'
+    ports:
+      - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
+    volumes:
+      - .m2:/root/.m2     
+    restart: unless-stopped
+
+  frontend:
+    depends_on:
+      - backend
+    image: tomassf/ies-project-frontend:latest
+    ports:
+      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}" 
+    restart: unless-stopped
+
+volumes:
+  db_data:

@@ -39,6 +39,8 @@ public interface BasicDataAnalysis {
     public Team getTeamById(Long teamId) throws ResourceNotFoundException;
     public Session getSessionById(Long sessionId) throws ResourceNotFoundException;
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException;
+    public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException;
+    public TeamDirector getTeamDirectorById(Long teamDirectorId) throws ResourceNotFoundException;
     
     // --- Get methods ---
     public Set<SessionInfoView> getSessionsInfoByTeamId(Team team) throws ResourceNotFoundException;
@@ -47,8 +49,14 @@ public interface BasicDataAnalysis {
     public Set<TeamsInfoView> getTeamsInfo() throws ResourceNotFoundException;
     public List<User> getUsers() throws ResourceNotFoundException;
     public List<Player> getPlayersWithoutSensorsByTeamId(Long teamId) throws ResourceNotFoundException; 
+    public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException;
     public Set<TeamDirectorsView> getTeamDirectors(Long teamId) throws ResourceNotFoundException;
     public Set<SensorPlayerView> getSensors(Long teamId) throws ResourceNotFoundException;
+    public Player getPlayerByUsername(String username) throws ResourceNotFoundException;
+    public Trainer getTrainerByUsername(String username) throws ResourceNotFoundException;
+    public TeamDirector getTeamDirectorByUsername(String username) throws ResourceNotFoundException;
+    public User getUserByUsername(String currentUsername) throws ResourceNotFoundException;
+    public User getUserByEmail(String email) throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);
@@ -61,5 +69,8 @@ public interface BasicDataAnalysis {
     // --- Assign methods ---
     public Sensor assignSensor(SensorTeamInfo sensorTeamInfo) throws ResourceNotFoundException;
     public PlayerSensor assignPlayerToSensor(SensorPlayerInfo sensorPlayerInfo) throws ResourceNotFoundException;
+
+    // --- Update methods ---
+    public User updateUser(Long userId, String profilePictureUrl) throws ResourceNotFoundException;
 
 }

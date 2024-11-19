@@ -1,5 +1,7 @@
 package sts.backend.core_app.models;
 
+import java.util.Set;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,8 +16,8 @@ public class TeamDirector extends User {
     // standard constructors / setters / getters / toString
     public TeamDirector() {}
 
-    public TeamDirector(String name, String username, String email, String password, String profilePictureUrl, Team team) {
-        super(name, username, email, password, profilePictureUrl);
+    public TeamDirector(String name, String username, String email, String password, String profilePictureUrl, Set<String> roles, Team team) {
+        super(name, username, email, password, profilePictureUrl, roles);
         this.team = team;
     }
     

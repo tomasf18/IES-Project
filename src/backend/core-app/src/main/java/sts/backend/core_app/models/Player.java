@@ -1,6 +1,8 @@
 package sts.backend.core_app.models;
 
 import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -27,8 +29,8 @@ public class Player extends User {
     // standard constructors / setters / getters / toString
     public Player() {}
 
-    public Player(String name, String username, String email, String password, String profilePictureUrl, Team team) {
-        super(name, username, email, password, profilePictureUrl);
+    public Player(String name, String username, String email, String password, String profilePictureUrl, Set<String> roles, Team team) {
+        super(name, username, email, password, profilePictureUrl, roles);
         this.team = team;
     }
 

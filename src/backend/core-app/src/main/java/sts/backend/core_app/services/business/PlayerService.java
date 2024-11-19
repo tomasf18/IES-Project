@@ -1,13 +1,16 @@
 package sts.backend.core_app.services.business;
 
-import sts.backend.core_app.dto.player.RecoveryStrainResponse;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.player.FatigueResponse;
+import sts.backend.core_app.dto.player.SessionsAllDayOfYear;
+import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.dto.player.MetricValue;
-import sts.backend.core_app.dto.player.OverviewStressResponse;
-import sts.backend.core_app.dto.player.SleepResponse;
+import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
@@ -24,28 +27,26 @@ public class PlayerService {
         this.realTimeAnalysis = realTimeAnalysis;
     }
 
-    public OverviewStressResponse getOverviewStress(Long playerId, String timeOption) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getOverviewStress'");
-    }
+    public SessionsAllDayOfYear getPlayerSessionsAllDaysOfYear(Long playerId, Long year) throws ResourceNotFoundException {
+        Set<SessionInfoView> allSessions = basicDataAnalysis.getSessionsInfoByPlayerId(playerId);
 
-    public SleepResponse getSleep(Long playerId, String timeOption) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getSleep'");
-    }
-
-    public RecoveryStrainResponse getRecoveryStrain(Long playerId, String timeOption) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRecoveryStrain'");
-    }
-
-    public FatigueResponse getPlayerFatigueAllDaysOfYear(Long playerId, Long year) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPlayerFatigueAllDaysOfYear'");
+        Map<LocalDate, Integer> sessionsPerDay = new HashMap<>();
+        for (SessionInfoView session : allSessions) {
+            LocalDate sessionDate = session.getStartTime().toLocalDate();
+            if (sessionDate.getYear() == year) {
+                sessionsPerDay.put(sessionDate, sessionsPerDay.getOrDefault(sessionDate, 0) + 1);
+            }
+        }
+        return new SessionsAllDayOfYear(playerId, year, sessionsPerDay);
+        
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
         return realTimeAnalysis.addMetricValue(metricValue);
+    }
+
+    public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
+        return realTimeAnalysis.getRealTimeExtraDetailsLast24Hours(playerId);
     }
     
 }
