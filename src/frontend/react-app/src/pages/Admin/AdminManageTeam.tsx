@@ -3,9 +3,17 @@ import { FaUsers, FaRegCopy, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus } fro
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { SimpleModal } from "../../components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth, useUser } from "../../hooks";
+
+import { getTeamDirectors, TeamDirectors, deleteTeamDirector, addTeamDirector, deleteTeam } from "../../api";
 
 export default function AdminManageTeam() {
+  const auth = useAuth();
+
+  const [teamDirectors, setTeamDirectors] = useState<TeamDirectors[]>([]);
+  const [newTeamDirector, setNewTeamDirector] = useState('');
+
   // Open Modal
   const [openModal, setOpenModal] = useState(false);
   
@@ -40,7 +48,8 @@ export default function AdminManageTeam() {
     to: string;
     label: string;
     color: "primary" | "secondary";
-  }[] = [{ to: "/", label: "Sign Out", color: "primary" }];
+    onClick?: () => void;
+  }[] = [{ to: "/", label: "Sign Out", color: "primary", onClick:() => auth.logOut() }];
 
   let configurationCardWidthClass = "w-[80rem]";
   let configurationCardHeightClass = "h-[50rem]";
@@ -52,32 +61,98 @@ export default function AdminManageTeam() {
   const teamName = searchParams.get("teamName");
   let configurationCardName = teamName || "Default Team Name";
 
+  // Fetch display data
+  useEffect(() => {
+    if (teamID) {
+      getTeamDirectors(auth.axiosInstance, Number(teamID))
+        .then((response) => {
+          setTeamDirectors(response);
+        })
+        .catch((error) => {
+          console.error("Error fetching team directors:", error);
+        });
+    }
+  }, [auth.axiosInstance, teamID]);
+
+
   let StripedTableWidthClass = "w-full";
   let StripedTableHeightClass = "h-full";
   let StripedTableColumnsName = ["Team Director", "Option"];
-  let StripedTableRows = [
-    [
-      "Danilo Silva",
-      <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />,
-    ],
-    [
-      "João Silva",
-      <div className="flex justify-center items-center space-x-4">
-        <FaRegCopy className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200"
-        onClick={e => openRegistrationCodeModal(e)}
-        />
-        <FaUserMinus className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200" />
-      </div>,
-    ],
-    [
-      <div className="w-full flex justify-center items-center">
-        <TextInput placeholder="Add Team Director" />
-      </div>,
-      <FaUserPlus className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />,
-    ],
-  ];
+
+  let StripedTableRows = teamDirectors.map((teamDirector) => [
+    teamDirector.name,
+    <button
+        onClick={async () => {
+            await deleteTeamDirector(
+                auth.axiosInstance,
+                Number(teamID),
+                teamDirector.directorId
+            );
+            // refresh
+            try {
+                const response = await getTeamDirectors(
+                    auth.axiosInstance,
+                    Number(teamID)
+                );
+                setTeamDirectors(response);
+            } catch (error) {
+                console.error(
+                    "Error fetching team directors:",
+                    error
+                );
+            }
+          }}
+          >
+        <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />
+    </button>  
+  ]);
+
+  // Append the "Add Team Director" row
+  StripedTableRows.push([
+    <div className="w-full flex justify-center items-center">
+      <TextInput 
+        placeholder="Add Team Director"
+        value={newTeamDirector}
+        onChange={(e) => setNewTeamDirector(e.target.value)}
+      />
+    </div>,
+    <button
+        onClick={async () => {
+            try {
+                // Call the function to add a new team director (ensure this function exists)
+                console.log("Adding new team director:", newTeamDirector);
+                const code = await addTeamDirector(auth.axiosInstance, Number(teamID), String(newTeamDirector), '', 2); // TODO: profilePictureUrl
+                // Refresh the team directors list
+                const response = await getTeamDirectors(auth.axiosInstance, Number(teamID));
+                setTeamDirectors(response);
+                // Reset the input field
+                setNewTeamDirector('');
+            } catch (error) {
+                console.error("Error adding new team director:", error);
+            }
+        }}
+    >
+      <FaUserPlus className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200" />
+    </button>,
+  ]);  
 
   const navigate = useNavigate();
+
+  const handleDeleteTeam = async () => {
+    console.log("Deleting team:", teamID);
+    try {
+      const response = await deleteTeam(auth.axiosInstance, Number(teamID)); // Assuming `deleteTeam` is an API function
+      if (response) {
+        console.log("Team deleted successfully");
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error deleting the team:", error);
+      return false;
+    }
+  };
+  
 
   let configurationCardRightContent = (
     <div className="flex flex-col min-h-[45rem]">
@@ -106,7 +181,14 @@ export default function AdminManageTeam() {
         <button
           type="submit"
           className="px-16 py-3 bg-red-primary text-black text-lg font-medium rounded-full shadow hover:bg-gray-400 transition duration-300"
-          onClick={() => navigate(`/admin/teams-managing/`)} // TODO: Delete Team
+          onClick={async () => {
+            const deleted = await handleDeleteTeam(); // Call the function to handle delete
+            if (deleted) {
+              navigate(`/admin/teams-managing/`); // Navigate after successful deletion
+            } else {
+              console.error("Failed to delete the team.");
+            }
+          }}
         >
           Delete Team
         </button>
