@@ -21,3 +21,6 @@ export { default as ButtonWithIcon } from "./ButtonWithIcon/ButtonWithIcon";
 export { default as Navbar } from "./Navbar/Navbar";
 export { default as SessionMatchInfo } from "./SessionMatchInfo/SessionMatchInfo";
 export type { Player } from "./PlayersCard/PlayersCard";
+export { default as MetricCard } from "./MetricCard/MetricCard";
+export { default as LineChartComponent } from "./LineChart/LineChartComponent";
+export { default as ChartSection } from "./ChartSeccion/ChartSection";

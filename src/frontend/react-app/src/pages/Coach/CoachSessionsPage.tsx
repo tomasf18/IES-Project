@@ -99,7 +99,12 @@ export default function CoachSessionPage() {
                               <FaCircle className="text-sm text-green-primary mr-2" />
                               <p>Open</p>
                             </div>,
+                          <button 
+                          onClick={() => navigate(`/coach/sessions/${session.sessionId}`)}
+                          >
                           <FaEye className="text-blue-primary cursor-pointer text-xl mx-auto hover:text-blue-darker hover:scale-125 transition-transform duration-200" />
+                          </button>
+                          
                         ];
                     })
                 }

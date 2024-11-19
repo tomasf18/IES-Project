@@ -4,14 +4,12 @@ import { useNavigate } from "react-router-dom";
 interface TeamCardProps {
   teamName: string;
   numberTeamMembers: number;
-  teamPhotoURL: string;
   teamId: string;
 }
 
 export default function TeamUniqueCard({
   teamName,
   numberTeamMembers,
-  teamPhotoURL,
   teamId
 }: TeamCardProps) {    
 
@@ -20,11 +18,7 @@ export default function TeamUniqueCard({
     return (
         <div className={`flex flex-col overflow-hidden rounded-lg shadow-lg p-6 w-64 h-auto`}>
           <div className="flex items-center mb-4 justify-left">
-            <img
-              src={teamPhotoURL}
-              alt={`${teamName} logo`}
-              className="w-12 h-14 rounded bg-gray-100 p-2 mr-4"
-            />
+            
             <h3 className="text-lg font-bold">{teamName}</h3>
           </div>
           <p className="text-3xl font-semibold">{numberTeamMembers} <span className="text-gray-600 text-base">members</span></p>

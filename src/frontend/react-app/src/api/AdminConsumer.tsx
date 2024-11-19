@@ -4,6 +4,12 @@ interface SensorAssign {
     playerId: number;
 }
 
+interface Team {
+    teamName: string;
+    numberTeamMembers: number;
+    teamId: string;
+  }
+
 
 const addTeamSensor = async (axiosInstance: any, sensorId: number ,teamId: number) => {
     try {
@@ -45,4 +51,46 @@ const deleteTeamSensor = async (
     }
 };
 
-export { addTeamSensor, deleteTeamSensor };
+const getTeamsInfo = async (
+    axiosInstance: any
+) => {
+    try {
+        const response = await axiosInstance.get("/team/teams-info");
+
+        if (response) {
+            const authResponse = response.data;
+            return authResponse;
+        }
+
+        return null;
+
+    } catch (error) {
+        console.error("Error fetching teams info:", error);
+        return null;
+    }
+}
+
+
+const createTeam = async (
+    axiosInstance: any,
+    teamName: string
+) => {
+    try {
+        const response = await axiosInstance.post("/team", {
+            name: teamName,
+        });
+
+        if (response) {
+            console.log("Team created:", response.data);
+            const authResponse = response.data;
+            return authResponse;
+        }
+        return null;
+
+    } catch (error) {
+        console.error("Error creating new team:", error);
+        return null;
+    }
+}
+
+export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam };

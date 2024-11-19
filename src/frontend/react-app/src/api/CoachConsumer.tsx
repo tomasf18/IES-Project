@@ -8,6 +8,13 @@ interface Session {
     isMatch: boolean;
 }
 
+interface SessionInfo {
+    sessionId: number;
+    name: string;
+    startTime: string;
+    endTime: string;
+}
+
 interface SensorAssign {
     sensorId: number;
     name: string;
@@ -66,6 +73,63 @@ interface SessionRealTimeData {
     type: string;
     location: string;
     weather: string;
+}
+interface SessionHistoricalData {
+    sessionId: number;
+    sessionName: string;
+    date: string;
+    time: number;
+    participants: number;
+    historicalDataPlayers: [
+        {
+            heartRateData: [
+                {
+                    value: number;
+                    idTimestamp: string;
+                }
+            ];
+            bodyTemperatureData: [
+                {
+                    value: number;
+                    idTimestamp: string;
+                }
+            ];
+            respiratoryRateData: [
+                {
+                    value: number;
+                    idTimestamp: string;
+                }
+            ];
+            playerId: number;
+            playerName: string;
+        }
+    ];
+    averageHeartRate: number;
+    averageBodyTemperature: number;
+    averageRespiratoryRate: number;
+    opponentTeam: string;
+    type: string;
+    location: string;
+    weather: string;
+}
+
+
+const getSessionInfo = async (axiosInstance: any, sessionId: number) => {
+    try {
+        const response = await axiosInstance.get(
+            "/sessions?sessionId=" + sessionId
+        );
+
+        if (response) {
+            const authResponse = response.data as SessionInfo;
+
+            return authResponse;
+        }
+        return null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
 }
 
 const getSessionsTeam = async (axiosInstance: any, teamId: number) => {
@@ -280,6 +344,46 @@ const getSessionRealTimeData = async (
     }
 }
 
+const getBySessionRealTimeData = async (
+    axiosInstance: any,
+    sessionId: number
+) => {
+    try {
+        const response = await axiosInstance.get(
+            "/sessions/real-time-info?sessionId=" + sessionId
+        )
+
+            const authResponse = response.data as SessionRealTimeData;
+    
+            return authResponse;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+const getBySessionHistoricalData = async (
+    axiosInstance: any,
+    sessionId: number
+) => {
+    try {
+        const response = await axiosInstance.get(
+            "/sessions/historical-info?sessionId=" + sessionId
+        );
+
+        if (response) {
+            console.log(response);
+            const authResponse = response.data as SessionHistoricalData;
+
+            return authResponse;
+        }
+        return null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+    
 const endSession = async (
     axiosInstance: any,
     sessionId: number
@@ -292,12 +396,14 @@ const endSession = async (
         if (response) {
             console.log(response);
         }
+            
     } catch (error) {
         console.error(error);
     }
 }
 
 export {
+    getSessionInfo,
     getSessionsTeam,
     getTeamSensors,
     deleteTeamSensorsAssignPlayer,
@@ -307,7 +413,9 @@ export {
     postSessionsAssignPlayer,
     getTeamPlayersAvailableReaTimeInfo,
     getSessionRealTimeData,
+    getBySessionRealTimeData,
+    getBySessionHistoricalData,
     endSession,
     postMatch
 };
-export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData };
+export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData, SessionHistoricalData };
