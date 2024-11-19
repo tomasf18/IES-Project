@@ -1,4 +1,4 @@
-import { Button, Modal } from "flowbite-react";
+import { Modal } from "flowbite-react";
 import { ReactNode } from "react";
 
 interface SimpleModalProps {
@@ -25,7 +25,7 @@ export default function SimpleModal({
         <div className="text-center">
           <div className="mb-3">{content}</div>
           <div className="flex justify-center items-center gap-4 mt-6">
-          <button className={`w-100 py-3 justify-center items-center transition duration-300 ${buttonClass}`} onClick={onConfirm}>
+          <button className={`w-100 justify-center items-center transition duration-300 ${buttonClass}`} onClick={onConfirm}>
             <strong>{buttonText}</strong>
           </button>
           </div>

@@ -82,7 +82,7 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/real-time-info-trainer")
-    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSessionPersonalTrainer(#trainerId)")
+    // @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSessionPersonalTrainer(#trainerId)")
     public RealTimeInfoResponse api_get_real_time_info_trainer(@RequestParam Long trainerId) throws ResourceNotFoundException {
         return sessionService.getRealTimeInfoTrainer(trainerId);
     }
