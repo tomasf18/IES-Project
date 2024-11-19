@@ -61,7 +61,6 @@ export default function AdminSensorsTrackingPage() {
   let StripedTableRows = sensorsAssign.map((sensorAssign) => [
     sensorAssign.sensorId,
     sensorAssign.name,
-    
     <button
         onClick={async () => {
             await deleteTeamSensor(
