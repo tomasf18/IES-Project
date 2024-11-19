@@ -224,9 +224,7 @@ export default function CoachSensorsPage() {
                     </>
                 }
                 buttonText="Yes, I'm sure"
-                buttonClass={
-                    selectedPlayerId === null ? "bg-gray-300" : "bg-gray-600"
-                }
+                buttonClass={`${selectedPlayerId === null ? "bg-gray-200 cursor-not-allowed" : "bg-gray-300 hover:bg-gray-600"} rounded rounded-2xl px-10`}
                 onConfirm={handleConfirm}
             />
         </div>

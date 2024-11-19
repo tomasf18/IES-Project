@@ -18,6 +18,8 @@ export default function CoachStartSessionPage() {
   const auth = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isMatch = searchParams.get("match");
   const [playersRealTimeInfo, setPlayersRealTimeInfo] = useState<RealTimeInfo[]>([]);
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
   const [sessionName, setSessionName] = useState("");
@@ -26,8 +28,8 @@ export default function CoachStartSessionPage() {
   const [locationMatch, setLocationMatch] = useState("");
   const [weather, setWeather] = useState("");
 
-  const searchParams = new URLSearchParams(location.search);
-  const isMatch = searchParams.get("match");
+  
+  
 
   useEffect(() => {
     if (user?.username === "") {
@@ -109,7 +111,7 @@ export default function CoachStartSessionPage() {
 
   return (
     <div className="flex min-h-screen">
-      <SideBar avatarUrl={avatarUrl} navLinks={navLinks} activePath={location.pathname} />
+      <SideBar avatarUrl={avatarUrl} navLinks={navLinks} activePath={location.pathname + "?match=true"} />
 
       {/* Main Content */}
       <div className="flex-grow p-8 overflow-y-auto h-full">

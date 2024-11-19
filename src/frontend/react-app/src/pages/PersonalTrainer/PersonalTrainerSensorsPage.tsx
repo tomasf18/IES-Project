@@ -6,7 +6,6 @@ import {
 } from "../../components";
 import {
     FaChartBar,
-    FaFutbol,
     FaHeartPulse,
     FaUserMinus,
     FaUserPlus,
@@ -222,7 +221,7 @@ export default function PersonalTrainerSensorsPage() {
                 }
                 buttonText="Yes, I'm sure"
                 buttonClass={
-                    selectedPlayerId === null ? "bg-gray-300" : "bg-gray-600"
+                    selectedPlayerId === null ? "bg-gray-100 w-1/2 rounded-lg py-2" : "bg-gray-300 hover:bg-gray-600 w-1/2 rounded-lg py-2"
                 }
                 onConfirm={handleConfirm}
             />

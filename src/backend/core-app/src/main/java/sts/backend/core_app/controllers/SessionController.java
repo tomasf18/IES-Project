@@ -33,6 +33,12 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
+    @GetMapping("/sessions")
+    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSession(#sessionId)")
+    public Session api_get_session_info(@RequestParam Long sessionId) throws ResourceNotFoundException {
+        return sessionService.getSessionInfo(sessionId);
+    }
+
     @PostMapping("/sessions")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToTrainer(#sessionRequest.getTrainerId())")
     public Session api_create_session(@RequestBody SessionRequest sessionRequest) throws ResourceNotFoundException {
@@ -76,7 +82,7 @@ public class SessionController {
     }
 
     @GetMapping("/sessions/real-time-info-trainer")
-    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSessionPersonalTrainer(#trainerId)")
+    // @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToSessionPersonalTrainer(#trainerId)")
     public RealTimeInfoResponse api_get_real_time_info_trainer(@RequestParam Long trainerId) throws ResourceNotFoundException {
         return sessionService.getRealTimeInfoTrainer(trainerId);
     }

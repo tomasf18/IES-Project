@@ -18,3 +18,5 @@ export { default as AdminManageTeam } from "./Admin/AdminManageTeam";
 export { default as AdminSensorsManaging } from "./Admin/AdminSensorsManaging";
 export { default as AdminEndpointsPage } from "./Admin/AdminEndpointsPage";
 export { default as AdminSensorsTrackingPage } from "./Admin/AdminSensorsTrackingPage";
+export { default as CoachRealTimeData } from "./Coach/CoachRealTimeData";
+export { default as CoachPlayerDetailsPage } from "./Coach/CoachPlayerDetailsPage";
