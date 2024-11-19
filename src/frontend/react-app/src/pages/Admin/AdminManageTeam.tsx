@@ -121,7 +121,7 @@ export default function AdminManageTeam() {
             try {
                 // Call the function to add a new team director (ensure this function exists)
                 console.log("Adding new team director:", newTeamDirector);
-                await addTeamDirector(auth.axiosInstance, Number(teamID), String(newTeamDirector), '', 2); // TODO: profilePictureUrl
+                const code = await addTeamDirector(auth.axiosInstance, Number(teamID), String(newTeamDirector), '', 2); // TODO: profilePictureUrl
                 // Refresh the team directors list
                 const response = await getTeamDirectors(auth.axiosInstance, Number(teamID));
                 setTeamDirectors(response);

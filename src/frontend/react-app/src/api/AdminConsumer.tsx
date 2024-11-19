@@ -146,6 +146,7 @@ const addTeamDirector = async (
 
         if (response) {
             console.log(response);
+            return response;
         }
 
         return null;
@@ -166,6 +167,7 @@ const deleteTeam = async (
 
         if (response) {
             console.log(response);
+            return response;
         }
         return null;
     }
