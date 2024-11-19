@@ -1,4 +1,4 @@
-import { SideBar, StripedTable } from "../../components";
+import { SideBar, StripedTable, ChartSection } from "../../components";
 import {
   FaHome,
   FaHeart,
@@ -14,15 +14,6 @@ import {
   getSessionRealTimeInfo,
   SessionRealTimeInfo,
 } from "../../api";
-
-import {
-  LineChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Line,
-} from "recharts";
 
 export default function PlayerSessionInfo() {
   const navLinks = [{ icon: <FaHome />, to: "/player/home" }];
@@ -116,6 +107,39 @@ export default function PlayerSessionInfo() {
       })
     );
 
+  const heartRateValue =
+    sessionInfo &&
+    sessionState === "Closed" &&
+    "averageHeartRate" in sessionInfo
+      ? parseInt(sessionInfo.averageHeartRate.toString(), 10)
+      : sessionInfo && "lastHeartRate" in sessionInfo
+      ? parseInt(sessionInfo.lastHeartRate.toString(), 10)
+      : 0;
+
+  const bodyTemperatureValue =
+    sessionInfo &&
+    sessionState === "Closed" &&
+    "averageBodyTemperature" in sessionInfo
+      ? parseFloat(
+          (
+            sessionInfo as SessionHistoricalInfo
+          ).averageBodyTemperature.toString()
+        ).toFixed(1)
+      : sessionInfo && "lastBodyTemperature" in sessionInfo
+      ? parseFloat(
+          (sessionInfo as SessionRealTimeInfo).lastBodyTemperature.toString()
+        ).toFixed(1)
+      : 0.0;
+
+  const respiratoryRateValue =
+    sessionInfo &&
+    sessionState === "Closed" &&
+    "averageRespiratoryRate" in sessionInfo
+      ? parseInt(sessionInfo.averageRespiratoryRate.toString(), 10)
+      : sessionInfo && "lastRespiratoryRate" in sessionInfo
+      ? parseInt(sessionInfo.lastRespiratoryRate.toString(), 10)
+      : 0;
+
   return (
     <div className="flex min-h-screen">
       <SideBar
@@ -161,145 +185,53 @@ export default function PlayerSessionInfo() {
 
           <div className="w-full space-y-6">
             {/* heartRateData */}
-            <div className="flex items-center p-4">
-              {/* Card Heart Rate */}
-              <div className="w-1/6 flex flex-col p-4 bg-white rounded-lg shadow-xl">
-                <div className="flex items-center">
-                  <FaHeart className="text-red-primary text-5xl mr-4" />
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {sessionState === "Closed"
-                      ? "Average Heart Rate"
-                      : "Heart Rate"}
-                  </h2>
-                </div>
-                <h2 className="mt-4 text-3xl font-bold text-gray-800">
-                  {sessionInfo &&
-                  sessionState === "Closed" &&
-                  "averageHeartRate" in sessionInfo
-                    ? parseInt(sessionInfo.averageHeartRate.toString(), 10)
-                    : sessionInfo && "lastHeartRate" in sessionInfo
-                    ? parseInt(sessionInfo.lastHeartRate.toString(), 10)
-                    : 0}{" "}
-                  bpm
-                </h2>
-              </div>
-
-              {/* Graphic */}
-              <div className="flex-grow p-4 ml-20">
-                {heartRateData && heartRateData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={700}>
-                    <LineChart data={heartRateData}>
-                      <XAxis dataKey="name" strokeWidth={2} />
-                      <YAxis strokeWidth={2} />
-                      <Tooltip />
-                      <Line
-                        type="natural"
-                        dataKey="value"
-                        stroke="#E46C6C"
-                        strokeWidth={3}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <p>No data available</p>
-                )}
-              </div>
-            </div>
+            <ChartSection
+              bgClass=""
+              icon={<FaHeart className="text-red-primary text-5xl mr-4" />}
+              title={
+                sessionState === "Closed"
+                  ? "Average Heart Rate"
+                  : "Last Heart Rate"
+              }
+              value={heartRateValue}
+              unit="bpm"
+              data={heartRateData || []}
+              strokeColor="#E46C6C"
+            />
 
             {/* bodyTemperatureData */}
-            <div className="flex items-center bg-gray-100 p-4">
-              {/* Card Body Temperature */}
-              <div className="w-1/6 flex flex-col p-4 bg-white rounded-lg shadow-xl">
-                <div className="flex items-center">
-                  <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {sessionState === "Closed"
-                      ? "Average Body Temperature"
-                      : "Body Temperature"}
-                  </h2>
-                </div>
-                <h2 className="mt-4 text-3xl font-bold text-gray-800">
-                  {sessionInfo &&
-                  sessionState === "Closed" &&
-                  "averageBodyTemperature" in sessionInfo
-                    ? parseInt(sessionInfo.averageBodyTemperature.toString(), 10)
-                    : sessionInfo && "lastBodyTemperature" in sessionInfo
-                    ? parseInt(sessionInfo.lastBodyTemperature.toString(), 10)
-                    : 0}{" "}
-                  °C
-                </h2>
-              </div>
-
-              {/* Graphic */}
-              <div className="flex-grow p-4 ml-20">
-                {bodyTemperatureData && bodyTemperatureData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={700}>
-                    <LineChart data={bodyTemperatureData}>
-                      <XAxis dataKey="name" strokeWidth={2} />
-                      <YAxis strokeWidth={2} />
-                      <Tooltip />
-                      <Line
-                        type="natural"
-                        dataKey="value"
-                        stroke="#25bfd9"
-                        strokeWidth={3}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <p>No data available</p>
-                )}
-              </div>
-            </div>
+            <ChartSection
+              bgClass="bg-gray-100"
+              icon={
+                <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
+              }
+              title={
+                sessionState === "Closed"
+                  ? "Average Body Temperature"
+                  : "Last Body Temperature"
+              }
+              value={bodyTemperatureValue}
+              unit="°C"
+              data={bodyTemperatureData || []}
+              strokeColor="#25bfd9"
+            />
 
             {/* respiratoryRateData */}
-            <div className="flex items-center p-4">
-              {/* Card Respiratory Rate */}
-              <div className="w-1/6 flex flex-col p-4 bg-white rounded-lg shadow-xl">
-                <div className="flex items-center">
-                  <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    {sessionState === "Closed"
-                      ? "Average Respiratory Rate"
-                      : "Respiratory Rate"}
-                  </h2>
-                </div>
-                <h2 className="mt-4 text-3xl font-bold text-gray-800">
-                  {sessionInfo &&
-                  sessionState === "Closed" &&
-                  "averageRespiratoryRate" in sessionInfo
-                    ? parseInt(sessionInfo.averageRespiratoryRate.toString(), 10)
-                    : sessionInfo && "lastRespiratoryRate" in sessionInfo
-                    ? parseInt(sessionInfo.lastRespiratoryRate.toString(), 10)
-                    : 0}{" "}
-                  rpm
-                </h2>
-              </div>
-
-              {/* Graphic */}
-              <div className="flex-grow p-4 ml-20">
-                {respiratoryRateData && respiratoryRateData.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={700}>
-                    <LineChart data={respiratoryRateData}>
-                      <XAxis dataKey="name" strokeWidth={2} />
-                      <YAxis strokeWidth={2} />
-                      <Tooltip />
-                      <Line
-                        type="natural"
-                        dataKey="value"
-                        stroke="#8884d8"
-                        strokeWidth={3}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <p>No data available</p>
-                )}
-              </div>
-            </div>
+            <ChartSection
+              bgClass=""
+              icon={
+                <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
+              }
+              title={
+                sessionState === "Closed"
+                  ? "Average Respiratory Rate"
+                  : "Last Respiratory Rate"
+              }
+              value={respiratoryRateValue}
+              unit="rpm"
+              data={respiratoryRateData || []}
+              strokeColor="#8884d8"
+            />
           </div>
         </div>
       </div>
