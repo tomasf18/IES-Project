@@ -44,6 +44,10 @@ public class SessionService {
         return basicDataAnalysis.getSessionsInfoByTeamId(team);
     }
 
+    public Session getSessionInfo(Long sessionId) throws ResourceNotFoundException {
+        return basicDataAnalysis.getSessionById(sessionId);
+    }
+
     public Session createSession(SessionRequest sessionRequest) throws ResourceNotFoundException {
         Session session = new Session();
         session.setName(sessionRequest.getName());
