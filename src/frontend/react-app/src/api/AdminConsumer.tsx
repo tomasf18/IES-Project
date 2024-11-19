@@ -59,7 +59,6 @@ const getTeamsInfo = async (
 
         if (response) {
             const authResponse = response.data;
-            console.log("Teams info:", authResponse);
             return authResponse;
         }
 
@@ -71,4 +70,27 @@ const getTeamsInfo = async (
     }
 }
 
-export { addTeamSensor, deleteTeamSensor, getTeamsInfo };
+
+const createTeam = async (
+    axiosInstance: any,
+    teamName: string
+) => {
+    try {
+        const response = await axiosInstance.post("/team", {
+            name: teamName,
+        });
+
+        if (response) {
+            console.log("Team created:", response.data);
+            const authResponse = response.data;
+            return authResponse;
+        }
+        return null;
+
+    } catch (error) {
+        console.error("Error creating new team:", error);
+        return null;
+    }
+}
+
+export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam };

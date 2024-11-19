@@ -118,8 +118,6 @@ StripedTableRows.push([
 ]);
 
 
-  const navigate = useNavigate();
-
   let configurationCardRightContent = (
     <div className="flex flex-col min-h-[45rem]">
 

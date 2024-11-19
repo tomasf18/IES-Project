@@ -47,7 +47,6 @@ export default function AdminTeamsManagingPage() {
           teamId: team.teamId.toString(), // Convert to string if necessary
         }));
         setTeams(mappedTeams);
-        console.log("Mapped Teams:", mappedTeams);
       })
       .catch((error) => {
         console.error("Error fetching team sensors:", error);
