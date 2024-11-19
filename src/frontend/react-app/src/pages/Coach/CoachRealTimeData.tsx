@@ -95,7 +95,7 @@ export default function CoachStartSessionPage() {
   const avatarUrl = user.profilePictureUrl;
 
   const handlePlayerManagement = (playerId: string) => {
-    console.log(`Player with id: ${playerId}`);
+    navigate(`/coach/sessions/${sessionId}/player/${playerId}`);
   };
 
   // Handle "End Session" click
