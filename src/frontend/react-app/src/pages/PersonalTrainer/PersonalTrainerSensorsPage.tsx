@@ -6,7 +6,6 @@ import {
 } from "../../components";
 import {
     FaChartBar,
-    FaFutbol,
     FaHeartPulse,
     FaUserMinus,
     FaUserPlus,

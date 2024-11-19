@@ -1,5 +1,5 @@
 import { PlayersCard, SideBar, Player } from "../../components";
-import { FaChartBar, FaHeartPulse, FaFutbol } from "react-icons/fa6";
+import { FaChartBar, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
