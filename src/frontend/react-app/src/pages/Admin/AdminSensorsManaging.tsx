@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { 
   getTeamSensors,
   SensorAssign,
-  deleteTeamSensorsAssignPlayer,
   deleteTeamSensor,
   addTeamSensor
 } from "../../api";
@@ -20,7 +19,6 @@ export default function AdminSensorsTrackingPage() {
     { icon: <FaUsers />, to: "/admin/teams-managing", label: "Teams Managing"},
   ];
 
-  const user = useUser();
   const auth = useAuth();
   const location = useLocation();
 
