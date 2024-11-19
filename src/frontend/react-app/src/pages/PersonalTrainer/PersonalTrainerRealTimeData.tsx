@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SideBar, PlayerUniqueCard, SimpleModal } from "../../components"; // Ensure these components exist
-import { FaChartBar, FaHeartPulse } from "react-icons/fa6";
+import { FaChartBar, FaHeartPulse, FaFutbol } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import {
@@ -11,8 +11,7 @@ import {
 
 export default function PersonalTrainerRealTimeData() {
     const navLinks = [
-        { icon: <FaChartBar />, to: "/personal-trainer/start-session" },
-        { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
+        { icon: <FaFutbol />, to: "/personal-trainer/session" },
     ];
 
     let refreshRate = 1000;
@@ -43,8 +42,8 @@ export default function PersonalTrainerRealTimeData() {
             getSessionRealTimeData(auth.axiosInstance, user.userId)
                 .then((response) => {
                     if (response) {
-                        setSessionRealTimeData(response);
                         console.log(response);
+                        setSessionRealTimeData(response);
                     }
                 })
                 .catch((error) => {
@@ -53,24 +52,24 @@ export default function PersonalTrainerRealTimeData() {
         }
     }, [auth.axiosInstance, user?.teamId, user?.userId]);
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //       if (user?.teamId) {
-    //         getSessionRealTimeData(auth.axiosInstance, user.teamId)
-    //           .then((response) => {
-    //             if (response) {
-    //                 setSessionRealTimeData(response);
-    //                 console.log(response);
-    //             }
-    //           })
-    //           .catch((error) => {
-    //             console.error("Error fetching team sensors:", error);
-    //           });
-    //       }
-    //     }, refreshRate);
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (user?.teamId) {
+            getSessionRealTimeData(auth.axiosInstance, user.userId)
+              .then((response) => {
+                if (response) {
+                    setSessionRealTimeData(response);
+                    console.log(response);
+                }
+              })
+              .catch((error) => {
+                console.error("Error fetching team sensors:", error);
+              });
+          }
+        }, refreshRate);
 
-    //     return () => clearInterval(interval);
-    //   }, [auth.axiosInstance, user?.teamId, refreshRate]);
+        return () => clearInterval(interval);
+      }, [auth.axiosInstance, user?.teamId, refreshRate]);
 
     const handlePlayerManagement = (playerId: string) => {
         console.log(`Player with id: ${playerId}`);
