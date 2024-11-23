@@ -1,9 +1,9 @@
 import { SideBar, Header, ConfigurationCard, StripedTable } from "../../components";
 import { FaUsers, FaCode, FaHeartPulse, FaUserMinus } from "react-icons/fa6";
 import { MdOutlineSensors } from "react-icons/md";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { TextInput } from "flowbite-react";
-import { useAuth, useUser } from "../../hooks";
+import { useAuth } from "../../hooks";
 import { useEffect, useState } from "react";
 import { 
   getTeamSensors,

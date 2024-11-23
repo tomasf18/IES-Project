@@ -1,10 +1,9 @@
-import { PlayersCard, SideBar, Player, PlayerUniqueCard, SimpleModal, ChartSection, StripedTable } from "../../components";
+import { SideBar, ChartSection, StripedTable } from "../../components";
 import { FaChartBar, FaFutbol, FaHeadSideCough, FaHeart, FaHeartPulse, FaTemperatureHigh } from "react-icons/fa6";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { endSession, getBySessionHistoricalData, getBySessionRealTimeData, getSessionHistoricalInfo, getSessionInfo, getSessionRealTimeInfo, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo, SessionHistoricalInfo, SessionRealTimeData, SessionRealTimeInfo } from "../../api";
-import { Checkbox, Label } from "flowbite-react";
+import { getSessionHistoricalInfo, getSessionInfo, getSessionRealTimeInfo, SessionHistoricalInfo, SessionRealTimeInfo } from "../../api";
 
 export default function CoachStartSessionPage() {
   const navLinks = [
@@ -13,18 +12,11 @@ export default function CoachStartSessionPage() {
     { icon: <FaHeartPulse />, to: "/coach/sensors" },
   ];
   let refreshRate = 1000;
-  let heartRateThreshold = 100;
-  let bodyTemperatureThreshold = 60;
-  let respiratoryRateThreshold = 30;
 
-  const { sessionId, playerId } = useParams();
+  const { sessionId } = useParams();
   const user = useUser();
   const auth = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [sessionRealTimeData, setSessionRealTimeData] = useState<SessionRealTimeData>();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHistorical, setIsHistorical] = useState(false);
 
   const sessionIdInt = sessionId ? parseInt(sessionId) : null;

@@ -148,7 +148,7 @@ export default function AdminEndpointsPage() {
                   <XAxis dataKey="day" />
                   <Tooltip cursor={{fill: 'transparent'}}/>
                   <Bar dataKey="accesses" >
-                    {data.map((entry, index) => (
+                    {data.map((_, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={index === selectedDay ? color : "#d3d3d3"}

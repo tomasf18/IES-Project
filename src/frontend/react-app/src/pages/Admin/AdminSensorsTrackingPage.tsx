@@ -1,4 +1,4 @@
-import { SideBar, Header, StripedTable, Navbar } from "../../components";
+import { SideBar, Header, StripedTable } from "../../components";
 import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
 import { FaChartBar } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
@@ -178,7 +178,7 @@ export default function AdminSensorsTrackingPage() {
                   <XAxis dataKey="day" />
                   <Tooltip cursor={{fill: 'transparent'}}/>
                   <Bar dataKey="accesses" >
-                    {data.map((entry, index) => (
+                    {data.map((_, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={index === selectedDay ? color : "#d3d3d3"}
