@@ -1,10 +1,9 @@
-import { PlayersCard, SideBar, Player, PlayerUniqueCard, SimpleModal } from "../../components";
+import { SideBar, PlayerUniqueCard, SimpleModal } from "../../components";
 import { FaChartBar, FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { endSession, getBySessionHistoricalData, getBySessionRealTimeData, getSessionInfo, postMatch, postSessions, postSessionsAssignPlayer, RealTimeInfo, SessionRealTimeData } from "../../api";
-import { Checkbox, Label } from "flowbite-react";
+import { endSession, getBySessionHistoricalData, getBySessionRealTimeData, getSessionInfo, SessionRealTimeData } from "../../api";
 
 export default function CoachStartSessionPage() {
   const navLinks = [

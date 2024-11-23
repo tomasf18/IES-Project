@@ -1,12 +1,17 @@
 import { SideBar, Header, ConfigurationCard, StripedTable } from "../../components";
-import { FaUsers, FaRegCopy, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus } from "react-icons/fa6";
+import { FaUsers, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { SimpleModal } from "../../components";
 import { useEffect, useState } from "react";
-import { useAuth, useUser } from "../../hooks";
-
-import { getTeamDirectors, TeamDirectors, deleteTeamDirector, addTeamDirector, deleteTeam } from "../../api";
+import { useAuth } from "../../hooks";
+import { 
+  getTeamDirectors, 
+  TeamDirectors, 
+  deleteTeamDirector, 
+  // addTeamDirector, 
+  deleteTeam 
+} from "../../api";
 
 export default function AdminManageTeam() {
   const auth = useAuth();
@@ -21,10 +26,10 @@ export default function AdminManageTeam() {
     setOpenModal(false);
   };
 
-  const openRegistrationCodeModal = (e: React.MouseEvent<SVGElement>) => {
-    e.preventDefault();
-    setOpenModal(true);
-  };
+  // const openRegistrationCodeModal = (e: React.MouseEvent<SVGElement>) => {
+  //   e.preventDefault();
+  //   setOpenModal(true);
+  // };
 
   const navLinks = [
     {
@@ -121,7 +126,9 @@ export default function AdminManageTeam() {
             try {
                 // Call the function to add a new team director (ensure this function exists)
                 console.log("Adding new team director:", newTeamDirector);
-                const code = await addTeamDirector(auth.axiosInstance, Number(teamID), String(newTeamDirector), '', 2); // TODO: profilePictureUrl
+                
+                // const code = await addTeamDirector(auth.axiosInstance, Number(teamID), String(newTeamDirector), '', 2); // TODO: profilePictureUrl
+                
                 // Refresh the team directors list
                 const response = await getTeamDirectors(auth.axiosInstance, Number(teamID));
                 setTeamDirectors(response);
