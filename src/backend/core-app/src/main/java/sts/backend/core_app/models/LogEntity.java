@@ -1,66 +1,62 @@
 package sts.backend.core_app.models;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
-@Document(indexName = "logs")
+@Entity
 public class LogEntity {
+
     @Id
-    private String id;
-    private String type; // "kafka" or "nginx"
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String type;
+
     private String message;
-    private long timestamp;
+
+    private Long timestamp;
 
     public LogEntity() {
     }
 
-    public LogEntity(String type, String message, long timestamp) {
+    public LogEntity(String type, String message, Long timestamp) {
         this.type = type;
         this.message = message;
         this.timestamp = timestamp;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getType() {
         return type;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    @Override
-    public String toString() {
-        return "LogEntity{" +
-                "id='" + id + '\'' +
-                ", type='" + type + '\'' +
-                ", message='" + message + '\'' +
-                ", timestamp=" + timestamp +
-                '}';
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     
