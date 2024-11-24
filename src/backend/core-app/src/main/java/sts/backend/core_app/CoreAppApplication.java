@@ -10,7 +10,7 @@ import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
 import sts.backend.core_app.services.business.AuthService;
 
 // swagger moved to /config/OpenApiConfig.java, for JWT security
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "sts.backend.core_app")
 public class CoreAppApplication {
 
 	public static void main(String[] args) {

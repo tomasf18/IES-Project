@@ -5,6 +5,7 @@ import java.util.Set;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -16,6 +17,10 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.ApplicationArguments;
 
 @Configuration
+@EnableJpaRepositories(
+    basePackages = "sts.backend.core_app.persistence.repositories.timescaleDB",
+    repositoryImplementationPostfix = "Impl"
+)
 public class TimescaleTableInitializer implements ApplicationRunner {
 
     private final EntityManager entityManager;

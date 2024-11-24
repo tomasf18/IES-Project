@@ -21,11 +21,13 @@ import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.LogEntity;
 import sts.backend.core_app.models.Match;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
+import sts.backend.core_app.persistence.repositories.elasticsearch.LogRepository;
 import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
@@ -33,13 +35,22 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     
     private final TimeSeriesQueries timeSeriesQueries;
     private final RelationalQueries relationalQueries;
+    private final LogRepository logRepository; // TODO: remove this line
 
-    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries) {
+    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries, LogRepository logRepository) {
         this.relationalQueries = relationalQueries;
         this.timeSeriesQueries = timeSeriesQueries;
+        this.logRepository = logRepository;
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
+        // TODO: remove this!
+        LogEntity log = new LogEntity();
+        log.setType("kafka");
+        log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
+        log.setTimestamp(LocalDateTime.now());
+        logRepository.save(log);
+        System.out.println("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
         return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());
     }
 

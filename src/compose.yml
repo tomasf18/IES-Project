@@ -48,8 +48,26 @@ services:
       - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
     restart: on-failure
   
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    restart: unless-stopped
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
+    restart: unless-stopped
+
+
 volumes:    
   postgres_db_data:
+  elasticsearch_data:
     
 
 
