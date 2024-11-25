@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.time.Duration;
 
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.player.MetricValue;
@@ -27,7 +28,6 @@ import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
-import sts.backend.core_app.persistence.repositories.elasticsearch.LogRepository;
 import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
@@ -35,12 +35,13 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     
     private final TimeSeriesQueries timeSeriesQueries;
     private final RelationalQueries relationalQueries;
-    private final LogRepository logRepository; // TODO: remove this line
+    private final ElasticsearchOperations elasticsearchOperations; // TODO: remove this line
 
-    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries, LogRepository logRepository) {
+    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries, ElasticsearchOperations elasticsearchOperations) {
         this.relationalQueries = relationalQueries;
         this.timeSeriesQueries = timeSeriesQueries;
-        this.logRepository = logRepository;
+        this.elasticsearchOperations = elasticsearchOperations;
+        elasticsearchOperations.indexOps(LogEntity.class).create();
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
@@ -49,7 +50,14 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         log.setType("kafka");
         log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
         log.setTimestamp(System.currentTimeMillis());
-        logRepository.save(log);
+        try {
+            System.out.println("Creating index");
+            elasticsearchOperations.indexOps(LogEntity.class).create();
+            System.out.println("Index created");
+            elasticsearchOperations.save(log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
         return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());
     }
