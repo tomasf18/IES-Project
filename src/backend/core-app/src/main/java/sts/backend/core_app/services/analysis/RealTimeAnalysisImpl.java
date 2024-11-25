@@ -48,7 +48,7 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         LogEntity log = new LogEntity();
         log.setType("kafka");
         log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
-        log.setTimestamp(LocalDateTime.now());
+        log.setTimestamp(System.currentTimeMillis());
         logRepository.save(log);
         System.out.println("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
         return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());

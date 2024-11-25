@@ -1,6 +1,7 @@
 package sts.backend.core_app.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -18,12 +19,12 @@ public class LogEntity {
 
     private String message;
 
-    private LocalDateTime timestamp;
+    private Long timestamp;
 
     public LogEntity() {
     }
 
-    public LogEntity(String type, String message, LocalDateTime timestamp) {
+    public LogEntity(String type, String message, Long timestamp) {
         this.type = type;
         this.message = message;
         this.timestamp = timestamp;
@@ -53,11 +54,11 @@ public class LogEntity {
         this.message = message;
     }
 
-    public LocalDateTime getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
