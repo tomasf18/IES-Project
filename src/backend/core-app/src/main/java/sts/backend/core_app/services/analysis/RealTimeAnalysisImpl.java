@@ -9,10 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.time.Duration;
 
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
@@ -22,9 +20,7 @@ import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
-import sts.backend.core_app.models.LogEntity;
 import sts.backend.core_app.models.Match;
-import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
@@ -35,31 +31,10 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     
     private final TimeSeriesQueries timeSeriesQueries;
     private final RelationalQueries relationalQueries;
-    private final ElasticsearchOperations elasticsearchOperations; // TODO: remove this line
 
-    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries, ElasticsearchOperations elasticsearchOperations) {
+    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries) {
         this.relationalQueries = relationalQueries;
         this.timeSeriesQueries = timeSeriesQueries;
-        this.elasticsearchOperations = elasticsearchOperations;
-        elasticsearchOperations.indexOps(LogEntity.class).create();
-    }
-
-    public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
-        // TODO: remove this!
-        LogEntity log = new LogEntity();
-        log.setType("kafka");
-        log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
-        log.setTimestamp(System.currentTimeMillis());
-        try {
-            System.out.println("Creating index");
-            elasticsearchOperations.indexOps(LogEntity.class).create();
-            System.out.println("Index created");
-            elasticsearchOperations.save(log);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
-        return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());
     }
 
     @Override
