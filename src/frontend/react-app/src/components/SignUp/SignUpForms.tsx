@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../../hooks";
 import { SimpleModal } from "../../components";
+import { postSignUpValidation } from "../../api";
 
 export default function Component() {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,26 +18,64 @@ export default function Component() {
     code: "",
   });
 
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    special: false,
+  });
+
   const auth = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "password") {
+      validatePassword(value);
+    }
+
     setInput((prevInput) => ({
       ...prevInput,
       [name]: value,
     }));
   };
 
-  const handleSubmitEvent = async () => {
-    setError("");
-    if (input.email !== "" && input.username !== "" && input.password !== "" && input.code !== "") {
-      const res = await auth.signUpAction(input);
-      if (res) {
-        setError(res);
+  const validatePassword = (password: string) => {
+    const criteria = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      number: /[0-9]/.test(password),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+    };
+
+    setPasswordCriteria(criteria);
+  };
+
+  const handleValidation = async (): Promise<boolean> => {
+    try {
+      const isValid = await postSignUpValidation(auth.axiosInstance, {
+        email: input.email,
+        username: input.username,
+      });
+      if (!isValid) {
+        setError("Email or username already exists.");
       }
-      return;
+      return isValid;
+    } catch (err) {
+      console.error("Error validating signup data:", err);
+      setError("An unexpected error occurred during validation.");
+      return false;
     }
-    setError("Please fill in all fields");
+  };
+
+  const handleSubmitEvent = async () => {
+    const res = await auth.signUpAction(input);
+    if (res) {
+      setError(res);
+    }
+    return;
   };
 
   const handleConfirm = () => {
@@ -44,15 +83,44 @@ export default function Component() {
     handleSubmitEvent();
   };
 
-  const openRegistrationCodeModal = (e: React.FormEvent<HTMLFormElement>) => {
+  const openRegistrationCodeModal = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
+    setError(""); // Reset any previous errors
+
+    // Verificar se todos os campos estão preenchidos
+    if (input.email === "" || input.username === "" || input.password === "") {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    // Validar critérios de senha
+    validatePassword(input.password);
+    const isPasswordValid = Object.values(passwordCriteria).every(
+      (criterion) => criterion
+    );
+
+    if (!isPasswordValid) {
+      setError("Password does not meet the required criteria.");
+      return;
+    }
+
+    // Validar email e username no servidor
+    const isValid = await handleValidation();
+    if (!isValid) {
+      return; // handleValidation já define o erro, então não precisa de mais lógica aqui
+    }
     setOpenModal(true);
   };
 
   return (
     <>
-      <form className="flex w-full max-w-xl flex-col gap-4 mx-auto" onSubmit={e => openRegistrationCodeModal(e)}>
-        <h1 className="text-3xl font-semibold text-center text-gray-600">
+      <form
+        className="flex w-full max-w-2xl flex-col gap-4 mx-auto transform scale-110"
+        onSubmit={(e) => openRegistrationCodeModal(e)}
+      >
+        <h1 className="text-4xl font-semibold text-center text-gray-600">
           Welcome to Smart Training System
         </h1>
         <hr className="flex-grow border-2 border-gray-300 my-8" />
@@ -101,16 +169,54 @@ export default function Component() {
           >
             {showPassword ? <AiOutlineEyeInvisible /> : <AiOutlineEye />}
           </button>
-          <ul className="mt-2 text-gray-500 text-sm list-disc list-inside pl-2 flex flex-wrap gap-4">
-            <li>Use 8 or more characters</li>
-            <li>One uppercase character</li>
-            <li>One lowercase character</li>
-            <li>One special character</li>
-            <li>One number</li>
+          <ul className="mt-2 text-gray-500 text-sm list-disc list-inside pl-2">
+            <li className="flex items-center gap-2">
+              <span
+                className={`w-3 h-3 rounded-full ${
+                  passwordCriteria.length ? "bg-green-500" : "bg-gray-300"
+                }`}
+              ></span>
+              Use 8 or more characters
+            </li>
+            <li className="flex items-center gap-2">
+              <span
+                className={`w-3 h-3 rounded-full ${
+                  passwordCriteria.uppercase ? "bg-green-500" : "bg-gray-300"
+                }`}
+              ></span>
+              One uppercase character
+            </li>
+            <li className="flex items-center gap-2">
+              <span
+                className={`w-3 h-3 rounded-full ${
+                  passwordCriteria.lowercase ? "bg-green-500" : "bg-gray-300"
+                }`}
+              ></span>
+              One lowercase character
+            </li>
+            <li className="flex items-center gap-2">
+              <span
+                className={`w-3 h-3 rounded-full ${
+                  passwordCriteria.number ? "bg-green-500" : "bg-gray-300"
+                }`}
+              ></span>
+              One number
+            </li>
+            <li className="flex items-center gap-2">
+              <span
+                className={`w-3 h-3 rounded-full ${
+                  passwordCriteria.special ? "bg-green-500" : "bg-gray-300"
+                }`}
+              ></span>
+              One special character
+            </li>
           </ul>
         </div>
         <div className="flex items-center gap-2 mt-4">
-          <Checkbox id="remember" className="text-gray-800 focus:ring-gray-600" />
+          <Checkbox
+            id="remember"
+            className="text-gray-800 focus:ring-gray-600"
+          />
           <Label htmlFor="remember" className="text-gray-500">
             I want to receive emails and notifications about the product and
             feature updates.
@@ -126,7 +232,9 @@ export default function Component() {
             Privacy Policy
           </span>
         </p>
-        {error && <div className="text-red-500 font-bold text-center">{error}</div>}
+        {error && (
+          <div className="text-red-500 font-bold text-center">{error}</div>
+        )}
         <button
           type="submit"
           className="bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"
@@ -148,7 +256,9 @@ export default function Component() {
         onClose={() => setOpenModal(false)}
         content={
           <>
-            <h2 className="text-center font-bold text-lg">Join the Smart Training System</h2>
+            <h2 className="text-center font-bold text-lg">
+              Join the Smart Training System
+            </h2>
             <h5 className="text-center">Insert your access code.</h5>
             <TextInput
               id="code"
@@ -162,7 +272,7 @@ export default function Component() {
           </>
         }
         buttonText="Yes, I'm sure"
-        buttonClass="bg-gray-600"
+        buttonClass="bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"
         onConfirm={handleConfirm}
       />
     </>

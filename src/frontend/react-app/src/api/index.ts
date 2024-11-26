@@ -6,3 +6,5 @@ export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo } f
 export type { SessionHistoricalInfo, SessionRealTimeInfo } from "./PlayerConsumer";
 export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam, getTeamDirectors, deleteTeamDirector, addTeamDirector, deleteTeam } from "./AdminConsumer";
 export type { TeamDirectors } from "./AdminConsumer";
+export { postSignUpValidation } from "./AuthConsumer";
+export type { Auth } from "./AuthConsumer";
