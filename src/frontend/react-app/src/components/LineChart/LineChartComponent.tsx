@@ -17,10 +17,10 @@ interface LineChartComponentProps {
 const LineChartComponent: React.FC<LineChartComponentProps> = ({
   data,
   strokeColor,
-  height = 700,
+  height = 600,
 }) => {
   return (
-    <ResponsiveContainer width="100%" height={height}>
+    <ResponsiveContainer width="85%" height={height}>
       <LineChart data={data}>
         <XAxis dataKey="name" strokeWidth={2} />
         <YAxis strokeWidth={2} />
