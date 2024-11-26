@@ -7,6 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+kafka-python = "^2.0.2"
+matplotlib = "^3.9.2"
+pandas = "^2.2.3"
 
 
 [build-system]
