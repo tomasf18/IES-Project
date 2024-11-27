@@ -48,5 +48,9 @@ public class PlayerService {
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
         return realTimeAnalysis.getRealTimeExtraDetailsLast24Hours(playerId);
     }
+
+    public Long getPlayerIdBySensorId(Long sensorId) {
+        return realTimeAnalysis.getPlayerIdBySensorId(sensorId);
+    }
     
 }

@@ -5,6 +5,15 @@ public class MetricValue {
     private String metricName;
     private Double value;
 
+    public MetricValue() {
+    }
+
+    public MetricValue(Long playerId, String metricName, Double value) {
+        this.playerId = playerId;
+        this.metricName = metricName;
+        this.value = value;
+    }
+
     public Long getPlayerId() {
         return playerId;
     }
