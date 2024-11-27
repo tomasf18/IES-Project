@@ -1,9 +1,15 @@
 package sts.backend.core_app;
 
+import java.util.HashMap;
+
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
+import org.springframework.kafka.core.ConsumerFactory;
+import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.persistence.repositories.postgreDB.UserRepository;
@@ -28,5 +34,6 @@ public class CoreAppApplication {
             }
         };
     }
+
 
 }

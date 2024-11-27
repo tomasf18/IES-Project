@@ -6,5 +6,5 @@ import sts.backend.core_app.models.LogEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LogRepository extends ElasticsearchRepository<LogEntity, String> {
+public interface LogRepository extends ElasticsearchRepository<LogEntity, Long> {
 }

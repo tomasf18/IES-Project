@@ -35,6 +35,7 @@ public class TimeSeriesQueriesImpl implements TimeSeriesQueries {
         );
         return sensorTimeSeriesDataRepository.save(sensorTimeSeriesData);
     }
+    
 
     @Override
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {

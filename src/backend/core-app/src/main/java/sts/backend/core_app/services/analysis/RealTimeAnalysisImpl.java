@@ -27,7 +27,7 @@ import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
-import sts.backend.core_app.persistence.repositories.elasticsearch.LogRepository;
+// import sts.backend.core_app.persistence.repositories.elasticsearch.LogRepository;
 import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
@@ -35,21 +35,23 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     
     private final TimeSeriesQueries timeSeriesQueries;
     private final RelationalQueries relationalQueries;
-    private final LogRepository logRepository; // TODO: remove this line
+    // private final LogRepository logRepository; // TODO: remove this line
 
-    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries, LogRepository logRepository) {
+    public RealTimeAnalysisImpl(RelationalQueries relationalQueries, TimeSeriesQueries timeSeriesQueries
+    // , LogRepository logRepository
+     ) {
         this.relationalQueries = relationalQueries;
         this.timeSeriesQueries = timeSeriesQueries;
-        this.logRepository = logRepository;
+        // this.logRepository = logRepository;
     }
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
         // TODO: remove this!
-        LogEntity log = new LogEntity();
-        log.setType("kafka");
-        log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
-        log.setTimestamp(LocalDateTime.now());
-        logRepository.save(log);
+        // LogEntity log = new LogEntity();
+        // log.setType("kafka");
+        // log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
+        // log.setTimestamp(LocalDateTime.now());
+        // logRepository.save(log);
         System.out.println("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
         return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());
     }
@@ -62,7 +64,7 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     public List<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
         List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = new ArrayList<>();
         List<Player> players = relationalQueries.getAvailablePlayersByTeamId(teamId);
-        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(5);
+        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(1);
 
         for (Player player : players) {
             List<ValueTimeSeriesView> heartRateData = timeSeriesQueries.getHeartRateData(player.getUserId(), initialTimestamp);
@@ -333,5 +335,10 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
             return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
         } 
         return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers);
+    }
+
+    @Override
+    public Long getPlayerIdBySensorId(Long sensorId) {
+        return relationalQueries.getPlayerIdBySensorId(sensorId);
     }
 }

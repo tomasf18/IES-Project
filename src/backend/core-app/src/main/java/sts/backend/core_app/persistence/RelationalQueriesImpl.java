@@ -341,4 +341,9 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return userRepository.save(user);
     }
 
+    @Override
+    public Long getPlayerIdBySensorId(Long sensorId) {
+        return playerSensorRepository.findPlayerIdBySensorSensorId(sensorId);
+    }
+
 }

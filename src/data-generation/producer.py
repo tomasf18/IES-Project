@@ -21,7 +21,7 @@ sensor_ids = [int(id_str) for id_str in sys.argv[1:]]
 
 # Kafka Configuration
 bootstrap_servers = 'localhost:29092'  # Adjust if your Kafka broker is at a different address
-topic_name = f'players_data_real_time'
+topic_name = f'sensorData'
 
 # Initialize Kafka Producer with JSON serialization
 producer = KafkaProducer(
@@ -30,12 +30,12 @@ producer = KafkaProducer(
 )
 
 # Average Heart Rate, Respiratory Rate, and Body Temperature
-average_heart_rate = 160.0 # bmp
+average_heart_rate = 90.0 # bmp
 average_respiratory_rate = 16.0 # rpm
 average_body_temperature = 36.5 # ºC
 
 # Standard deviation
-standard_deviation_heart_rate = 10.0
+standard_deviation_heart_rate = 40.0
 standard_deviation_respiratory_rate = 2.0
 standard_deviation_body_temperature = 0.2
 
@@ -51,15 +51,18 @@ try:
 
             sensor_data = {
                 'sensor_id': sensor_id,
-                'heart_rate': heartRate,
-                'respiratory_rate': respiratoryRate,
-                'body_temperature': bodyTemperature
+                'heart_rate': round(heartRate, 2),
+                'respiratory_rate': round(respiratoryRate, 2),
+                'body_temperature': round(bodyTemperature, 2)
             }
             message_list.append(sensor_data)
         
         # Send the list of sensor data as a single message
-        producer.send(topic_name, value=message_list)
-        print(f"Produced: {message_list}")
+        value = {
+            "records": message_list
+        }
+        producer.send(topic_name, value=value)
+        print(f"Produced: {value}")
         time.sleep(random.uniform(0.5, 1.0))
 
 except KeyboardInterrupt:
