@@ -54,6 +54,45 @@ interface SessionRealTimeInfo {
   weather: string;
 }
 
+// sessions all days of year is like:
+// {
+//   "playerId": 4,
+//   "year": 2024,
+//   "sessionsPerDay": {
+//     "2024-11-26": 1,
+//     "2024-11-19": 1,
+//     "2024-11-18": 1,
+//     "2024-11-17": 6
+//   }
+// }
+
+interface SessionsAllDaysOfYear {
+  playerId: number;
+  year: number;
+  sessionsPerDay: Record<string, number>;
+}
+
+const getSessionsAllDaysOfYear = async (
+  axiosInstance: any,
+  playerId: number,
+  year: number
+): Promise<SessionsAllDaysOfYear | null> => {
+  try {
+    const response = await axiosInstance.get(
+      "/player/sessions/all-days-of-year?playerId=" + playerId + "&year=" + year
+    );
+
+    if (response) {
+      const authResponse = response.data as SessionsAllDaysOfYear;
+      return authResponse;
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 const getSessionsPlayer = async (axiosInstance: any, playerId: number) => {
   try {
     const response = await axiosInstance.get(
@@ -120,5 +159,5 @@ const getSessionRealTimeInfo = async (
   }
 }
 
-export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo };
-export type { Session, SessionHistoricalInfo, SessionRealTimeInfo };
+export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo, getSessionsAllDaysOfYear };
+export type { Session, SessionHistoricalInfo, SessionRealTimeInfo, SessionsAllDaysOfYear };

@@ -2,8 +2,8 @@ export { getSessionInfo, getSessionsTeam, postMatch, getTeamSensors, deleteTeamS
 export type { SensorAssign, PlayersWithoutSensor, Session, RealTimeInfo, SessionRealTimeData, SessionHistoricalData } from "./CoachConsumer";
 export { getTeamMembers, deleteRegistrationCode, deleteUser, refreshRegistrationCode, changeProfilePictureUrl } from "./TeamDirectorConsumer";
 export type { TeamMembers } from "./TeamDirectorConsumer";
-export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo } from "./PlayerConsumer";
-export type { SessionHistoricalInfo, SessionRealTimeInfo } from "./PlayerConsumer";
+export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo, getSessionsAllDaysOfYear } from "./PlayerConsumer";
+export type { SessionHistoricalInfo, SessionRealTimeInfo, SessionsAllDaysOfYear } from "./PlayerConsumer";
 export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam, getTeamDirectors, deleteTeamDirector, addTeamDirector, deleteTeam } from "./AdminConsumer";
 export type { TeamDirectors } from "./AdminConsumer";
 export { postSignUpValidation } from "./AuthConsumer";
