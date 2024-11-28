@@ -2,15 +2,16 @@ package sts.backend.core_app.consumer;
 
 import org.springframework.stereotype.Service;
 
+import sts.backend.core_app.consumer.interfaces.DataTransformationModule;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
 
 @Service
-public class DataTransformationModule {
+public class DataTransformationModuleImp implements DataTransformationModule {
 
     private final TimeSeriesQueries timeSeriesQueries;
 
-    public DataTransformationModule(TimeSeriesQueries timeSeriesQueries) {
+    public DataTransformationModuleImp(TimeSeriesQueries timeSeriesQueries) {
         this.timeSeriesQueries = timeSeriesQueries;
     }
 

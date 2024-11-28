@@ -51,5 +51,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
         WHERE s.team.teamId = :teamId
         """)
     Optional<Set<SensorPlayerView>> findSensorsWithPlayersByTeamId(Long teamId);
+
+    Optional<Long> findTeamIdByPlayerId(Long userId);
 }
     

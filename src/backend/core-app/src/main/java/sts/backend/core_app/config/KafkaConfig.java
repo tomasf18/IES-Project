@@ -1,4 +1,4 @@
-package sts.backend.core_app.consumer;
+package sts.backend.core_app.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;

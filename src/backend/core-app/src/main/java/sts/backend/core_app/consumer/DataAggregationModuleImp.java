@@ -1,23 +1,31 @@
 package sts.backend.core_app.consumer;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.dto.session.Message;
-import sts.backend.core_app.consumer.MessageController;
+import sts.backend.core_app.consumer.WebSocketControllerImp;
+import sts.backend.core_app.consumer.interfaces.DataAggregationModule;
 import sts.backend.core_app.dto.session.Record;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
+import sts.backend.core_app.models.SensorsLogEntity;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
+import sts.backend.core_app.services.analysis.interfaces.ElasticSearchAnalysis;
+import sts.backend.core_app.services.business.SensorsService;
 
 @Service
-public class DataAggregationModule {
+public class DataAggregationModuleImp implements DataAggregationModule {
     
+    private final SensorsService sensorsService;
     private final RelationalQueries relationalQueries;
-    private final DataTransformationModule dataTransformationModule;
-    private final MessageController webSocketController;
+    private final DataTransformationModuleImp dataTransformationModule;
+    private final WebSocketControllerImp webSocketController;
     
-    public DataAggregationModule(DataTransformationModule dataTransformationModule, RelationalQueries relationalQueries, MessageController webSocketController) {
-        this.dataTransformationModule = dataTransformationModule;
+    public DataAggregationModuleImp(SensorsService sensorsService, RelationalQueries relationalQueries, DataTransformationModuleImp dataTransformationModule, WebSocketControllerImp webSocketController) {
+        this.sensorsService = sensorsService;
         this.relationalQueries = relationalQueries;
+        this.dataTransformationModule = dataTransformationModule;
         this.webSocketController = webSocketController;
     }
 
@@ -39,7 +47,14 @@ public class DataAggregationModule {
 
             dataTransformationModule.transformAndSendMessage(playerId, heartRate, respiratoryRate, bodyTemperature);
 
+            // notify elasticSearch
+            sensorsService.addSensorsLog(playerId, "Received: heart_rate = " + heartRate);
+            sensorsService.addSensorsLog(playerId, "Received: respiratory_rate = " + respiratoryRate);
+            sensorsService.addSensorsLog(playerId, "Received: body_temperature = " + bodyTemperature);
+
             // Send the message to the WebSocket TODO...
         }    
     }
+
+    
 }

@@ -64,6 +64,7 @@ public interface RelationalQueries {
     public User getUserByUsername(String currentUsername) throws ResourceNotFoundException;
     public User getUserByEmail(String email) throws ResourceNotFoundException;
     public List<Player> getAvailablePlayersByTeamId(Long teamId) throws ResourceNotFoundException;
+    public Long getTeamIdByPlayerId(Long playerId) throws ResourceNotFoundException;
 
     // --- Delete methods ---
     public void deleteRegistrationCode(RegistrationCode registrationCode);

@@ -173,6 +173,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Sensor with ID " + sensorId + " not found"));
     }
 
+    public Long getTeamIdByPlayerId(Long playerId) throws ResourceNotFoundException {
+        return teamRepository.findTeamIdByPlayerId(playerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Team for player with ID " + playerId + " not found"));
+    }
+
     // --- Get By other methods ---
 
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException {
