@@ -8,6 +8,7 @@ import {
     postSessions,
     postSessionsAssignPlayer,
     RealTimeInfo,
+    getSessionRealTimeData,
 } from "../../api";
 import { Checkbox, Label } from "flowbite-react";
 
@@ -27,6 +28,7 @@ export default function PersonalTrainerStartSessionage() {
     >([]);
     const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
     const [sessionName, setSessionName] = useState("");
+    const [hasActiveSession, setHasActiveSession] = useState(false);
 
     useEffect(() => {
         if (user?.username === "") {
@@ -34,37 +36,55 @@ export default function PersonalTrainerStartSessionage() {
         }
     }, [user, auth]);
 
-    // Fetch display data
     useEffect(() => {
-        if (user?.teamId) {
-            getTeamPlayersAvailableReaTimeInfo(auth.axiosInstance, user.teamId)
-                .then((response) => {
-                    setPlayersRealTimeInfo(response);
-                })
-                .catch((error) => {
-                    console.error("Error fetching team sensors:", error);
-                });
+        const checkSession = async () => {
+            try {
+                const sessionData = await getSessionRealTimeData(
+                    auth.axiosInstance,
+                    user.userId
+                );
+                setHasActiveSession(!!sessionData);
+            } catch (error) {
+                console.error("No active session found for this Trainer.");
+                setHasActiveSession(false);
+            }
+        };
+
+        if (user?.userId) {
+            checkSession();
         }
+    }, [auth.axiosInstance, user?.userId]);
+
+    useEffect(() => {
+        if (hasActiveSession) {
+            navigate("/personal-trainer/session");
+        } else {
+            navigate("/personal-trainer/start-session");
+        }
+    }, [hasActiveSession, navigate]);
+
+    const fetchTeamRealTimeInfo = async () => {
+        try {
+            if (user?.teamId) {
+                const response = await getTeamPlayersAvailableReaTimeInfo(
+                    auth.axiosInstance,
+                    user.teamId
+                );
+                setPlayersRealTimeInfo(response);
+            }
+        } catch (error) {
+            console.error("Error fetching team sensors:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchTeamRealTimeInfo();
     }, [auth.axiosInstance, user?.teamId]);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (user?.teamId) {
-                getTeamPlayersAvailableReaTimeInfo(
-                    auth.axiosInstance,
-                    user.teamId
-                )
-                    .then((response) => {
-                        setPlayersRealTimeInfo(response);
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching team sensors:", error);
-                    });
-            }
-        }, refreshRate);
-
+        const interval = setInterval(fetchTeamRealTimeInfo, refreshRate);
         return () => clearInterval(interval);
-    }, [auth.axiosInstance, user?.teamId, refreshRate]);
+    }, [fetchTeamRealTimeInfo]);
 
     const avatarUrl = user.profilePictureUrl;
 
