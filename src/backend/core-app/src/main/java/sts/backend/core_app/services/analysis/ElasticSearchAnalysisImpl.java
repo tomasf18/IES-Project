@@ -1,17 +1,20 @@
 package sts.backend.core_app.services.analysis;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.models.LogEntity;
+import sts.backend.core_app.models.SensorsLogEntity;
+import sts.backend.core_app.models.EndpointsEntity;
 
 import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -22,19 +25,23 @@ import sts.backend.core_app.services.analysis.interfaces.ElasticSearchAnalysis;
 @Service
 public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
     
-    private ElasticsearchOperations elasticsearchOperations;
-    private TimeSeriesQueries timeSeriesQueries;
+    private final ElasticsearchOperations elasticsearchOperations;
+    private final TimeSeriesQueries timeSeriesQueries;
+
+    private final IndexCoordinates sensorsIndex;
+    private final IndexCoordinates endpointsIndex;
 
     public ElasticSearchAnalysisImpl(ElasticsearchOperations elasticsearchOperations, TimeSeriesQueries timeSeriesQueries) {
         this.elasticsearchOperations = elasticsearchOperations;
         this.timeSeriesQueries = timeSeriesQueries;
+        this.sensorsIndex = elasticsearchOperations.getIndexCoordinatesFor(SensorsLogEntity.class);
+        this.endpointsIndex = elasticsearchOperations.getIndexCoordinatesFor(EndpointsEntity.class);
     }
 
-    public List<LogEntity> getLogs() {
-        elasticsearchOperations.indexOps(LogEntity.class).create(); // if exists, it will ignore
-        Criteria criteria = new Criteria("type").is("kafka");
+    public List<SensorsLogEntity> getLogs() {
+        Criteria criteria = new Criteria(); // 
         Query query = new CriteriaQuery(criteria);
-        SearchHits<LogEntity> searchHis = elasticsearchOperations.search(query, LogEntity.class);
+        SearchHits<SensorsLogEntity> searchHis = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
         return searchHis.stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
@@ -42,13 +49,14 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
 
     public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
         // TODO: remove this!
-        LogEntity log = new LogEntity();
-        log.setType("kafka");
+        SensorsLogEntity log = new SensorsLogEntity();
+        log.setId(UUID.randomUUID().toString());
+        log.setTeamId(1L);
         log.setMessage("Produced to topic: " + metricValue.getMetricName() + " with value: " + metricValue.getValue());
         log.setTimestamp(System.currentTimeMillis());
         try {
-            elasticsearchOperations.indexOps(LogEntity.class).create(); // if exists, it will ignore
-            elasticsearchOperations.save(log);
+            System.out.println("Saving log to Elasticsearch");
+            elasticsearchOperations.save(log, sensorsIndex);
         } catch (Exception e) {
             e.printStackTrace();
         }

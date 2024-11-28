@@ -33,7 +33,7 @@ services:
       - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
       - .m2:/root/.m2     
-    # restart: unless-stopped
+    restart: on-failure
 
   frontend:
     depends_on:
@@ -49,7 +49,7 @@ services:
     restart: on-failure
   
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     environment:
       - discovery.type=single-node
     ports:
@@ -58,13 +58,6 @@ services:
       - elasticsearch_data:/usr/share/elasticsearch/data
     restart: unless-stopped
   
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.2
-    ports:
-      - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
-    restart: unless-stopped
-
-
 volumes:    
   postgres_db_data:
   elasticsearch_data:

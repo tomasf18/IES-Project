@@ -3,7 +3,7 @@ package sts.backend.core_app.services.business;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.services.analysis.interfaces.ElasticSearchAnalysis;
-import sts.backend.core_app.models.LogEntity;
+import sts.backend.core_app.models.SensorsLogEntity;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class AdministratorService {
     }
 
 // get all logs (TEST PURPOSES)
-    public List<LogEntity> getLogs() {
+    public List<SensorsLogEntity> getLogs() {
         return elasticSearchAnalysis.getLogs();
     }
 

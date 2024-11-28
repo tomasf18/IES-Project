@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(
     basePackages = "sts.backend.core_app.persistence.repositories.postgreDB",
     excludeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
-        sts.backend.core_app.persistence.repositories.elasticsearch.LogRepository.class,
+        sts.backend.core_app.persistence.repositories.elasticsearch.SensorsLogRepository.class,
         sts.backend.core_app.persistence.repositories.timescaleDB.SensorTimeSeriesDataRepository.class
     })
 )
