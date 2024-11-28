@@ -326,23 +326,28 @@ const getTeamPlayersAvailableReaTimeInfo = async (
 const getSessionRealTimeData = async (
     axiosInstance: any,
     trainerId: number
-) => {
+): Promise<SessionRealTimeData | null> => {
     try {
         const response = await axiosInstance.get(
             "/sessions/real-time-info-trainer?trainerId=" + trainerId
         );
 
-        if (response) {
+        if (response.status === 200) {
             console.log(response);
-            const authResponse = response.data as SessionRealTimeData;
-
-            return authResponse;
+            return response.data as SessionRealTimeData;
         }
-        return null;
-    } catch (error) {
-        console.error(error);
+
+        return null; 
+    } catch (error: any) {
+        if (error.response?.status === 404) {
+            console.warn("No session available for this trainer.");
+            return null;
+        }
+        console.error("Unexpected error:", error);
+        throw error;
     }
-}
+};
+
 
 const getBySessionRealTimeData = async (
     axiosInstance: any,

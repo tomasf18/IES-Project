@@ -5,6 +5,7 @@ import {
   FaHeadSideCough,
   FaHeart,
   FaTemperatureHigh,
+  FaHeartPulse,
 } from "react-icons/fa6";
 import { Link, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
@@ -20,6 +21,7 @@ import {
 export default function PersonalTrainerPlayerDetailsPage() {
     const navLinks = [
         { icon: <FaFutbol />, to: "/personal-trainer/session" },
+        { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
     ];
   let refreshRate = 1000;
 

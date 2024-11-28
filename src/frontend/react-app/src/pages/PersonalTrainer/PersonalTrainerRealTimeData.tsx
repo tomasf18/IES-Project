@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { SideBar, PlayerUniqueCard, SimpleModal } from "../../components"; // Ensure these components exist
-import { FaFutbol } from "react-icons/fa6";
+import { FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import {
@@ -12,6 +12,7 @@ import {
 export default function PersonalTrainerRealTimeData() {
     const navLinks = [
         { icon: <FaFutbol />, to: "/personal-trainer/session" },
+        { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
     ];
 
     let refreshRate = 1000;
@@ -38,38 +39,47 @@ export default function PersonalTrainerRealTimeData() {
 
     // Fetch session real-time data
     useEffect(() => {
-        if (user?.teamId) {
-            getSessionRealTimeData(auth.axiosInstance, user.userId)
-                .then((response) => {
-                    if (response) {
-                        console.log(response);
-                        setSessionRealTimeData(response);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching team sensors:", error);
-                });
+        const checkSession = async () => {
+            try {
+                const sessionData = await getSessionRealTimeData(auth.axiosInstance, user.userId);
+    
+                if (sessionData) {
+                    console.log("Session found:", sessionData);
+                    setSessionRealTimeData(sessionData);
+                } else {
+                    console.log("No session found, redirecting to start session.");
+                    navigate('/personal-trainer/start-session');
+                }
+            } catch (error) {
+                console.error("Error while checking session:", error);
+                navigate('/personal-trainer/start-session'); // Redirect even when with unexpected errors
+            }
+        };
+    
+        if (user?.username) {
+            checkSession();
         }
-    }, [auth.axiosInstance, user?.teamId, user?.userId]);
+    }, [auth.axiosInstance, user, navigate]);
+    
 
     useEffect(() => {
-        const interval = setInterval(() => {
-          if (user?.teamId) {
-            getSessionRealTimeData(auth.axiosInstance, user.userId)
-              .then((response) => {
-                if (response) {
-                    setSessionRealTimeData(response);
-                    console.log(response);
+        const interval = setInterval(async () => {
+            if (user?.teamId && sessionRealTimeData) {
+                try {
+                    const updatedData = await getSessionRealTimeData(auth.axiosInstance, user.userId);
+    
+                    if (updatedData) {
+                        setSessionRealTimeData(updatedData);
+                        console.log("Updated session data:", updatedData);
+                    }
+                } catch (error) {
+                    console.error("Error fetching session real-time data:", error);
                 }
-              })
-              .catch((error) => {
-                console.error("Error fetching team sensors:", error);
-              });
-          }
+            }
         }, refreshRate);
-
+    
         return () => clearInterval(interval);
-      }, [auth.axiosInstance, user?.teamId, refreshRate]);
+    }, [auth.axiosInstance, user?.teamId, sessionRealTimeData, refreshRate]);    
 
     const handlePlayerManagement = (playerId: string) => {
         navigate(`/personal-trainer/session/${sessionRealTimeData?.sessionId}/player/${playerId}`);
