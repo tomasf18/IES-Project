@@ -18,6 +18,7 @@ import {
   PersonalTrainerStartSessionPage,
   PersonalTrainerSensorsPage,
   PersonalTrainerRealTimeData,
+  PersonalTrainerPlayerDetailsPage,
   AdminAddTeam,
   AdminManageTeam,
   AdminSensorsManaging,
@@ -75,6 +76,7 @@ export default function AppRoutes() {
           <Route path="start-session" element={<PersonalTrainerStartSessionPage />} />
           <Route path="sensors" element={<PersonalTrainerSensorsPage/>} />
           <Route path="session" element={<PersonalTrainerRealTimeData />} />
+          <Route path="session/:sessionId/player/:playerId" element={<PersonalTrainerPlayerDetailsPage />} />
         </Route>
 
       </Route>

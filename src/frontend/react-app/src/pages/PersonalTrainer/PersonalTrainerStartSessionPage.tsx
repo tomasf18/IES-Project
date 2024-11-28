@@ -111,7 +111,7 @@ export default function PersonalTrainerStartSessionage() {
     };
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen h-lvh">
             <SideBar
                 avatarUrl={avatarUrl}
                 navLinks={navLinks}
@@ -119,7 +119,7 @@ export default function PersonalTrainerStartSessionage() {
             />
 
             {/* Main Content */}
-            <div className="flex-grow p-8">
+            <div className="flex-grow p-8 overflow-y-auto h-full">
                 {/* Logo */}
                 <img
                     src="/logo.png"

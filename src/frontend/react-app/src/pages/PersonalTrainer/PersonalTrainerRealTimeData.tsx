@@ -72,7 +72,7 @@ export default function PersonalTrainerRealTimeData() {
       }, [auth.axiosInstance, user?.teamId, refreshRate]);
 
     const handlePlayerManagement = (playerId: string) => {
-        console.log(`Player with id: ${playerId}`);
+        navigate(`/personal-trainer/session/${sessionRealTimeData?.sessionId}/player/${playerId}`);
     };
 
     // Handle "End Session" click
@@ -105,7 +105,7 @@ export default function PersonalTrainerRealTimeData() {
     };
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex min-h-screen h-lvh">
             <SideBar
                 avatarUrl={avatarUrl}
                 navLinks={navLinks}
@@ -113,7 +113,7 @@ export default function PersonalTrainerRealTimeData() {
             />
 
             {/* Main Content */}
-            <div className="flex-grow p-8">
+            <div className="flex-grow p-8 overflow-y-auto h-full">
                 {/* Logo */}
                 <img
                     src="/logo.png"

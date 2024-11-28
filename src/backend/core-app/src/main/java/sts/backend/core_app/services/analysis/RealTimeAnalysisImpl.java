@@ -45,7 +45,7 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     public List<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
         List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = new ArrayList<>();
         List<Player> players = relationalQueries.getAvailablePlayersByTeamId(teamId);
-        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(5);
+        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(1);
 
         for (Player player : players) {
             List<ValueTimeSeriesView> heartRateData = timeSeriesQueries.getHeartRateData(player.getUserId(), initialTimestamp);
@@ -316,5 +316,10 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
             return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
         } 
         return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers);
+    }
+
+    @Override
+    public Long getPlayerIdBySensorId(Long sensorId) {
+        return relationalQueries.getPlayerIdBySensorId(sensorId);
     }
 }

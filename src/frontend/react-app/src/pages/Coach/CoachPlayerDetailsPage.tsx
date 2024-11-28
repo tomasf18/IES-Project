@@ -1,9 +1,23 @@
 import { SideBar, ChartSection, StripedTable } from "../../components";
-import { FaChartBar, FaFutbol, FaHeadSideCough, FaHeart, FaHeartPulse, FaTemperatureHigh } from "react-icons/fa6";
-import { useParams } from "react-router-dom";
+import {
+  FaArrowLeft,
+  FaChartBar,
+  FaFutbol,
+  FaHeadSideCough,
+  FaHeart,
+  FaHeartPulse,
+  FaTemperatureHigh,
+} from "react-icons/fa6";
+import { Link, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
-import { getSessionHistoricalInfo, getSessionInfo, getSessionRealTimeInfo, SessionHistoricalInfo, SessionRealTimeInfo } from "../../api";
+import {
+  getSessionHistoricalInfo,
+  getSessionInfo,
+  getSessionRealTimeInfo,
+  SessionHistoricalInfo,
+  SessionRealTimeInfo,
+} from "../../api";
 
 export default function CoachStartSessionPage() {
   const navLinks = [
@@ -35,7 +49,10 @@ export default function CoachStartSessionPage() {
     const fetchData = async () => {
       let interval: NodeJS.Timeout | null = null;
 
-      var sessionInfo = await getSessionInfo(auth.axiosInstance, Number(sessionId));
+      var sessionInfo = await getSessionInfo(
+        auth.axiosInstance,
+        Number(sessionId)
+      );
 
       const fetchHistoricalData = async () => {
         try {
@@ -111,19 +128,15 @@ export default function CoachStartSessionPage() {
       })
     );
 
-    const heartRateValue =
-    sessionInfo &&
-    isHistorical &&
-    "averageHeartRate" in sessionInfo
+  const heartRateValue =
+    sessionInfo && isHistorical && "averageHeartRate" in sessionInfo
       ? parseInt(sessionInfo.averageHeartRate.toString(), 10)
       : sessionInfo && "lastHeartRate" in sessionInfo
       ? parseInt(sessionInfo.lastHeartRate.toString(), 10)
       : 2;
 
   const bodyTemperatureValue =
-    sessionInfo &&
-    isHistorical &&
-    "averageBodyTemperature" in sessionInfo
+    sessionInfo && isHistorical && "averageBodyTemperature" in sessionInfo
       ? parseFloat(
           (
             sessionInfo as SessionHistoricalInfo
@@ -136,110 +149,111 @@ export default function CoachStartSessionPage() {
       : 0.0;
 
   const respiratoryRateValue =
-    sessionInfo &&
-    isHistorical &&
-    "averageRespiratoryRate" in sessionInfo
+    sessionInfo && isHistorical && "averageRespiratoryRate" in sessionInfo
       ? parseInt(sessionInfo.averageRespiratoryRate.toString(), 10)
       : sessionInfo && "lastRespiratoryRate" in sessionInfo
       ? parseInt(sessionInfo.lastRespiratoryRate.toString(), 10)
       : 0;
 
-      return (
-        <div className="flex min-h-screen h-lvh">
-          <SideBar
-            avatarUrl={avatarUrl}
-            navLinks={navLinks}
-            activePath={"/coach/sessions"}
-          />
-    
-          {/* Main Content */}
-          <div className="flex-grow p-8 overflow-y-auto h-full">
-            {/* Logo */}
-            <img
-              src="/logo.png"
-              alt="Logo"
-              className="absolute top-8 right-8 h-24"
-            />
-            {/* Content */}
-            <div className="flex-grow flex p-6 flex-col jsutify-center items-center">
-              <div className="border-4 w-4/5 p-6 mb-40">
-                <StripedTable
-                  widthClass="justify-center mx-auto"
-                  heightClass="h-full"
-                  columnsName={[
-                    "Session Name",
-                    "Date",
-                    "Time(min)",
-                    "Participants",
-                  ]}
-                  rows={
-                    sessionInfo
-                      ? [
-                          [
-                            sessionInfo.sessionName,
-                            sessionInfo.date,
-                            sessionInfo.time,
-                            sessionInfo.participants,
-                          ],
-                        ]
-                      : []
-                  }
-                />
-              </div>
-    
-              <div className="w-full space-y-6">
-                {/* heartRateData */}
-                <ChartSection
-                  bgClass=""
-                  icon={<FaHeart className="text-red-primary text-5xl mr-4" />}
-                  title={
-                    isHistorical
-                      ? "Average Heart Rate"
-                      : "Last Heart Rate"
-                  }
-                  value={heartRateValue}
-                  unit="bpm"
-                  data={heartRateData || []}
-                  strokeColor="#E46C6C"
-                />
-    
-                {/* bodyTemperatureData */}
-                <ChartSection
-                  bgClass="bg-gray-100"
-                  icon={
-                    <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
-                  }
-                  title={
-                    isHistorical
-                      ? "Average Body Temperature"
-                      : "Last Body Temperature"
-                  }
-                  value={bodyTemperatureValue}
-                  unit="°C"
-                  data={bodyTemperatureData || []}
-                  strokeColor="#25bfd9"
-                />
-    
-                {/* respiratoryRateData */}
-                <ChartSection
-                  bgClass=""
-                  icon={
-                    <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
-                  }
-                  title={
-                    isHistorical
-                      ? "Average Respiratory Rate"
-                      : "Last Respiratory Rate"
-                  }
-                  value={respiratoryRateValue}
-                  unit="rpm"
-                  data={respiratoryRateData || []}
-                  strokeColor="#8884d8"
-                />
-              </div>
+  return (
+    <div className="flex min-h-screen h-lvh">
+      <SideBar
+        avatarUrl={avatarUrl}
+        navLinks={navLinks}
+        activePath={"/coach/sessions"}
+      />
+
+      {/* Main Content */}
+      <div className="flex-grow p-8 overflow-y-auto h-full">
+        {/* Logo */}
+        <img
+          src="/logo.png"
+          alt="Logo"
+          className="absolute top-8 right-8 h-24"
+        />
+        {/* Content */}
+        <div className="flex-grow flex p-6 flex-col jsutify-center items-center">
+          <div className="flex w-full items-start mb-20">
+            <Link to={`/coach/sessions/${sessionId}`}>
+              <button className="bg-green-t3 hover:bg-gray-400 transition duration-300 text-white px-4 py-2 rounded-lg my-5">
+                <FaArrowLeft className="inline-block mr-2" />
+                <strong>Back</strong>
+              </button>
+            </Link>
+            <div className="border-4 w-4/5 p-6 ml-20">
+              <StripedTable
+                widthClass="justify-center mx-auto"
+                heightClass="h-full"
+                columnsName={[
+                  "Session Name",
+                  "Date",
+                  "Time(min)",
+                  "Participants",
+                ]}
+                rows={
+                  sessionInfo
+                    ? [
+                        [
+                          sessionInfo.sessionName,
+                          sessionInfo.date,
+                          sessionInfo.time,
+                          sessionInfo.participants,
+                        ],
+                      ]
+                    : []
+                }
+              />
             </div>
           </div>
+
+          <div className="w-full space-y-6">
+            {/* heartRateData */}
+            <ChartSection
+              bgClass=""
+              icon={<FaHeart className="text-red-primary text-5xl mr-4" />}
+              title={isHistorical ? "Average Heart Rate" : "Last Heart Rate"}
+              value={heartRateValue}
+              unit="bpm"
+              data={heartRateData || []}
+              strokeColor="#E46C6C"
+            />
+
+            {/* bodyTemperatureData */}
+            <ChartSection
+              bgClass="bg-gray-100"
+              icon={
+                <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
+              }
+              title={
+                isHistorical
+                  ? "Average Body Temperature"
+                  : "Last Body Temperature"
+              }
+              value={bodyTemperatureValue}
+              unit="°C"
+              data={bodyTemperatureData || []}
+              strokeColor="#25bfd9"
+            />
+
+            {/* respiratoryRateData */}
+            <ChartSection
+              bgClass=""
+              icon={
+                <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
+              }
+              title={
+                isHistorical
+                  ? "Average Respiratory Rate"
+                  : "Last Respiratory Rate"
+              }
+              value={respiratoryRateValue}
+              unit="rpm"
+              data={respiratoryRateData || []}
+              strokeColor="#8884d8"
+            />
+          </div>
         </div>
-      );
-    }
-    
+      </div>
+    </div>
+  );
+}

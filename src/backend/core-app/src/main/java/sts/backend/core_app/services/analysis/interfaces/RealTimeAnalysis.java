@@ -22,4 +22,6 @@ public interface RealTimeAnalysis {
     public RealTimeInfoResponse getRealTimeInfo(Long sessionId) throws ResourceNotFoundException; 
 
     public RealTimeInfoResponse getRealTimeInfoTrainer(Long trainerId) throws ResourceNotFoundException;
+
+    public Long getPlayerIdBySensorId(Long sensorId);
 }
