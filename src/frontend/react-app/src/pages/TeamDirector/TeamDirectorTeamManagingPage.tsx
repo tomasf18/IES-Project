@@ -13,6 +13,7 @@ import {
   FaUserMinus,
   FaRegCopy,
   FaTrashCan,
+  FaUserPlus,
 } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
@@ -24,7 +25,9 @@ import {
   deleteUser,
   refreshRegistrationCode,
   changeProfilePictureUrl,
+  addTeamDirector,
 } from "../../api";
+import { Select, TextInput } from "flowbite-react";
 
 export default function TeamDirectorTeamManagingPage() {
   const navLinks = [
@@ -59,10 +62,16 @@ export default function TeamDirectorTeamManagingPage() {
   const location = useLocation();
   const [teamMembers, setTeamMembers] = useState<TeamMembers[]>([]);
   const [openModalProfileUrl, setOpenModalProfileUrl] = useState(false);
-  const [openModalRegistrationCode, setOpenModalRegistrationCode] = useState(false);
+  const [openModalRegistrationCode, setOpenModalRegistrationCode] =
+    useState(false);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [registrationCode, setRegistrationCode] = useState("");
+  const [newMember, setNewMember] = useState({
+    name: "",
+    profilePictureUrl: "",
+    userTypeId: "",
+  });
 
   // Fetch user data from token
   useEffect(() => {
@@ -84,7 +93,10 @@ export default function TeamDirectorTeamManagingPage() {
     }
   }, [auth.axiosInstance, user?.teamId]);
 
-  const openModalHandlerProfileUrl = (userId: number, profilePictureUrl: string) => {
+  const openModalHandlerProfileUrl = (
+    userId: number,
+    profilePictureUrl: string
+  ) => {
     setSelectedUserId(userId);
     setProfilePictureUrl(profilePictureUrl || "");
     setOpenModalProfileUrl(true);
@@ -93,12 +105,16 @@ export default function TeamDirectorTeamManagingPage() {
   const openModalHandlerRegistrationCode = (code: string) => {
     setRegistrationCode(code);
     setOpenModalRegistrationCode(true);
-  }
+  };
 
   const handleConfirmProfileUrl = async () => {
     if (selectedUserId !== null) {
       try {
-        await changeProfilePictureUrl(auth.axiosInstance, selectedUserId, profilePictureUrl);
+        await changeProfilePictureUrl(
+          auth.axiosInstance,
+          selectedUserId,
+          profilePictureUrl
+        );
         const response = await getTeamMembers(auth.axiosInstance, user.teamId);
         setTeamMembers(response);
         setOpenModalProfileUrl(false);
@@ -110,7 +126,7 @@ export default function TeamDirectorTeamManagingPage() {
 
   const handleConfirmRegistrationCode = async () => {
     setOpenModalRegistrationCode(false);
-  }
+  };
 
   let configurationCardRightContent = (
     <div className="max-h-[45rem] overflow-y-auto">
@@ -118,36 +134,85 @@ export default function TeamDirectorTeamManagingPage() {
         widthClass="w-full"
         heightClass="h-full"
         columnsName={["Team Members", "", "Role", "Options "]}
-        rows={teamMembers.map((teamMember) => [
-          teamMember.name,
-          teamMember.profilePictureUrl ? (
-            <FaPen
-              className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200"
-              onClick={() => openModalHandlerProfileUrl(teamMember.id, teamMember.profilePictureUrl)}
-            />
-          ) : (
-            <Button color="primary" className="mx-auto" onClick={() => openModalHandlerProfileUrl(teamMember.id, teamMember.profilePictureUrl)}>
-              Add Photo
-            </Button>
-          ),
-          teamMember.userTypeId === 1
-            ? "Player"
-            : teamMember.userTypeId === 3
-            ? "Coach"
-            : teamMember.userTypeId === 4
-            ? "Personal Trainer"
-            : "Unknown",
-          teamMember.registrationCode ? (
-            <div className="flex justify-center items-center space-x-4">
-              <FaRegCopy 
-                className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200" 
+        rows={[
+          ...teamMembers.map((teamMember) => [
+            teamMember.name,
+            teamMember.profilePictureUrl ? (
+              <FaPen
+                className="text-green-primary cursor-pointer text-xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200"
+                onClick={() =>
+                  openModalHandlerProfileUrl(
+                    teamMember.id,
+                    teamMember.profilePictureUrl
+                  )
+                }
+              />
+            ) : (
+              <Button
+                color="primary"
+                className="mx-auto"
+                onClick={() =>
+                  openModalHandlerProfileUrl(
+                    teamMember.id,
+                    teamMember.profilePictureUrl
+                  )
+                }
+              >
+                Add Photo
+              </Button>
+            ),
+            teamMember.userTypeId === 1
+              ? "Player"
+              : teamMember.userTypeId === 3
+              ? "Coach"
+              : teamMember.userTypeId === 4
+              ? "Personal Trainer"
+              : "Unknown",
+            teamMember.registrationCode ? (
+              <div className="flex justify-center items-center space-x-4">
+                <FaRegCopy
+                  className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200"
+                  onClick={async () => {
+                    const newCode = await refreshRegistrationCode(
+                      auth.axiosInstance,
+                      teamMember.registrationCode
+                    );
+                    openModalHandlerRegistrationCode(newCode);
+                    try {
+                      const response = await getTeamMembers(
+                        auth.axiosInstance,
+                        user.teamId
+                      );
+                      setTeamMembers(response);
+                    } catch (error) {
+                      console.error("Error fetching team members:", error);
+                    }
+                  }}
+                />
+                <FaTrashCan
+                  className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200"
+                  onClick={async () => {
+                    await deleteRegistrationCode(
+                      auth.axiosInstance,
+                      teamMember.registrationCode
+                    );
+                    try {
+                      const response = await getTeamMembers(
+                        auth.axiosInstance,
+                        user.teamId
+                      );
+                      setTeamMembers(response);
+                    } catch (error) {
+                      console.error("Error fetching team members:", error);
+                    }
+                  }}
+                />
+              </div>
+            ) : (
+              <FaUserMinus
+                className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200"
                 onClick={async () => {
-                  const newCode = await refreshRegistrationCode(
-                    auth.axiosInstance,
-                    teamMember.registrationCode
-                  );
-                  
-                  openModalHandlerRegistrationCode(newCode);
+                  await deleteUser(auth.axiosInstance, teamMember.id);
                   try {
                     const response = await getTeamMembers(
                       auth.axiosInstance,
@@ -159,43 +224,68 @@ export default function TeamDirectorTeamManagingPage() {
                   }
                 }}
               />
-              <FaTrashCan
-                className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200"
-                onClick={async () => {
-                  await deleteRegistrationCode(
-                    auth.axiosInstance,
-                    teamMember.registrationCode
-                  );
-                  try {
-                    const response = await getTeamMembers(
-                      auth.axiosInstance,
-                      user.teamId
-                    );
-                    setTeamMembers(response);
-                  } catch (error) {
-                    console.error("Error fetching team members:", error);
-                  }
-                }}
-              />
-            </div>
-          ) : (
-            <FaUserMinus
-              className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200"
+            ),
+          ]),
+          // Row for adding a new team member
+          [
+            <TextInput
+              placeholder="Add Team Member"
+              value={newMember.name}
+              onChange={(e) =>
+                setNewMember({ ...newMember, name: e.target.value })
+              }
+            />,
+            <TextInput
+              placeholder="Profile Picture URL"
+              value={newMember.profilePictureUrl}
+              onChange={(e) =>
+                setNewMember({
+                  ...newMember,
+                  profilePictureUrl: e.target.value,
+                })
+              }
+            />,
+            <Select
+              value={newMember.userTypeId}
+              onChange={(e) =>
+                setNewMember({ ...newMember, userTypeId: e.target.value })
+              }
+            >
+              <option value="">Select Role</option>
+              <option value="1">Player</option>
+              <option value="3">Coach</option>
+              <option value="4">Personal Trainer</option>
+            </Select>,
+            <FaUserPlus
+              className="text-green-primary cursor-pointer text-2xl mx-auto hover:text-green-darker hover:scale-125 transition-transform duration-200"
               onClick={async () => {
-                await deleteUser(auth.axiosInstance, teamMember.id);
                 try {
+                  const code_response = await addTeamDirector(
+                    auth.axiosInstance,
+                    user.teamId,
+                    newMember.name,
+                    newMember.profilePictureUrl,
+                    Number(newMember.userTypeId)
+                  );
+                  openModalHandlerRegistrationCode(code_response.data.code);
+
                   const response = await getTeamMembers(
                     auth.axiosInstance,
                     user.teamId
                   );
                   setTeamMembers(response);
+                  setNewMember({
+                    name: "",
+                    profilePictureUrl: "",
+                    userTypeId: "",
+                  });
                 } catch (error) {
-                  console.error("Error fetching team members:", error);
+                  console.error("Error adding team member:", error);
                 }
               }}
-            />
-          ),
-        ])}
+            />,
+          ],
+        ]}
       />
     </div>
   );
@@ -252,7 +342,7 @@ export default function TeamDirectorTeamManagingPage() {
           </>
         }
         buttonText="Change Url"
-        buttonClass={"bg-gray-600"}
+        buttonClass={"bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"}
         onConfirm={handleConfirmProfileUrl}
       />
       <SimpleModal
@@ -261,9 +351,9 @@ export default function TeamDirectorTeamManagingPage() {
           setOpenModalRegistrationCode(false);
         }}
         content={
-            <h2 className="text-center font-bold text-lg">
-              New Registration Code: {registrationCode}
-            </h2>
+          <h2 className="text-center font-bold text-lg">
+            New Registration Code: {registrationCode}
+          </h2>
         }
         buttonText="Ok"
         buttonClass={"bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"}
