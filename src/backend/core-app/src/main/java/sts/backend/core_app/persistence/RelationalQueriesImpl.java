@@ -184,6 +184,12 @@ public class RelationalQueriesImpl implements RelationalQueries {
         return sessionRepository.findSessionInfoByPlayerId(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Sessions for player with ID " + playerId + " not found"));
     }
+    
+    public Set<SessionInfoView> getSessionByPlayerId(Long playerId) throws ResourceNotFoundException {
+        System.out.println("playerId: " + playerId);
+        return sessionRepository.findSessionInfoByPlayerId(playerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Session for sensor with ID " + playerId));
+    }
 
     public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException {
         return playerRepository.findByPlayerSessionsSessionSessionId(sessionId)
