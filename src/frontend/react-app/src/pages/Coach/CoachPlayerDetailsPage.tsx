@@ -27,7 +27,7 @@ export default function CoachStartSessionPage() {
   ];
   let refreshRate = 1000;
 
-  const { sessionId } = useParams();
+  const { sessionId, playerId } = useParams();
   const user = useUser();
   const auth = useAuth();
 
@@ -59,7 +59,7 @@ export default function CoachStartSessionPage() {
           const response = await getSessionHistoricalInfo(
             auth.axiosInstance,
             sessionIdInt!,
-            user.userId
+            Number(playerId)
           );
           setSessionInfo(response);
         } catch (error) {
@@ -73,7 +73,7 @@ export default function CoachStartSessionPage() {
           const response = await getSessionRealTimeInfo(
             auth.axiosInstance,
             sessionIdInt!,
-            user.userId
+            Number(playerId)
           );
           setSessionInfo(response);
         } catch (error) {
@@ -101,7 +101,7 @@ export default function CoachStartSessionPage() {
     };
 
     fetchData();
-  }, [auth.axiosInstance, user.userId, sessionId]);
+  }, [auth.axiosInstance, playerId, sessionId]);
 
   const avatarUrl = user.profilePictureUrl;
 

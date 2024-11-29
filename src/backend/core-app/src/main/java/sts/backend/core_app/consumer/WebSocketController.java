@@ -2,6 +2,8 @@ package sts.backend.core_app.consumer;
 import java.util.List;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+
+import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
 
@@ -19,5 +21,9 @@ public class WebSocketController {
 
     public void sendPlayersAvailableRealTimeInfo(List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo) {
         messagingTemplate.convertAndSend("/topic/playersAvailableRealTimeInfo", playersAvailableRealTimeInfo);
+    }
+
+    public void sendPlayersRealTimeExtraDetails(Long playerId, RealTimeExtraDetailsResponse realTimeExtraDetailsResponse) {
+        messagingTemplate.convertAndSend("/topic/realTimeExtraDetails/" + playerId, realTimeExtraDetailsResponse);
     }
 }

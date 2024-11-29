@@ -14,6 +14,7 @@ import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
+import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
 
 @Service
 public class DataAggregationModule {
@@ -60,7 +61,9 @@ public class DataAggregationModule {
             List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
             webSocketController.sendPlayersAvailableRealTimeInfo(playersAvailableRealTimeInfo);
 
-
+            RealTimeExtraDetailsResponse realTimeExtraDetailsResponse = realTimeAnalysis.getRealTimeExtraDetails(sessionId, playerId);
+            System.out.println("Real time extra details response: " + realTimeExtraDetailsResponse);
+            webSocketController.sendPlayersRealTimeExtraDetails(playerId, realTimeExtraDetailsResponse);
         }    
     }
 }
