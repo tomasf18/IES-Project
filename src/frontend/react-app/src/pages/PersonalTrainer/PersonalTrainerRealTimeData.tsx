@@ -16,7 +16,6 @@ export default function PersonalTrainerRealTimeData() {
         { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
     ];
 
-    // let refreshRate = 1000;
     let heartRateThreshold = 200;
     let bodyTemperatureThreshold = 60;
     let respiratoryRateThreshold = 30;
@@ -39,14 +38,16 @@ export default function PersonalTrainerRealTimeData() {
 
     // Fetch session real-time data
     useEffect(() => {
-        const checkSession = async () => {
+        const fetchDataAndConnectWebSocket = async () => {
             try {
                 const sessionData = await getSessionRealTimeData(auth.axiosInstance, user.userId);
-    
+
                 if (sessionData) {
                     console.log("Session found:", sessionData);
                     setSessionRealTimeData(sessionData);
-                    connectWebSocketRealTimeData(setSessionRealTimeData)
+                    const cleanupWebSocket = await connectWebSocketRealTimeData(setSessionRealTimeData);
+
+                    return cleanupWebSocket;
                 } else {
                     console.log("No session found, redirecting to start session.");
                     navigate('/personal-trainer/start-session');
@@ -56,31 +57,18 @@ export default function PersonalTrainerRealTimeData() {
                 navigate('/personal-trainer/start-session'); // Redirect even when with unexpected errors
             }
         };
-    
+
         if (user?.username) {
-            checkSession();
+            const cleanupWebSocketPromise = fetchDataAndConnectWebSocket();
+
+            return () => {
+                cleanupWebSocketPromise.then(cleanupWebSocket => {
+                    console.log("Cleaning up WebSocket for real-time data...");
+                    cleanupWebSocket?.(); // Cleanup WebSocket connection
+                });
+            };
         }
     }, [auth.axiosInstance, user, navigate]);
-    
-
-    // useEffect(() => {
-    //     const interval = setInterval(async () => {
-    //         if (user?.teamId && sessionRealTimeData) {
-    //             try {
-    //                 const updatedData = await getSessionRealTimeData(auth.axiosInstance, user.userId);
-    
-    //                 if (updatedData) {
-    //                     setSessionRealTimeData(updatedData);
-    //                     console.log("Updated session data:", updatedData);
-    //                 }
-    //             } catch (error) {
-    //                 console.error("Error fetching session real-time data:", error);
-    //             }
-    //         }
-    //     }, refreshRate);
-    
-    //     return () => clearInterval(interval);
-    // }, [auth.axiosInstance, user?.teamId, sessionRealTimeData, refreshRate]);    
 
     const handlePlayerManagement = (playerId: string) => {
         navigate(`/personal-trainer/session/${sessionRealTimeData?.sessionId}/player/${playerId}`);

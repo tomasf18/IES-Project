@@ -20,7 +20,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         // Enables simple broker for topics
-        config.enableSimpleBroker("/topic"); // Clients can subscribe to "/topic/{sensorId}"
+        config.enableSimpleBroker("/topic"); // Clients can subscribe to "/topic/"
     }
 
     @Override
