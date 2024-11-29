@@ -1,6 +1,8 @@
 interface TeamDirectors {
-    directorId: number;
+    teamDirectorId: number;
     name: string;
+    isOfficialMember: boolean;
+    registrationCode: string;
 }
 
 const addTeamSensor = async (axiosInstance: any, sensorId: number ,teamId: number) => {
@@ -106,27 +108,6 @@ const getTeamDirectors = async (
     }
 }
 
-const deleteTeamDirector = async (
-    axiosInstance: any,
-    teamId: number,
-    directorId: number
-) => {
-    try {
-        // TODO: implement endpoint
-        const response = await axiosInstance.delete(
-            "/team/team-directors" + "?teamId=" + teamId + "&directorId=" + directorId
-        );
-
-        if (response) {
-            console.log(response);
-        }
-
-    } catch (error) {
-        console.error("Error deleting team director:", error);
-        return null;
-    }
-}
-
 const addTeamDirector = async (
     axiosInstance: any,
     teamId: number,
@@ -176,5 +157,5 @@ const deleteTeam = async (
 }
 
 
-export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam, getTeamDirectors, deleteTeamDirector, addTeamDirector, deleteTeam };
+export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam, getTeamDirectors, addTeamDirector, deleteTeam };
 export type { TeamDirectors };

@@ -266,7 +266,7 @@ export default function TeamDirectorTeamManagingPage() {
             </h2>
         }
         buttonText="Ok"
-        buttonClass={"bg-gray-600"}
+        buttonClass={"bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"}
         onConfirm={handleConfirmRegistrationCode}
       />
     </div>
