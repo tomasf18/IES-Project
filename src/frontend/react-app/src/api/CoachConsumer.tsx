@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from "react";
+import * as StompJs from "@stomp/stompjs";
+
 interface Session {
     sessionName: string;
     sessionId: number;
@@ -111,6 +114,62 @@ interface SessionHistoricalData {
     type: string;
     location: string;
     weather: string;
+}
+
+
+let stompClient: StompJs.Client | null = null; // Keep track of the connection
+
+const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<SetStateAction<SessionRealTimeData | undefined>>) => {
+
+    if (stompClient && stompClient.active) {
+        console.log("WebSocket already connected");
+        return; // Prevent duplicate connection
+    }
+
+    stompClient = new StompJs.Client({
+        brokerURL: "ws://localhost:8080/backend-ws",    // WebSocket URL
+        debug: (str) => console.log(str),               // Optional debugging logs
+        reconnectDelay: 5000,                           // Time to wait before attempting to reconnect
+        heartbeatIncoming: 4000,                        // Heartbeat checks for incoming messages
+    });
+
+    // Define behavior on successful connection
+    stompClient.onConnect = (frame) => {
+        console.log("Connected: " + frame);
+
+        // Subscribe to the topic and listen for updates
+        stompClient?.subscribe("/topic/realTimeInfo", (message) => {
+            const newSessionRealTimeData = JSON.parse(message.body);
+            console.log("Received new data: ", newSessionRealTimeData);
+
+            setSessionRealTimeData((prevData) => ({
+                ...prevData,
+                ...newSessionRealTimeData,
+            }));
+        });
+    }
+
+    // Handle WebSocket errors
+    stompClient.onWebSocketError = (error) => {
+        console.error("WebSocket error: ", error);
+    };
+
+    // Handle STOMP protocol errors
+    stompClient.onStompError = (frame) => {
+        console.error("Broker reported error: " + frame.headers["message"]);
+        console.error("Additional details: " + frame.body);
+    };
+
+    // Activate the client
+    stompClient.activate();
+
+    // Cleanup on component unmount
+    return () => {
+        if (stompClient && stompClient.active) {
+            stompClient.deactivate();
+            console.log("WebSocket connection closed");
+        }
+    };
 }
 
 
@@ -408,6 +467,7 @@ const endSession = async (
 }
 
 export {
+    connectWebSocketRealTimeData,
     getSessionInfo,
     getSessionsTeam,
     getTeamSensors,

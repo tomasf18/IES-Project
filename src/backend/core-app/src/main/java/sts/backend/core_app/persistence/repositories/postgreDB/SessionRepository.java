@@ -3,6 +3,7 @@ package sts.backend.core_app.persistence.repositories.postgreDB;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.kafka.common.quota.ClientQuotaAlteration.Op;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +18,9 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     // Get session by trainerId and is open (endtime null)
     Optional<Session> findByTrainerUserIdAndEndTimeIsNull(Long trainerId);
-    
+
     @Query("""
-            SELECT  s.id AS sessionId, 
+            SELECT  s.id AS sessionId,
                     s.startTime as startTime,
                     s.name as sessionName,
                     s.endTime as endTime,
@@ -63,4 +64,3 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             """)
     Optional<Set<SessionInfoView>> findSessionInfoByPlayerId(@Param("playerId") Long playerId);
 }
-    
