@@ -25,7 +25,7 @@ export default function PersonalTrainerPlayerDetailsPage() {
         { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
     ];
 
-    const { sessionId, playerId } = useParams();
+    const { sessionId } = useParams();
     const user = useUser();
     const auth = useAuth();
 
@@ -42,14 +42,7 @@ export default function PersonalTrainerPlayerDetailsPage() {
 
     // Fetch display data
     useEffect(() => {
-        if (user?.username === "") {
-            auth.authMe();
-        }
-    }, [user, auth]);
-
-    // Fetch display data
-    useEffect(() => {
-        const fetchDataAndConnectWebSocket = async () => {
+        const fetchData = async () => {
             const sessionInfo = await getSessionInfo(
                 auth.axiosInstance,
                 Number(sessionId)
@@ -60,7 +53,7 @@ export default function PersonalTrainerPlayerDetailsPage() {
                     const response = await getSessionHistoricalInfo(
                         auth.axiosInstance,
                         Number(sessionId),
-                        Number(playerId)
+                        user.userId
                     );
                     setSessionInfo(response);
                 } catch (error) {
@@ -77,7 +70,7 @@ export default function PersonalTrainerPlayerDetailsPage() {
                     const response = await getSessionRealTimeInfo(
                         auth.axiosInstance,
                         Number(sessionId),
-                        Number(playerId)
+                        user.userId
                     );
                     setSessionInfo(response);
                 } catch (error) {
@@ -97,27 +90,20 @@ export default function PersonalTrainerPlayerDetailsPage() {
                     setIsHistorical(false);
                     fetchRealTimeData(); // Fetch initial data
 
-                    if (playerId) {
-                        const cleanupWebSocket =
-                            await connectPlayerWebSocketRealTimeInfo(
-                                setSessionInfo,
-                                playerId
-                            );
+                    const cleanupWebSocket = await connectPlayerWebSocketRealTimeInfo(
+                        setSessionInfo,
+                        user.userId.toString(),
+                    );
 
-                        return cleanupWebSocket;
-                    }
+                    return () => {
+                        cleanupWebSocket?.(); // Cleanup WebSocket connection
+                    };
                 }
             }
         };
 
-        const cleanupWebSocketPromise = fetchDataAndConnectWebSocket();
-
-        return () => {
-            cleanupWebSocketPromise.then((cleanupWebSocket) => {
-                cleanupWebSocket?.(); // Cleanup WebSocket connection
-            });
-        };
-    }, [auth.axiosInstance, playerId, sessionId]);
+        fetchData();
+    }, [auth.axiosInstance, user.userId, sessionId, user.userId]);
 
     const avatarUrl = user.profilePictureUrl;
 
