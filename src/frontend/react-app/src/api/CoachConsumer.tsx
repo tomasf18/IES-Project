@@ -117,16 +117,16 @@ interface SessionHistoricalData {
 }
 
 
-let stompClient: StompJs.Client | null = null; // Keep track of the connection
+let stompClientRealTimeData: StompJs.Client | null = null; // Keep track of the connection
 
 const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<SetStateAction<SessionRealTimeData | undefined>>) => {
 
-    if (stompClient && stompClient.active) {
+    if (stompClientRealTimeData && stompClientRealTimeData.active) {
         console.log("WebSocket already connected");
         return; // Prevent duplicate connection
     }
 
-    stompClient = new StompJs.Client({
+    stompClientRealTimeData = new StompJs.Client({
         brokerURL: "ws://localhost:8080/backend-ws",    // WebSocket URL
         debug: (str) => console.log(str),               // Optional debugging logs
         reconnectDelay: 5000,                           // Time to wait before attempting to reconnect
@@ -134,11 +134,11 @@ const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<Set
     });
 
     // Define behavior on successful connection
-    stompClient.onConnect = (frame) => {
+    stompClientRealTimeData.onConnect = (frame) => {
         console.log("Connected: " + frame);
 
         // Subscribe to the topic and listen for updates
-        stompClient?.subscribe("/topic/realTimeInfo", (message) => {
+        stompClientRealTimeData?.subscribe("/topic/realTimeInfo", (message) => {
             const newSessionRealTimeData = JSON.parse(message.body);
             console.log("Received new data: ", newSessionRealTimeData);
 
@@ -150,23 +150,76 @@ const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<Set
     }
 
     // Handle WebSocket errors
-    stompClient.onWebSocketError = (error) => {
+    stompClientRealTimeData.onWebSocketError = (error) => {
         console.error("WebSocket error: ", error);
     };
 
     // Handle STOMP protocol errors
-    stompClient.onStompError = (frame) => {
+    stompClientRealTimeData.onStompError = (frame) => {
         console.error("Broker reported error: " + frame.headers["message"]);
         console.error("Additional details: " + frame.body);
     };
 
     // Activate the client
-    stompClient.activate();
+    stompClientRealTimeData.activate();
 
     // Cleanup on component unmount
     return () => {
-        if (stompClient && stompClient.active) {
-            stompClient.deactivate();
+        if (stompClientRealTimeData && stompClientRealTimeData.active) {
+            stompClientRealTimeData.deactivate();
+            console.log("WebSocket connection closed");
+        }
+    };
+}
+
+
+let stompClientRealTimeInfo: StompJs.Client | null = null; 
+
+const connectWebSocketRealTimeInfo = async (setPlayersRealTimeInfo: Dispatch<SetStateAction<RealTimeInfo[]>>) => {
+
+    if (stompClientRealTimeInfo && stompClientRealTimeInfo.active) {
+        console.log("WebSocket already connected");
+        return; // Prevent duplicate connection
+    }
+
+    stompClientRealTimeInfo = new StompJs.Client({
+        brokerURL: "ws://localhost:8080/backend-ws",    
+        debug: (str) => console.log(str),               
+        reconnectDelay: 5000,                           
+        heartbeatIncoming: 4000,                        
+    });
+
+    // Define behavior on successful connection
+    stompClientRealTimeInfo.onConnect = (frame) => {
+        console.log("Connected: " + frame);
+
+        // Subscribe to the topic and listen for updates
+        stompClientRealTimeInfo?.subscribe("/topic/playersAvailableRealTimeInfo", (message) => {
+            const newPlayersRealTimeInfo = JSON.parse(message.body);
+            console.log("Received new data: ", newPlayersRealTimeInfo);
+
+            setPlayersRealTimeInfo(newPlayersRealTimeInfo);
+        });
+    }
+
+    // Handle WebSocket errors
+    stompClientRealTimeInfo.onWebSocketError = (error) => {
+        console.error("WebSocket error: ", error);
+    };
+
+    // Handle STOMP protocol errors
+    stompClientRealTimeInfo.onStompError = (frame) => {
+        console.error("Broker reported error: " + frame.headers["message"]);
+        console.error("Additional details: " + frame.body);
+    };
+
+    // Activate the client
+    stompClientRealTimeInfo.activate();
+
+    // Cleanup on component unmount
+    return () => {
+        if (stompClientRealTimeInfo && stompClientRealTimeInfo.active) {
+            stompClientRealTimeInfo.deactivate();
             console.log("WebSocket connection closed");
         }
     };
@@ -468,6 +521,7 @@ const endSession = async (
 
 export {
     connectWebSocketRealTimeData,
+    connectWebSocketRealTimeInfo,
     getSessionInfo,
     getSessionsTeam,
     getTeamSensors,
