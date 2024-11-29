@@ -71,7 +71,7 @@ export default function PersonalTrainerPlayerDetailsPage() {
                     setSessionInfo(null);
                 }
             };
-
+ 
             const fetchRealTimeData = async () => {
                 try {
                     const response = await getSessionRealTimeInfo(
