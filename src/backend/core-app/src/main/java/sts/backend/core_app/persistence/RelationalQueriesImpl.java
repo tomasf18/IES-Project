@@ -353,8 +353,9 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     @Override
-    public Long getPlayerIdBySensorId(Long sensorId) {
-        return playerSensorRepository.findPlayerIdBySensorSensorId(sensorId);
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
+        return playerSensorRepository.findPlayerIdBySensorSensorId(sensorId)
+            .orElseThrow(() -> new ResourceNotFoundException("Player with sensor ID " + sensorId + " not found"));
     }
 
 

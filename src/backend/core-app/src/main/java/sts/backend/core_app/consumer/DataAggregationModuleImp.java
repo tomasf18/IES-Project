@@ -56,33 +56,46 @@ public class DataAggregationModuleImp implements DataAggregationModule {
             bodyTemperature = record.getBodyTemperature();
 
             // Implement logic for saving sensor data to TimescaleDB using JDBC or a JPA repository.
-            playerId = realTimeAnalysis.getPlayerIdBySensorId(sensorId);
+            try {
+                playerId = realTimeAnalysis.getPlayerIdBySensorId(sensorId);
+            } catch (ResourceNotFoundException e) {
+                System.out.println("Player not found for sensor with id: " + sensorId);
+                continue;
+            }
+            
             dataTransformationModule.transformAndSendMessage(playerId, heartRate, respiratoryRate, bodyTemperature);
             
             Player player = relationalQueries.getPlayerById(playerId);
             Team team = player.getTeam();
             Long teamId = team.getTeamId();
-            
-            Set<SessionInfoView> sessionsInfo = relationalQueries.getSessionsInfoByPlayerId(playerId);
-            System.out.println("\n\nSESSION INFO: " + sessionsInfo + "\n\n");
-            
-            Long sessionId = sessionsInfo.stream().findFirst().get().getSessionId();
 
             // notify elasticSearch
-            // sensorsService.addSensorsLog(player, "Received: heart_rate = " + heartRate);
-            // sensorsService.addSensorsLog(player, "Received: respiratory_rate = " + respiratoryRate);
-            // sensorsService.addSensorsLog(player, "Received: body_temperature = " + bodyTemperature);
-
-            // I only want to send this kind of data if there is a session
-            if (sessionId != null) {
-                RealTimeExtraDetailsResponse realTimeExtraDetailsResponse = realTimeAnalysis.getRealTimeExtraDetails(sessionId, playerId);
-                System.out.println("Real time extra details response: " + realTimeExtraDetailsResponse);
-                webSocketController.sendPlayersRealTimeExtraDetails(playerId, realTimeExtraDetailsResponse);
-                
-                sessionIDs.add(sessionId);
+            sensorsService.addSensorsLog(player, "Received: heart_rate = " + heartRate);
+            sensorsService.addSensorsLog(player, "Received: respiratory_rate = " + respiratoryRate);
+            sensorsService.addSensorsLog(player, "Received: body_temperature = " + bodyTemperature);
+            
+            if (!teamIds.contains(teamId)){
+                teamIds.add(teamId);    
             }
             
-            teamIds.add(teamId);    
+            try {
+
+                Set<SessionInfoView> sessionsInfo = relationalQueries.getSessionsInfoByPlayerId(playerId);
+                System.out.println("\n\nSESSION INFO: " + sessionsInfo + "\n\n");
+                
+                Long sessionId = sessionsInfo.stream().findFirst().get().getSessionId();
+
+                // I only want to send this kind of data if there is a session
+                if (sessionId != null) {
+                    RealTimeExtraDetailsResponse realTimeExtraDetailsResponse = realTimeAnalysis.getRealTimeExtraDetails(sessionId, playerId);
+                    System.out.println("Real time extra details response: " + realTimeExtraDetailsResponse);
+                    webSocketController.sendPlayersRealTimeExtraDetails(playerId, realTimeExtraDetailsResponse);
+                    
+                    sessionIDs.add(sessionId);
+                }
+            } catch (Exception e) {
+                System.out.println("No session found for player with id: " + playerId);
+            }
         }    
 
         for (Long sessionId : sessionIDs) {

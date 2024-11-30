@@ -1,5 +1,7 @@
 package sts.backend.core_app.persistence.repositories.postgreDB;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface PlayerSensorRepository extends JpaRepository<PlayerSensor, PlayerSensorId> {
 
     @Query("SELECT ps.player.id FROM playerSensors ps WHERE ps.sensor.sensorId = :sensorId")
-    Long findPlayerIdBySensorSensorId(@Param("sensorId") Long sensorId);
+    Optional<Long> findPlayerIdBySensorSensorId(@Param("sensorId") Long sensorId);
 
 
 }

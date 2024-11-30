@@ -48,7 +48,7 @@ public class PlayerService {
         return realTimeAnalysis.getRealTimeExtraDetailsLast24Hours(playerId);
     }
 
-    public Long getPlayerIdBySensorId(Long sensorId) {
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
         return realTimeAnalysis.getPlayerIdBySensorId(sensorId);
     }
     

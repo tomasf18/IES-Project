@@ -80,6 +80,6 @@ public interface RelationalQueries {
 
     // --- Update methods ---
     public User updateUser(User user) throws ResourceNotFoundException;
-    public Long getPlayerIdBySensorId(Long sensorId);
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException;
     
 }

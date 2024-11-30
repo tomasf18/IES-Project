@@ -319,7 +319,7 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     }
 
     @Override
-    public Long getPlayerIdBySensorId(Long sensorId) {
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
         return relationalQueries.getPlayerIdBySensorId(sensorId);
     }
 }
