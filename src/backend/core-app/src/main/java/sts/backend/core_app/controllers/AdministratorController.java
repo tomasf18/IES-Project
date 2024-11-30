@@ -21,7 +21,7 @@ public class AdministratorController {
         this.administratorService = administratorService;
     }
 
-    @GetMapping("/logs")
+    @GetMapping("/last-minute-logs")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> api_get_logs() throws ResourceNotFoundException {
         System.out.println("GET /api/v1/logs");

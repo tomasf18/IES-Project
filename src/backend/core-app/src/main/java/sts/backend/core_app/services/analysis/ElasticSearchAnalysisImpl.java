@@ -33,7 +33,10 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
 
     public List<SensorsLogEntity> getLogs() {
         // TODO: remove this method (only to demonstrate how to read data from Elasticsearch)
-        Criteria criteria = new Criteria(); // 
+        long now = System.currentTimeMillis();
+        long oneMinutesAgo = now - 5 * 60 * 1000;
+
+        Criteria criteria = new Criteria("timestamp").greaterThanEqual(oneMinutesAgo);
         Query query = new CriteriaQuery(criteria);
         SearchHits<SensorsLogEntity> searchHis = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
         return searchHis.stream()
