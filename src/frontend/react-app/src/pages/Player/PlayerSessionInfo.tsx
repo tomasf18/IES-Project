@@ -1,250 +1,276 @@
 import { SideBar, StripedTable, ChartSection } from "../../components";
 import {
-  FaHome,
-  FaHeart,
-  FaTemperatureHigh,
-  FaHeadSideCough,
-  FaArrowLeft,
+    FaHome,
+    FaHeart,
+    FaTemperatureHigh,
+    FaHeadSideCough,
+    FaArrowLeft,
 } from "react-icons/fa";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
 import {
-  getSessionHistoricalInfo,
-  SessionHistoricalInfo,
-  getSessionRealTimeInfo,
-  SessionRealTimeInfo,
+    getSessionHistoricalInfo,
+    SessionHistoricalInfo,
+    getSessionRealTimeInfo,
+    SessionRealTimeInfo,
+    getSessionInfo,
+    connectPlayerWebSocketRealTimeInfo,
 } from "../../api";
 
 export default function PlayerSessionInfo() {
-  const navLinks = [{ icon: <FaHome />, to: "/player/home" }];
+    const navLinks = [{ icon: <FaHome />, to: "/player/home" }];
 
-  const user = useUser();
-  const auth = useAuth();
-  const location = useLocation();
-  const { sessionState } = location.state || {};
-  const avatarUrl = user.profilePictureUrl;
-  const { sessionId } = useParams();
-  // parse sessionId to int
-  const sessionIdInt = sessionId ? parseInt(sessionId) : null;
-  const [sessionInfo, setSessionInfo] = useState<
-    SessionHistoricalInfo | SessionRealTimeInfo | null
-  >(null);
+    const user = useUser();
+    const auth = useAuth();
+    const location = useLocation();
+    const avatarUrl = user.profilePictureUrl;
+    const [isHistorical, setIsHistorical] = useState(false);
 
-  useEffect(() => {
-    if (user?.username === "") {
-      auth.authMe();
-    }
-  }, [user, auth]);
+    const { sessionId } = useParams();
+    // parse sessionId to int
+    const [sessionInfo, setSessionInfo] = useState<
+        SessionHistoricalInfo | SessionRealTimeInfo | null
+    >(null);
 
-  // Fetch display data
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    useEffect(() => {
+        if (user?.username === "") {
+            auth.authMe();
+        }
+    }, [user, auth]);
 
-    const fetchHistoricalData = async () => {
-      try {
-        const response = await getSessionHistoricalInfo(
-          auth.axiosInstance,
-          sessionIdInt!,
-          user.userId
-        );
-        setSessionInfo(response);
-      } catch (error) {
-        console.error("Error fetching historical session info:", error);
-        setSessionInfo(null);
-      }
-    };
+    // Fetch display data
+    useEffect(() => {
+        const fetchDataAndConnectWebSocket = async () => {
+            const sessionInfo = await getSessionInfo(
+                auth.axiosInstance,
+                Number(sessionId)
+            );
 
-    const fetchRealTimeData = async () => {
-      try {
-        const response = await getSessionRealTimeInfo(
-          auth.axiosInstance,
-          sessionIdInt!,
-          user.userId
-        );
-        setSessionInfo(response);
-      } catch (error) {
-        console.error("Error fetching real-time session info:", error);
-        setSessionInfo(null);
-      }
-    };
-
-    if (sessionIdInt !== null) {
-      if (sessionState === "Closed") {
-        fetchHistoricalData();
-      } else {
-        fetchRealTimeData(); // Fetch initial data
-        interval = setInterval(fetchRealTimeData, 2000);
-      }
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [auth.axiosInstance, user.userId, sessionIdInt, sessionState]);
-
-  const heartRateData = sessionInfo?.historicalDataPlayers[0].heartRateData.map(
-    (item: { value: number }, index: number) => ({
-      name: index,
-      value: item.value,
-    })
-  );
-
-  const bodyTemperatureData =
-    sessionInfo?.historicalDataPlayers[0].bodyTemperatureData.map(
-      (item: { value: number }, index: number) => ({
-        name: index,
-        value: item.value,
-      })
-    );
-
-  const respiratoryRateData =
-    sessionInfo?.historicalDataPlayers[0].respiratoryRateData.map(
-      (item: { value: number }, index: number) => ({
-        name: index,
-        value: item.value,
-      })
-    );
-
-  const heartRateValue =
-    sessionInfo &&
-    sessionState === "Closed" &&
-    "averageHeartRate" in sessionInfo
-      ? parseInt(sessionInfo.averageHeartRate.toString(), 10)
-      : sessionInfo && "lastHeartRate" in sessionInfo
-      ? parseInt(sessionInfo.lastHeartRate.toString(), 10)
-      : 0;
-
-  const bodyTemperatureValue =
-    sessionInfo &&
-    sessionState === "Closed" &&
-    "averageBodyTemperature" in sessionInfo
-      ? parseFloat(
-          (
-            sessionInfo as SessionHistoricalInfo
-          ).averageBodyTemperature.toString()
-        ).toFixed(1)
-      : sessionInfo && "lastBodyTemperature" in sessionInfo
-      ? parseFloat(
-          (sessionInfo as SessionRealTimeInfo).lastBodyTemperature.toString()
-        ).toFixed(1)
-      : 0.0;
-
-  const respiratoryRateValue =
-    sessionInfo &&
-    sessionState === "Closed" &&
-    "averageRespiratoryRate" in sessionInfo
-      ? parseInt(sessionInfo.averageRespiratoryRate.toString(), 10)
-      : sessionInfo && "lastRespiratoryRate" in sessionInfo
-      ? parseInt(sessionInfo.lastRespiratoryRate.toString(), 10)
-      : 0;
-
-  return (
-    <div className="flex min-h-screen h-lvh">
-      <SideBar
-        avatarUrl={avatarUrl}
-        navLinks={navLinks}
-        activePath={location.pathname}
-      />
-
-      {/* Main Content */}
-      <div className="flex-grow p-8 overflow-y-auto h-full">
-        {/* Logo */}
-        <img
-          src="/logo.png"
-          alt="Logo"
-          className="absolute top-8 right-8 h-24"
-        />
-        {/* Content */}
-        <div className="flex-grow flex p-6 flex-col jsutify-center items-center">
-          <div className="flex w-full items-start mb-20">
-            <Link to="/player/home">
-              <button className="bg-green-t3 hover:bg-gray-400 transition duration-300 text-white px-4 py-2 rounded-lg my-5">
-                <FaArrowLeft className="inline-block mr-2" />
-                <strong>Back</strong>
-              </button>
-            </Link>
-
-            <div className="border-4 w-4/5 p-6 ml-20">
-              <StripedTable
-                widthClass="justify-center mx-auto"
-                heightClass="h-full"
-                columnsName={[
-                  "Session Name",
-                  "Date",
-                  "Time(min)",
-                  "Participants",
-                ]}
-                rows={
-                  sessionInfo
-                    ? [
-                        [
-                          sessionInfo.sessionName,
-                          sessionInfo.date,
-                          sessionInfo.time,
-                          sessionInfo.participants,
-                        ],
-                      ]
-                    : []
+            const fetchHistoricalData = async () => {
+                try {
+                    const response = await getSessionHistoricalInfo(
+                        auth.axiosInstance,
+                        Number(sessionId),
+                        user.userId
+                    );
+                    console.log("Historical data:", response);
+                    setSessionInfo(response);
+                } catch (error) {
+                    console.error(
+                        "Error fetching historical session info:",
+                        error
+                    );
+                    setSessionInfo(null);
                 }
-              />
+            };
+
+            const fetchRealTimeData = async () => {
+                try {
+                    const response = await getSessionRealTimeInfo(
+                        auth.axiosInstance,
+                        Number(sessionId),
+                        user.userId
+                    );
+                    setSessionInfo(response);
+                } catch (error) {
+                    console.error(
+                        "Error fetching real-time session info:",
+                        error
+                    );
+                    setSessionInfo(null);
+                }
+            };
+
+            if (sessionId !== null) {
+                if (sessionInfo?.endTime !== null) {
+                    setIsHistorical(true);
+                    fetchHistoricalData();
+                } else {
+                    setIsHistorical(false);
+                    fetchRealTimeData(); // Fetch initial data
+
+                    if (user.userId) {
+                        const cleanupWebSocket =
+                            await connectPlayerWebSocketRealTimeInfo(
+                                setSessionInfo,
+                                String(user.userId),
+                            );
+
+                        return cleanupWebSocket;
+                    }
+                }
+            }
+        };
+
+        const cleanupWebSocketPromise = fetchDataAndConnectWebSocket();
+
+        return () => {
+            cleanupWebSocketPromise.then((cleanupWebSocket) => {
+                cleanupWebSocket?.(); // Cleanup WebSocket connection
+            });
+        };
+    }, [auth.axiosInstance, user.userId, sessionId]);
+
+    const heartRateData =
+        sessionInfo?.historicalDataPlayers[0].heartRateData.map(
+            (item: { value: number }, index: number) => ({
+                name: index,
+                value: item.value,
+            })
+        );
+
+    const bodyTemperatureData =
+        sessionInfo?.historicalDataPlayers[0].bodyTemperatureData.map(
+            (item: { value: number }, index: number) => ({
+                name: index,
+                value: item.value,
+            })
+        );
+
+    const respiratoryRateData =
+        sessionInfo?.historicalDataPlayers[0].respiratoryRateData.map(
+            (item: { value: number }, index: number) => ({
+                name: index,
+                value: item.value,
+            })
+        );
+
+    const heartRateValue =
+        sessionInfo && isHistorical && "averageHeartRate" in sessionInfo
+            ? parseInt(sessionInfo.averageHeartRate.toString(), 10)
+            : sessionInfo && "lastHeartRate" in sessionInfo
+            ? parseInt(sessionInfo.lastHeartRate.toString(), 10)
+            : 0;
+
+    const bodyTemperatureValue =
+        sessionInfo && isHistorical && "averageBodyTemperature" in sessionInfo
+            ? parseFloat(
+                  (
+                      sessionInfo as SessionHistoricalInfo
+                  ).averageBodyTemperature.toString()
+              ).toFixed(1)
+            : sessionInfo && "lastBodyTemperature" in sessionInfo
+            ? parseFloat(
+                  (
+                      sessionInfo as SessionRealTimeInfo
+                  ).lastBodyTemperature.toString()
+              ).toFixed(1)
+            : 0.0;
+
+    const respiratoryRateValue =
+        sessionInfo && isHistorical && "averageRespiratoryRate" in sessionInfo
+            ? parseInt(sessionInfo.averageRespiratoryRate.toString(), 10)
+            : sessionInfo && "lastRespiratoryRate" in sessionInfo
+            ? parseInt(sessionInfo.lastRespiratoryRate.toString(), 10)
+            : 0;
+
+    return (
+        <div className="flex min-h-screen h-lvh">
+            <SideBar
+                avatarUrl={avatarUrl}
+                navLinks={navLinks}
+                activePath={location.pathname}
+            />
+
+            {/* Main Content */}
+            <div className="flex-grow p-8 overflow-y-auto h-full">
+                {/* Logo */}
+                <img
+                    src="/logo.png"
+                    alt="Logo"
+                    className="absolute top-8 right-8 h-24"
+                />
+                {/* Content */}
+                <div className="flex-grow flex p-6 flex-col jsutify-center items-center">
+                    <div className="flex w-full items-start mb-20">
+                        <Link to="/player/home">
+                            <button className="bg-green-t3 hover:bg-gray-400 transition duration-300 text-white px-4 py-2 rounded-lg my-5">
+                                <FaArrowLeft className="inline-block mr-2" />
+                                <strong>Back</strong>
+                            </button>
+                        </Link>
+
+                        <div className="border-4 w-4/5 p-6 ml-20">
+                            <StripedTable
+                                widthClass="justify-center mx-auto"
+                                heightClass="h-full"
+                                columnsName={[
+                                    "Session Name",
+                                    "Date",
+                                    "Time(min)",
+                                    "Participants",
+                                ]}
+                                rows={
+                                    sessionInfo
+                                        ? [
+                                              [
+                                                  sessionInfo.sessionName,
+                                                  sessionInfo.date,
+                                                  sessionInfo.time,
+                                                  sessionInfo.participants,
+                                              ],
+                                          ]
+                                        : []
+                                }
+                            />
+                        </div>
+                    </div>
+
+                    <div className="w-full space-y-6">
+                        {/* heartRateData */}
+                        <ChartSection
+                            bgClass=""
+                            icon={
+                                <FaHeart className="text-red-primary text-5xl mr-4" />
+                            }
+                            title={
+                                isHistorical
+                                    ? "Average Heart Rate"
+                                    : "Last Heart Rate"
+                            }
+                            value={heartRateValue}
+                            unit="bpm"
+                            data={heartRateData || []}
+                            strokeColor="#E46C6C"
+                        />
+
+                        {/* bodyTemperatureData */}
+                        <ChartSection
+                            bgClass="bg-gray-100"
+                            icon={
+                                <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
+                            }
+                            title={
+                                isHistorical
+                                    ? "Average Body Temperature"
+                                    : "Last Body Temperature"
+                            }
+                            value={bodyTemperatureValue}
+                            unit="°C"
+                            data={bodyTemperatureData || []}
+                            strokeColor="#25bfd9"
+                        />
+
+                        {/* respiratoryRateData */}
+                        <ChartSection
+                            bgClass=""
+                            icon={
+                                <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
+                            }
+                            title={
+                                isHistorical
+                                    ? "Average Respiratory Rate"
+                                    : "Last Respiratory Rate"
+                            }
+                            value={respiratoryRateValue}
+                            unit="rpm"
+                            data={respiratoryRateData || []}
+                            strokeColor="#8884d8"
+                        />
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <div className="w-full space-y-6">
-            {/* heartRateData */}
-            <ChartSection
-              bgClass=""
-              icon={<FaHeart className="text-red-primary text-5xl mr-4" />}
-              title={
-                sessionState === "Closed"
-                  ? "Average Heart Rate"
-                  : "Last Heart Rate"
-              }
-              value={heartRateValue}
-              unit="bpm"
-              data={heartRateData || []}
-              strokeColor="#E46C6C"
-            />
-
-            {/* bodyTemperatureData */}
-            <ChartSection
-              bgClass="bg-gray-100"
-              icon={
-                <FaTemperatureHigh className="text-cyan-500 text-5xl mr-4" />
-              }
-              title={
-                sessionState === "Closed"
-                  ? "Average Body Temperature"
-                  : "Last Body Temperature"
-              }
-              value={bodyTemperatureValue}
-              unit="°C"
-              data={bodyTemperatureData || []}
-              strokeColor="#25bfd9"
-            />
-
-            {/* respiratoryRateData */}
-            <ChartSection
-              bgClass=""
-              icon={
-                <FaHeadSideCough className="text-violet-500 text-5xl mr-4" />
-              }
-              title={
-                sessionState === "Closed"
-                  ? "Average Respiratory Rate"
-                  : "Last Respiratory Rate"
-              }
-              value={respiratoryRateValue}
-              unit="rpm"
-              data={respiratoryRateData || []}
-              strokeColor="#8884d8"
-            />
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
