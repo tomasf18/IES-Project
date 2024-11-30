@@ -100,13 +100,13 @@ public class DataAggregationModuleImp implements DataAggregationModule {
 
         for (Long sessionId : sessionIDs) {
             RealTimeInfoResponse realTimeInfo = realTimeAnalysis.getRealTimeInfo(sessionId);
-            webSocketController.sendRealTimeInfo(realTimeInfo);
+            webSocketController.sendRealTimeInfo(sessionId, realTimeInfo);
         }
 
 
         for (Long teamId : teamIds) {
             List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
-            webSocketController.sendPlayersAvailableRealTimeInfo(playersAvailableRealTimeInfo);
+            webSocketController.sendPlayersAvailableRealTimeInfo(teamId, playersAvailableRealTimeInfo);
         }
     }
 }

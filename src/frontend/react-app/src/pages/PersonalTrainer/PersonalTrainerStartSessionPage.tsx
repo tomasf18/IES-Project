@@ -75,7 +75,7 @@ export default function PersonalTrainerStartSessionage() {
                 await fetchTeamRealTimeInfo();
     
                 console.log("Connecting to WebSocket for real-time player info...");
-                const cleanupWebSocket = await connectWebSocketRealTimeInfo(setPlayersRealTimeInfo);
+                const cleanupWebSocket = await connectWebSocketRealTimeInfo(user.teamId, setPlayersRealTimeInfo);
     
                 return cleanupWebSocket;
             };

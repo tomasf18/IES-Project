@@ -45,7 +45,7 @@ export default function PersonalTrainerRealTimeData() {
                 if (sessionData) {
                     console.log("Session found:", sessionData);
                     setSessionRealTimeData(sessionData);
-                    const cleanupWebSocket = await connectWebSocketRealTimeData(setSessionRealTimeData);
+                    const cleanupWebSocket = await connectWebSocketRealTimeData(Number(sessionData.sessionId), setSessionRealTimeData);
 
                     return cleanupWebSocket;
                 } else {

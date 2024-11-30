@@ -36,9 +36,9 @@ average_respiratory_rate = 16.0 # rpm
 average_body_temperature = 36.5 # ºC
 
 # Standard deviation
-standard_deviation_heart_rate = 40.0
+standard_deviation_heart_rate = 30.0
 standard_deviation_respiratory_rate = 2.0
-standard_deviation_body_temperature = 0.2
+standard_deviation_body_temperature = 0.8
 
 # Generate new quotes for movies every 5 to 10 seconds and introduce them in a Kafka topic. 
 try:
@@ -64,7 +64,7 @@ try:
         }
         producer.send(topic_name, value=value)
         print(f"Produced: {value}")
-        time.sleep(2.0)
+        time.sleep(1.0)
 
 except KeyboardInterrupt:
     print("Stopping producer...")

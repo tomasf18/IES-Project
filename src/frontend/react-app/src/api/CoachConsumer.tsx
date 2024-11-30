@@ -119,7 +119,7 @@ interface SessionHistoricalData {
 
 let stompClientRealTimeData: StompJs.Client | null = null; // Keep track of the connection
 
-const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<SetStateAction<SessionRealTimeData | undefined>>) => {
+const connectWebSocketRealTimeData = async (sessionId: number, setSessionRealTimeData: Dispatch<SetStateAction<SessionRealTimeData | undefined>>) => {
 
     if (stompClientRealTimeData && stompClientRealTimeData.active) {
         console.log("WebSocket already connected");
@@ -138,7 +138,7 @@ const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<Set
         console.log("Connected: " + frame);
 
         // Subscribe to the topic and listen for updates
-        stompClientRealTimeData?.subscribe("/topic/realTimeInfo", (message) => {
+        stompClientRealTimeData?.subscribe("/topic/realTimeInfo/" + sessionId, (message) => {
             const newSessionRealTimeData = JSON.parse(message.body);
             console.log("Received new data: ", newSessionRealTimeData);
 
@@ -175,7 +175,7 @@ const connectWebSocketRealTimeData = async (setSessionRealTimeData: Dispatch<Set
 
 let stompClientRealTimeInfo: StompJs.Client | null = null; 
 
-const connectWebSocketRealTimeInfo = async (setPlayersRealTimeInfo: Dispatch<SetStateAction<RealTimeInfo[]>>) => {
+const connectWebSocketRealTimeInfo = async (teamId: number, setPlayersRealTimeInfo: Dispatch<SetStateAction<RealTimeInfo[]>>) => {
 
     if (stompClientRealTimeInfo && stompClientRealTimeInfo.active) {
         console.log("WebSocket already connected");
@@ -194,7 +194,7 @@ const connectWebSocketRealTimeInfo = async (setPlayersRealTimeInfo: Dispatch<Set
         console.log("Connected: " + frame);
 
         // Subscribe to the topic and listen for updates
-        stompClientRealTimeInfo?.subscribe("/topic/playersAvailableRealTimeInfo", (message) => {
+        stompClientRealTimeInfo?.subscribe("/topic/playersAvailableRealTimeInfo/" + teamId, (message) => {
             const newPlayersRealTimeInfo = JSON.parse(message.body);
             console.log("Received new data: ", newPlayersRealTimeInfo);
 
