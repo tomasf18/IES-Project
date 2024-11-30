@@ -64,7 +64,7 @@ try:
         }
         producer.send(topic_name, value=value)
         print(f"Produced: {value}")
-        time.sleep(random.uniform(0.5, 1.0))
+        time.sleep(2.0)
 
 except KeyboardInterrupt:
     print("Stopping producer...")

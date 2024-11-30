@@ -1,11 +1,13 @@
 package sts.backend.core_app.consumer;
 
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.models.Player;
+import sts.backend.core_app.models.Team;
 import sts.backend.core_app.dto.session.Message;
 import sts.backend.core_app.consumer.interfaces.DataAggregationModule;
 import sts.backend.core_app.consumer.interfaces.DataTransformationModule;
@@ -44,6 +46,9 @@ public class DataAggregationModuleImp implements DataAggregationModule {
         Double heartRate, respiratoryRate, bodyTemperature;
         Long playerId;
 
+        List<Long> sessionIDs = new ArrayList<>();
+        List<Long> teamIds = new ArrayList<>();
+
         for (Record record : records) {
             sensorId = record.getSensorId();
             heartRate = record.getHeartRate();
@@ -52,29 +57,43 @@ public class DataAggregationModuleImp implements DataAggregationModule {
 
             // Implement logic for saving sensor data to TimescaleDB using JDBC or a JPA repository.
             playerId = realTimeAnalysis.getPlayerIdBySensorId(sensorId);
-            Player player = relationalQueries.getPlayerById(playerId);
-
             dataTransformationModule.transformAndSendMessage(playerId, heartRate, respiratoryRate, bodyTemperature);
             
-            Set<SessionInfoView> session = relationalQueries.getSessionByPlayerId(playerId);
-            // Get last session id added to the set
-            Long sessionId = session.stream().findFirst().get().getSessionId();
-            RealTimeInfoResponse realTimeInfo = realTimeAnalysis.getRealTimeInfo(sessionId);
-            webSocketController.sendRealTimeInfo(realTimeInfo);
+            Player player = relationalQueries.getPlayerById(playerId);
+            Team team = player.getTeam();
+            Long teamId = team.getTeamId();
+            
+            Set<SessionInfoView> sessionsInfo = relationalQueries.getSessionsInfoByPlayerId(playerId);
+            System.out.println("\n\nSESSION INFO: " + sessionsInfo + "\n\n");
+            
+            Long sessionId = sessionsInfo.stream().findFirst().get().getSessionId();
 
             // notify elasticSearch
-            sensorsService.addSensorsLog(player, "Received: heart_rate = " + heartRate);
-            sensorsService.addSensorsLog(player, "Received: respiratory_rate = " + respiratoryRate);
-            sensorsService.addSensorsLog(player, "Received: body_temperature = " + bodyTemperature);
+            // sensorsService.addSensorsLog(player, "Received: heart_rate = " + heartRate);
+            // sensorsService.addSensorsLog(player, "Received: respiratory_rate = " + respiratoryRate);
+            // sensorsService.addSensorsLog(player, "Received: body_temperature = " + bodyTemperature);
 
-            // notify webSocket
-            Long teamId = player.getTeam().getTeamId();
+            // I only want to send this kind of data if there is a session
+            if (sessionId != null) {
+                RealTimeExtraDetailsResponse realTimeExtraDetailsResponse = realTimeAnalysis.getRealTimeExtraDetails(sessionId, playerId);
+                System.out.println("Real time extra details response: " + realTimeExtraDetailsResponse);
+                webSocketController.sendPlayersRealTimeExtraDetails(playerId, realTimeExtraDetailsResponse);
+                
+                sessionIDs.add(sessionId);
+            }
+            
+            teamIds.add(teamId);    
+        }    
+
+        for (Long sessionId : sessionIDs) {
+            RealTimeInfoResponse realTimeInfo = realTimeAnalysis.getRealTimeInfo(sessionId);
+            webSocketController.sendRealTimeInfo(realTimeInfo);
+        }
+
+
+        for (Long teamId : teamIds) {
             List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
             webSocketController.sendPlayersAvailableRealTimeInfo(playersAvailableRealTimeInfo);
-
-            RealTimeExtraDetailsResponse realTimeExtraDetailsResponse = realTimeAnalysis.getRealTimeExtraDetails(sessionId, playerId);
-            System.out.println("Real time extra details response: " + realTimeExtraDetailsResponse);
-            webSocketController.sendPlayersRealTimeExtraDetails(playerId, realTimeExtraDetailsResponse);
-        }    
+        }
     }
 }
