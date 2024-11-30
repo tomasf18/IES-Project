@@ -16,8 +16,8 @@ public class DataIngestionModuleImp implements DataIngestionModule {
         this.dataAggregationModule = dataAggregationModule;
     }
     
-    // @KafkaListener(topics = "sensorData", groupId = "consumers_1")
-    @KafkaListener(topics = "sensorData", containerFactory = "messageKafkaListenerContainerFactory")
+    // @KafkaListener(topics = "sensor_data", groupId = "consumers_1")
+    @KafkaListener(topics = "sensor_data", containerFactory = "messageKafkaListenerContainerFactory")
     public void listen(Message message) throws ResourceNotFoundException {
         dataAggregationModule.processMessage(message);
     }

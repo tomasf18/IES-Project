@@ -1,5 +1,5 @@
 import { SideBar, Header, ConfigurationCard, StripedTable } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus } from "react-icons/fa6";
+import { FaUsers, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus, FaRegCopy, FaTrashCan } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { SimpleModal } from "../../components";
@@ -8,9 +8,11 @@ import { useAuth } from "../../hooks";
 import { 
   getTeamDirectors, 
   TeamDirectors, 
-  deleteTeamDirector, 
-  // addTeamDirector, 
-  deleteTeam 
+  deleteUser, 
+  addTeamDirector, 
+  deleteTeam, 
+  refreshRegistrationCode,
+  deleteRegistrationCode
 } from "../../api";
 
 export default function AdminManageTeam() {
@@ -18,18 +20,17 @@ export default function AdminManageTeam() {
 
   const [teamDirectors, setTeamDirectors] = useState<TeamDirectors[]>([]);
   const [newTeamDirector, setNewTeamDirector] = useState('');
+  const [openModalRegistrationCode, setOpenModalRegistrationCode] = useState(false);
+  const [registrationCode, setRegistrationCode] = useState("");
 
-  // Open Modal
-  const [openModal, setOpenModal] = useState(false);
-  
-  const handleConfirm = () => {
-    setOpenModal(false);
-  };
+  const openModalHandlerRegistrationCode = (code: string) => {
+    setRegistrationCode(code);
+    setOpenModalRegistrationCode(true);
+  }
 
-  // const openRegistrationCodeModal = (e: React.MouseEvent<SVGElement>) => {
-  //   e.preventDefault();
-  //   setOpenModal(true);
-  // };
+  const handleConfirmRegistrationCode = async () => {
+    setOpenModalRegistrationCode(false);
+  }
 
   const navLinks = [
     {
@@ -86,30 +87,64 @@ export default function AdminManageTeam() {
 
   let StripedTableRows = teamDirectors.map((teamDirector) => [
     teamDirector.name,
-    <button
-        onClick={async () => {
-            await deleteTeamDirector(
-                auth.axiosInstance,
-                Number(teamID),
-                teamDirector.directorId
+    teamDirector.registrationCode ? (
+      <div className="flex justify-center items-center space-x-4">
+        <FaRegCopy 
+          className="text-black-primary cursor-pointer text-2xl hover:text-black-darker hover:scale-125 transition-transform duration-200" 
+          onClick={async () => {
+            const newCode = await refreshRegistrationCode(
+              auth.axiosInstance,
+              teamDirector.registrationCode
             );
-            // refresh
+            
+            openModalHandlerRegistrationCode(newCode);
             try {
-                const response = await getTeamDirectors(
-                    auth.axiosInstance,
-                    Number(teamID)
-                );
-                setTeamDirectors(response);
+              const response = await getTeamDirectors(
+                auth.axiosInstance,
+                Number(teamID)
+              );
+              setTeamDirectors(response);
             } catch (error) {
-                console.error(
-                    "Error fetching team directors:",
-                    error
-                );
+              console.error("Error fetching team directors:", error);
             }
           }}
-          >
-        <FaUserMinus className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200" />
-    </button>  
+        />
+        <FaTrashCan
+          className="text-red-primary cursor-pointer text-2xl hover:text-red-600 hover:scale-125 transition-transform duration-200"
+          onClick={async () => {
+            await deleteRegistrationCode(
+              auth.axiosInstance,
+              teamDirector.registrationCode
+            );
+            try {
+              const response = await getTeamDirectors(
+                auth.axiosInstance,
+                Number(teamID)
+              );
+              setTeamDirectors(response);
+            } catch (error) {
+              console.error("Error fetching team directors:", error);
+            }
+          }}
+        />
+      </div>
+    ) : (
+      <FaUserMinus
+        className="text-red-primary cursor-pointer text-2xl mx-auto hover:text-red-600 hover:scale-125 transition-transform duration-200"
+        onClick={async () => {
+          await deleteUser(auth.axiosInstance, teamDirector.teamDirectorId);
+          try {
+            const response = await getTeamDirectors(
+              auth.axiosInstance,
+              Number(teamID)
+            );
+            setTeamDirectors(response);
+          } catch (error) {
+            console.error("Error fetching team directors:", error);
+          }
+        }}
+      />
+    ),
   ]);
 
   // Append the "Add Team Director" row
@@ -127,7 +162,14 @@ export default function AdminManageTeam() {
                 // Call the function to add a new team director (ensure this function exists)
                 console.log("Adding new team director:", newTeamDirector);
                 
-                // const code = await addTeamDirector(auth.axiosInstance, Number(teamID), String(newTeamDirector), '', 2); // TODO: profilePictureUrl
+                const code_response = await addTeamDirector(
+                  auth.axiosInstance, 
+                  Number(teamID), 
+                  String(newTeamDirector), 
+                  '', 
+                  2
+                );
+                openModalHandlerRegistrationCode(code_response.data.code);
                 
                 // Refresh the team directors list
                 const response = await getTeamDirectors(auth.axiosInstance, Number(teamID));
@@ -229,16 +271,18 @@ export default function AdminManageTeam() {
       </div>
     
       <SimpleModal
-        show={openModal}
-        onClose={() => setOpenModal(false)}
+        show={openModalRegistrationCode}
+        onClose={() => {
+          setOpenModalRegistrationCode(false);
+        }}
         content={
-          <>
-            <h2 className="text-center font-bold text-lg">New code: 123e4567-e89b-42d3-a456-556642440000 </h2>
-          </>
+            <h2 className="text-center font-bold text-lg">
+              New Registration Code: {registrationCode}
+            </h2>
         }
         buttonText="Ok"
-        buttonClass="bg-green-t3"
-        onConfirm={handleConfirm}
+        buttonClass={"bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"}
+        onConfirm={handleConfirmRegistrationCode}
       />
     
     </>

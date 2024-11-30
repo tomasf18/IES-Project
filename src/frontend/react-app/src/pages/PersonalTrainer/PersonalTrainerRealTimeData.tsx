@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { SideBar, PlayerUniqueCard, SimpleModal } from "../../components"; // Ensure these components exist
-import { FaFutbol } from "react-icons/fa6";
+import { FaFutbol, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import {
     getSessionRealTimeData,
     SessionRealTimeData,
     endSession,
+    connectWebSocketRealTimeData,
 } from "../../api";
 
 export default function PersonalTrainerRealTimeData() {
     const navLinks = [
         { icon: <FaFutbol />, to: "/personal-trainer/session" },
+        { icon: <FaHeartPulse />, to: "/personal-trainer/sensors" },
     ];
 
-    let refreshRate = 1000;
     let heartRateThreshold = 200;
     let bodyTemperatureThreshold = 60;
     let respiratoryRateThreshold = 30;
@@ -23,8 +24,7 @@ export default function PersonalTrainerRealTimeData() {
     const auth = useAuth();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [sessionRealTimeData, setSessionRealTimeData] =
-        useState<SessionRealTimeData>();
+    const [sessionRealTimeData, setSessionRealTimeData] = useState<SessionRealTimeData>();
 
     useEffect(() => {
         if (user?.username === "") {
@@ -38,38 +38,37 @@ export default function PersonalTrainerRealTimeData() {
 
     // Fetch session real-time data
     useEffect(() => {
-        if (user?.teamId) {
-            getSessionRealTimeData(auth.axiosInstance, user.userId)
-                .then((response) => {
-                    if (response) {
-                        console.log(response);
-                        setSessionRealTimeData(response);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching team sensors:", error);
-                });
-        }
-    }, [auth.axiosInstance, user?.teamId, user?.userId]);
+        const fetchDataAndConnectWebSocket = async () => {
+            try {
+                const sessionData = await getSessionRealTimeData(auth.axiosInstance, user.userId);
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-          if (user?.teamId) {
-            getSessionRealTimeData(auth.axiosInstance, user.userId)
-              .then((response) => {
-                if (response) {
-                    setSessionRealTimeData(response);
-                    console.log(response);
+                if (sessionData) {
+                    console.log("Session found:", sessionData);
+                    setSessionRealTimeData(sessionData);
+                    const cleanupWebSocket = await connectWebSocketRealTimeData(setSessionRealTimeData);
+
+                    return cleanupWebSocket;
+                } else {
+                    console.log("No session found, redirecting to start session.");
+                    navigate('/personal-trainer/start-session');
                 }
-              })
-              .catch((error) => {
-                console.error("Error fetching team sensors:", error);
-              });
-          }
-        }, refreshRate);
+            } catch (error) {
+                console.error("Error while checking session:", error);
+                navigate('/personal-trainer/start-session'); // Redirect even when with unexpected errors
+            }
+        };
 
-        return () => clearInterval(interval);
-      }, [auth.axiosInstance, user?.teamId, refreshRate]);
+        if (user?.username) {
+            const cleanupWebSocketPromise = fetchDataAndConnectWebSocket();
+
+            return () => {
+                cleanupWebSocketPromise.then(cleanupWebSocket => {
+                    console.log("Cleaning up WebSocket for real-time data...");
+                    cleanupWebSocket?.(); // Cleanup WebSocket connection
+                });
+            };
+        }
+    }, [auth.axiosInstance, user, navigate]);
 
     const handlePlayerManagement = (playerId: string) => {
         navigate(`/personal-trainer/session/${sessionRealTimeData?.sessionId}/player/${playerId}`);

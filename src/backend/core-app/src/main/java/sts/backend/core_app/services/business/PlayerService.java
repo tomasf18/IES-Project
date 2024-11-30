@@ -44,10 +44,6 @@ public class PlayerService {
         
     }
 
-    public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
-        return elasticSearchAnalysis.addMetricValue(metricValue);
-    }
-
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
         return realTimeAnalysis.getRealTimeExtraDetailsLast24Hours(playerId);
     }
