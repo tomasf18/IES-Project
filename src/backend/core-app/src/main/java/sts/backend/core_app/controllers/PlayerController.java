@@ -32,13 +32,6 @@ public class PlayerController {
         return playerService.getPlayerSessionsAllDaysOfYear(playerId, year);
     }
 
-    @PostMapping("/player/add-metric-value")
-    @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToUser(#metricValue.getPlayerId())")
-    public SensorTimeSeriesData api_add_metric_value(@RequestBody MetricValue metricValue) throws ResourceNotFoundException {
-        System.out.println("Adding metric value: " + metricValue.getPlayerId() + " " + metricValue.getMetricName() + " " + metricValue.getValue());
-        return playerService.addMetricValue(metricValue);
-    }
-
     @PostMapping("/player/real-time-extra-details-last-24-hours")
     @PreAuthorize("hasRole('ADMIN') or @securityService.hasAccessToUser(#playerId)")
     public RealTimeExtraDetailsPlayer api_real_time_extra_details_last_24_hours(@RequestParam Long playerId) throws ResourceNotFoundException {

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import sts.backend.core_app.dto.team.TeamMembersResponse;
 import sts.backend.core_app.dto.team.SensorPlayerView;
 import sts.backend.core_app.dto.team.TeamsInfoView;
+import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.Team;
 
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,7 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
         WHERE s.team.teamId = :teamId
         """)
     Optional<Set<SensorPlayerView>> findSensorsWithPlayersByTeamId(Long teamId);
+
+    Optional<Long> findTeamIdByPlayers(Player player);
 }
     

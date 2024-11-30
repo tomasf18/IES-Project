@@ -154,7 +154,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
-        return playerRepository.findById(playerId)
+        return userRepository.findPlayerByUserId(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Player with ID " + playerId + " not found"));
     }
 
@@ -171,6 +171,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public Sensor getSensorById(Long sensorId) throws ResourceNotFoundException {
         return sensorRepository.findById(sensorId)
             .orElseThrow(() -> new ResourceNotFoundException("Sensor with ID " + sensorId + " not found"));
+    }
+
+    public Long getTeamIdByPlayers(Player player) throws ResourceNotFoundException {
+        return teamRepository.findTeamIdByPlayers(player)
+            .orElseThrow(() -> new ResourceNotFoundException("Team for player " + player + " not found"));
     }
 
     // --- Get By other methods ---
@@ -348,8 +353,10 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     @Override
-    public Long getPlayerIdBySensorId(Long sensorId) {
-        return playerSensorRepository.findPlayerIdBySensorSensorId(sensorId);
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
+        return playerSensorRepository.findPlayerIdBySensorSensorId(sensorId)
+            .orElseThrow(() -> new ResourceNotFoundException("Player with sensor ID " + sensorId + " not found"));
     }
+
 
 }
