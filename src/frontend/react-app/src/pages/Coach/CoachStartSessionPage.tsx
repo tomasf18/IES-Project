@@ -48,9 +48,6 @@ export default function CoachStartSessionPage() {
     // Fetch real-time team player information and connect WebSocket
     useEffect(() => {
         const fetchDataAndConnectWebSocket = async () => {
-            console.log(
-                "No active session. Fetching team real-time information..."
-            );
             await fetchTeamRealTimeInfo();
 
             console.log("Connecting to WebSocket for real-time player info...");

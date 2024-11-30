@@ -32,7 +32,7 @@ export default function CoachStartSessionPage() {
     const auth = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const [sessionRealTimeData, setSessionRealTimeData] =
+    const [sessionRealTimeData, setSessionInfo] =
         useState<SessionRealTimeData>();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -75,9 +75,9 @@ export default function CoachStartSessionPage() {
                 );
                 if (sessionData) {
                     console.log("Session found:", sessionData);
-                    setSessionRealTimeData(sessionData);
+                    setSessionInfo(sessionData);
                     const cleanupWebSocket = await connectWebSocketRealTimeData(
-                        setSessionRealTimeData
+                        setSessionInfo
                     );
                     return cleanupWebSocket;
                 }
@@ -97,7 +97,7 @@ export default function CoachStartSessionPage() {
                 );
                 if (sessionData) {
                     console.log("Session found:", sessionData);
-                    setSessionRealTimeData(sessionData);
+                    setSessionInfo(sessionData);
                 }
             } catch (error) {
                 console.error("Error fetching historical data:", error);
