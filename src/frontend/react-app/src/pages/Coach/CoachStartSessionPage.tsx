@@ -52,6 +52,7 @@ export default function CoachStartSessionPage() {
 
             console.log("Connecting to WebSocket for real-time player info...");
             const cleanupWebSocket = await connectWebSocketRealTimeInfo(
+                user.teamId,
                 setPlayersRealTimeInfo
             );
 

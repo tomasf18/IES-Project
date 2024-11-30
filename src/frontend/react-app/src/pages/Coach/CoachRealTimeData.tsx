@@ -77,6 +77,7 @@ export default function CoachStartSessionPage() {
                     console.log("Session found:", sessionData);
                     setSessionInfo(sessionData);
                     const cleanupWebSocket = await connectWebSocketRealTimeData(
+                        Number(sessionData.sessionId),
                         setSessionInfo
                     );
                     return cleanupWebSocket;
