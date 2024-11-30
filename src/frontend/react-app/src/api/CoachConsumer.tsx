@@ -537,4 +537,4 @@ export {
     endSession,
     postMatch
 };
-export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData, SessionHistoricalData };
+export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData, SessionHistoricalData, SessionInfo };
