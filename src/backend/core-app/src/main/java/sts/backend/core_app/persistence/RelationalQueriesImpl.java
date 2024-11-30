@@ -154,7 +154,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
-        return playerRepository.findById(playerId)
+        return userRepository.findPlayerByUserId(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Player with ID " + playerId + " not found"));
     }
 

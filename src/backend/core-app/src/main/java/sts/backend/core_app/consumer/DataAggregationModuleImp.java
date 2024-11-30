@@ -37,6 +37,7 @@ public class DataAggregationModuleImp implements DataAggregationModule {
     }
 
     public void processMessage(Message message) throws ResourceNotFoundException {
+        System.out.println("Processing message: " + message);
         Record[] records = message.getRecords();
         
         Long sensorId;
@@ -55,7 +56,6 @@ public class DataAggregationModuleImp implements DataAggregationModule {
 
             dataTransformationModule.transformAndSendMessage(playerId, heartRate, respiratoryRate, bodyTemperature);
             
-            
             Set<SessionInfoView> session = relationalQueries.getSessionByPlayerId(playerId);
             // Get last session id added to the set
             Long sessionId = session.stream().findFirst().get().getSessionId();
@@ -63,9 +63,9 @@ public class DataAggregationModuleImp implements DataAggregationModule {
             webSocketController.sendRealTimeInfo(realTimeInfo);
 
             // notify elasticSearch
-            sensorsService.addSensorsLog(playerId, "Received: heart_rate = " + heartRate);
-            sensorsService.addSensorsLog(playerId, "Received: respiratory_rate = " + respiratoryRate);
-            sensorsService.addSensorsLog(playerId, "Received: body_temperature = " + bodyTemperature);
+            sensorsService.addSensorsLog(player, "Received: heart_rate = " + heartRate);
+            sensorsService.addSensorsLog(player, "Received: respiratory_rate = " + respiratoryRate);
+            sensorsService.addSensorsLog(player, "Received: body_temperature = " + bodyTemperature);
 
             // notify webSocket
             Long teamId = player.getTeam().getTeamId();
