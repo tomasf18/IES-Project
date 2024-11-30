@@ -59,7 +59,7 @@ public class DataAggregationModule {
             
             Set<SessionInfoView> sessionsInfo = relationalQueries.getSessionsInfoByPlayerId(playerId);
             System.out.println("\n\nSESSION INFO: " + sessionsInfo + "\n\n");
-            
+
             Long sessionId = sessionsInfo.stream().findFirst().get().getSessionId();
 
 
@@ -77,12 +77,12 @@ public class DataAggregationModule {
 
         for (Long sessionId : sessionIDs) {
             RealTimeInfoResponse realTimeInfo = realTimeAnalysis.getRealTimeInfo(sessionId);
-            webSocketController.sendRealTimeInfo(realTimeInfo);
+            webSocketController.sendRealTimeInfo(sessionId, realTimeInfo);
         }
 
         for (Long teamId : teamIds) {
             List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = realTimeAnalysis.getPlayersAvailableRealTimeInfo(teamId);
-            webSocketController.sendPlayersAvailableRealTimeInfo(playersAvailableRealTimeInfo);
+            webSocketController.sendPlayersAvailableRealTimeInfo(teamId, playersAvailableRealTimeInfo);
         }
     }
 }

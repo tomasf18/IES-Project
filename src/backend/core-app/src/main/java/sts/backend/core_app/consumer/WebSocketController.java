@@ -15,12 +15,12 @@ public class WebSocketController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void sendRealTimeInfo(RealTimeInfoResponse realTimeInfo) {
-        messagingTemplate.convertAndSend("/topic/realTimeInfo", realTimeInfo);
+    public void sendRealTimeInfo(Long sessionId, RealTimeInfoResponse realTimeInfo) {
+        messagingTemplate.convertAndSend("/topic/realTimeInfo/" + sessionId, realTimeInfo);
     }
 
-    public void sendPlayersAvailableRealTimeInfo(List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo) {
-        messagingTemplate.convertAndSend("/topic/playersAvailableRealTimeInfo", playersAvailableRealTimeInfo);
+    public void sendPlayersAvailableRealTimeInfo(Long teamId, List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo) {
+        messagingTemplate.convertAndSend("/topic/playersAvailableRealTimeInfo/" + teamId, playersAvailableRealTimeInfo);
     }
 
     public void sendPlayersRealTimeExtraDetails(Long playerId, RealTimeExtraDetailsResponse realTimeExtraDetailsResponse) {
