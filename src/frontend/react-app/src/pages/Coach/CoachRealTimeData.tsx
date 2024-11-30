@@ -1,6 +1,11 @@
 import { SideBar, PlayerUniqueCard, SimpleModal } from "../../components";
-import { FaChartBar, FaFutbol, FaHeartPulse } from "react-icons/fa6";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+    FaChartBar,
+    FaFutbol,
+    FaHeartPulse,
+    FaArrowLeft,
+} from "react-icons/fa6";
+import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
 import { useAuth, useUser } from "../../hooks";
 import { useEffect, useState } from "react";
 import {
@@ -31,7 +36,7 @@ export default function CoachStartSessionPage() {
         useState<SessionRealTimeData>();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isHistorical, setIsHistorical] = useState(false);
+    const [isHistorical, setIsHistorical] = useState(true);
 
     useEffect(() => {
         if (user?.username === "") {
@@ -41,50 +46,91 @@ export default function CoachStartSessionPage() {
 
     // Fetch display data
     useEffect(() => {
-      const connectWebSocket = async () => {
-          const cleanupWebSocket = await connectWebSocketRealTimeData(setSessionRealTimeData);
-          return cleanupWebSocket;
-      };
+        const checkIsHistorical = async () => {
+            try {
+                const sessionInfo = await getSessionInfo(
+                    auth.axiosInstance,
+                    Number(sessionId)
+                );
+                if (sessionInfo?.endTime !== null) {
+                    setIsHistorical(true);
+                    return true;
+                }
+                setIsHistorical(false);
+                return false;
+            } catch (error) {
+                console.error(
+                    "Error checking if session is historical:",
+                    error
+                );
+                return false;
+            }
+        };
 
-      const fetchData = async () => {
-          if (user?.teamId && sessionId) {
-              const sessionInfo = await getSessionInfo(auth.axiosInstance, Number(sessionId));
+        const fetchDataAndConnectWebSocket = async () => {
+            try {
+                const sessionData = await getBySessionRealTimeData(
+                    auth.axiosInstance,
+                    Number(sessionId)
+                );
+                if (sessionData) {
+                    console.log("Session found:", sessionData);
+                    setSessionRealTimeData(sessionData);
+                    const cleanupWebSocket = await connectWebSocketRealTimeData(
+                        setSessionRealTimeData
+                    );
+                    return cleanupWebSocket;
+                }
+            } catch (error) {
+                console.error(
+                    "Error fetching real-time data or connecting WebSocket:",
+                    error
+                );
+            }
+        };
 
-              if (sessionInfo?.endTime === null) {
-                  // run-time data
-                  setIsHistorical(false);
-                  const sessionData = await getBySessionRealTimeData(auth.axiosInstance, user.userId);
+        const fetchHistoricalData = async () => {
+            try {
+                const sessionData = await getBySessionHistoricalData(
+                    auth.axiosInstance,
+                    Number(sessionId)
+                );
+                if (sessionData) {
+                    console.log("Session found:", sessionData);
+                    setSessionRealTimeData(sessionData);
+                }
+            } catch (error) {
+                console.error("Error fetching historical data:", error);
+            }
+        };
 
-                  if (sessionData) {
-                      console.log("Session found:", sessionData);
-                      setSessionRealTimeData(sessionData);
-                      const cleanupWebSocketPromise = connectWebSocket();
+        const fetchData = async () => {
+            const isHistoricalSession = await checkIsHistorical();
+            if (!isHistoricalSession) {
+                const cleanupWebSocketPromise = fetchDataAndConnectWebSocket();
+                return () => {
+                    cleanupWebSocketPromise.then((cleanupWebSocket) => {
+                        console.log(
+                            "Cleaning up WebSocket for real-time data..."
+                        );
+                        cleanupWebSocket?.(); // Cleanup WebSocket connection
+                    });
+                };
+            } else {
+                await fetchHistoricalData();
+            }
+        };
 
-                      return () => {
-                          cleanupWebSocketPromise.then((cleanupWebSocket) => {
-                              console.log("Cleaning up WebSocket for real-time data...");
-                              cleanupWebSocket?.(); // Cleanup WebSocket connection
-                          });
-                      };
-                  }
-              } else {
-                  // historical data
-                  setIsHistorical(true);
-                  getBySessionHistoricalData(auth.axiosInstance, Number(sessionId))
-                      .then((response) => {
-                          if (response) {
-                              setSessionRealTimeData(response);
-                          }
-                      })
-                      .catch((error) => {
-                          console.error("Error fetching historical session info:", error);
-                      });
-              }
-          }
-      };
+        if (user?.username) {
+            const cleanupFunction = fetchData();
 
-      fetchData();
-  }, [auth.axiosInstance, user?.teamId, user, navigate]);
+            return () => {
+                if (cleanupFunction instanceof Promise) {
+                    cleanupFunction.then((cleanup) => cleanup?.());
+                }
+            };
+        }
+    }, [auth.axiosInstance, user?.username, sessionId]);
 
     const avatarUrl = user.profilePictureUrl;
 
@@ -138,12 +184,21 @@ export default function CoachStartSessionPage() {
                 />
                 <div className="w-full pl-2 pr-20">
                     {/* Header */}
-                    <button
-                        onClick={handleEndSessionClick}
-                        className="bg-red-500 text-white px-4 py-2 rounded-lg my-5"
-                    >
-                        <strong>End Session</strong>
-                    </button>
+                    <Link to={`/coach/sessions`}>
+                        <button className="bg-green-t3 hover:bg-gray-400 transition duration-300 text-white px-4 py-2 rounded-lg my-5">
+                            <FaArrowLeft className="inline-block mr-2" />
+                            <strong>Back</strong>
+                        </button>
+                    </Link>
+
+                    {!isHistorical && (
+                        <button
+                            onClick={handleEndSessionClick}
+                            className="bg-red-500 text-white ml-2 px-4 py-2 rounded-lg my-5"
+                        >
+                            <strong>End Session</strong>
+                        </button>
+                    )}
 
                     {/* SimpleModal for confirmation */}
                     <SimpleModal
