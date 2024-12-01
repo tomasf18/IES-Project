@@ -141,6 +141,31 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
         return result;
     }
 
+    public Map<String, Integer> getSensorsDay(String date) {
+        // Parse the date
+        LocalDate localDate = LocalDate.parse(date);
+        long startOfDay = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        long endOfDay = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    
+        // Criteria for the day
+        Criteria criteria = new Criteria("timestamp").greaterThanEqual(startOfDay).and("timestamp").lessThan(endOfDay);
+        Query query = new CriteriaQuery(criteria);
+        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
+    
+        // Group logs by hour
+        Map<String, Long> logsByHour = searchHits.stream()
+            .map(SearchHit::getContent)
+            .map(log -> Instant.ofEpochMilli(log.getTimestamp()).atZone(ZoneId.systemDefault()).getHour())
+            .collect(Collectors.groupingBy(
+                hour -> String.format("%02d:00", hour), // Format the hour as HH:00
+                Collectors.counting()
+            ));
+    
+        // Convert to Map<String, Integer>
+        return logsByHour.entrySet().stream()
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
+    }
+
 
     public void addSensorsLog(SensorsLogEntity sensorsLogEntity) {
         elasticsearchOperations.save(sensorsLogEntity, sensorsIndex);

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
@@ -56,4 +57,16 @@ public class AdministratorController {
             return new ResponseEntity<>("Error fetching sensors", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/administrator/sensors-day")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> api_get_sensors_day(@RequestParam String date) throws ResourceNotFoundException {
+        System.out.println("GET /api/v1/administrator/sensors-day");
+        try {
+            return new ResponseEntity<>(administratorService.getSensorsDay(date), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error fetching sensors: " + e.getMessage());
+            return new ResponseEntity<>("Error fetching sensors", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    } 
 }
