@@ -44,4 +44,16 @@ public class AdministratorController {
             return new ResponseEntity<>("Error fetching sensors", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/administrator/sensors-last-5-days")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> api_get_sensors_last_5_days() throws ResourceNotFoundException {
+        System.out.println("GET /api/v1/administrator/sensors-last-5-days");
+        try {
+            return new ResponseEntity<>(administratorService.getSensorsLast5Days(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error fetching sensors: " + e.getMessage());
+            return new ResponseEntity<>("Error fetching sensors", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
