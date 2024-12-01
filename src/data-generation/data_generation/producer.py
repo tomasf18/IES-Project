@@ -46,9 +46,9 @@ try:
         message_list = []
         for sensor_id in sensor_ids:
             # Generate random values following a normal distribution
-            heartRate = random.gauss(average_heart_rate, standard_deviation_heart_rate)
-            respiratoryRate = random.gauss(average_respiratory_rate, standard_deviation_respiratory_rate)
-            bodyTemperature = random.gauss(average_body_temperature, standard_deviation_body_temperature)
+            heartRate = int(random.gauss(average_heart_rate, standard_deviation_heart_rate))
+            respiratoryRate = int(random.gauss(average_respiratory_rate, standard_deviation_respiratory_rate))
+            bodyTemperature = round(random.gauss(average_body_temperature, standard_deviation_body_temperature), 1)
 
             sensor_data = {
                 'sensor_id': sensor_id,
