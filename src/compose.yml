@@ -35,18 +35,18 @@ services:
       - .m2:/root/.m2     
     restart: on-failure
 
-  frontend:
-    depends_on:
-      - backend
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    environment:
-      BACKEND_IP: ${BACKEND_IP}
-      BACKEND_PORT: ${BACKEND_LOCAL_PORT}
-    ports:
-      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
-    restart: on-failure
+  # frontend:
+  #   depends_on:
+  #     - backend
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     BACKEND_IP: ${BACKEND_IP}
+  #     BACKEND_PORT: ${BACKEND_LOCAL_PORT}
+  #   ports:
+  #     - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
+  #   restart: on-failure
   
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0

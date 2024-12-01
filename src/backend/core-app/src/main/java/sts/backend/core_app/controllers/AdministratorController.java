@@ -33,5 +33,15 @@ public class AdministratorController {
         }
     }
 
-
+    @GetMapping("/administrator/sensors-team-weak")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> api_get_sensors() throws ResourceNotFoundException {
+        System.out.println("GET /api/v1/administrator/sensors");
+        try {
+            return new ResponseEntity<>(administratorService.getSensors(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.err.println("Error fetching sensors: " + e.getMessage());
+            return new ResponseEntity<>("Error fetching sensors", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
