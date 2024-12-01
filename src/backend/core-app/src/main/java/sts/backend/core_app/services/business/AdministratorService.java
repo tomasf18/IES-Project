@@ -8,6 +8,7 @@ import sts.backend.core_app.dto.admin.SensorsTeamWeek;
 import sts.backend.core_app.dto.admin.SensorsLast5Days;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AdministratorService {
@@ -31,6 +32,11 @@ public class AdministratorService {
     // get all sensors logs in the last 5 days
     public List<SensorsLast5Days> getSensorsLast5Days() {
         return elasticSearchAnalysis.getSensorsLast5Days();
+    }
+
+    // get all sensors logs by hour in the day
+    public Map<String, Integer> getSensorsDay(String date) {
+        return elasticSearchAnalysis.getSensorsDay(date);
     }
 
 
