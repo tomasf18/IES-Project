@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.services.analysis.interfaces.ElasticSearchAnalysis;
 import sts.backend.core_app.models.SensorsLogEntity;
+import sts.backend.core_app.dto.admin.SensorsTeamWeek;
 
 import java.util.List;
 
@@ -16,10 +17,16 @@ public class AdministratorService {
         this.elasticSearchAnalysis = elasticSearchAnalysis;
     }
 
-// get all logs (TEST PURPOSES)
+    // get all logs (TEST PURPOSES)
     public List<SensorsLogEntity> getLogs() {
         return elasticSearchAnalysis.getLogs();
     }
+
+    // get all sensors logs by team in the week
+    public List<SensorsTeamWeek> getSensors() {
+        return elasticSearchAnalysis.getSensors();
+    }
+
 
 // get daily-comparison for all last 5 days
 

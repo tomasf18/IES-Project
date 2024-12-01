@@ -4,12 +4,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.web.bind.annotation.RequestBody;
 import sts.backend.core_app.dto.player.SessionsAllDayOfYear;
-import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
-import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.services.business.PlayerService;
 
 import org.springframework.security.access.prepost.PreAuthorize;

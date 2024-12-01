@@ -3,7 +3,6 @@ package sts.backend.core_app.persistence.repositories.postgreDB;
 import java.util.Optional;
 import java.util.Set;
 
-import org.apache.kafka.common.quota.ClientQuotaAlteration.Op;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
