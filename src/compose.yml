@@ -1,24 +1,79 @@
+name: smart-training-system
+
 services:
+
   database:
     image: timescale/timescaledb:latest-pg16
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
     ports:
       - "${DATABASE_LOCAL_PORT}:${DATABASE_CONTAINER_PORT}"
     volumes:
       - postgres_db_data:${DATABASE_VOLUME}
     restart: unless-stopped
 
+  kafdrop:
+    image: obsidiandynamics/kafdrop:4.0.2
+    ports:
+      - "${KAFDROP_LOCAL_PORT}:${KAFDROP_CONTAINER_PORT}"
+    environment:
+      KAFKA_BROKERCONNECT: "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
+      SERVER_SERVLET_CONTEXTPATH: "${KAFDROP_CONTEXT_PATH}" 
+    restart: on-failure
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.4
+    environment:
+      ZOOKEEPER_CLIENT_PORT: "${ZOOKEEPER_CONTAINER_PORT}"
+      ZOOKEEPER_TICK_TIME: "${ZOOKEEPER_TICK_TIME}"
+    ports:
+      - "${ZOOKEEPER_LOCAL_PORT}:${ZOOKEEPER_CONTAINER_PORT}"
+  
+  kafka:
+    image: confluentinc/cp-kafka:7.4.4
+    depends_on:
+      - zookeeper
+    ports:
+      - "${KAFKA_LOCAL_PORT}:${KAFKA_CONTAINER_PORT}"
+    environment:
+      KAFKA_BROKER_ID: "${KAFKA_BROKER_ID}"
+      KAFKA_ZOOKEEPER_CONNECT: "${ZOOKEEPER_IP}:${ZOOKEEPER_CONTAINER_PORT}"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_IP}:${KAFKA_BROKER_PORT},PLAINTEXT_HOST://localhost:${KAFKA_LOCAL_PORT}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "${KAFKA_REPLICATION_FACTOR}"
+      KAFKA_LOG_RETENTION_MS: "${KAFKA_RETENTION_MS}"
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: "${KAFKA_RETENTION_CHECK_INTERVAL_MS}"
+    restart: unless-stopped
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    volumes:
+      - elasticsearch_data:${ELASTICSEARCH_VOLUME}
+    restart: unless-stopped
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
+    restart: on-failure
+
   backend:
     depends_on: 
       - database
+      - kafka
+      - elasticsearch
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: "${BACKEND_CONTEXT_PATH}"
+      dockerfile: "${BACKEND_DOCKERFILE}"
     environment:
-      FRONTEND_LOCAL_PORT: ${FRONTEND_LOCAL_PORT}
+      FRONTEND_PORT: ${FRONTEND_LOCAL_PORT}
       FRONTEND_IP: ${FRONTEND_IP}
       SPRING_APPLICATION_JSON: 
         '{
@@ -32,70 +87,20 @@ services:
     ports:
       - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
-      - .m2:/root/.m2     
+      - .m2:${M2_BACKEND_VOLUME}    
     restart: on-failure
 
-  # frontend:
-  #   depends_on:
-  #     - backend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     BACKEND_IP: ${BACKEND_IP}
-  #     BACKEND_PORT: ${BACKEND_LOCAL_PORT}
-  #   ports:
-  #     - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
-  #   restart: on-failure
-  
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    restart: unless-stopped
-  
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.2
-    ports:
-      - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
-    restart: on-failure
-
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.4.4
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
-  
-  kafka:
-    image: confluentinc/cp-kafka:7.4.4
+  frontend:
     depends_on:
-      - zookeeper
-    ports:
-      - 29092:29092
+      - backend
+    build:
+      context: "${FRONTEND_CONTEXT_PATH}"
+      dockerfile: "${FRONTEND_DOCKERFILE}"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_LOG_RETENTION_MS: 1000
-      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 500
-    restart: unless-stopped
-
-  kafdrop:
-    image: obsidiandynamics/kafdrop:4.0.2
+      BACKEND_IP: ${BACKEND_IP}
+      BACKEND_PORT: ${BACKEND_LOCAL_PORT}
     ports:
-      - "9009:9000"
-    environment:
-      KAFKA_BROKERCONNECT: "kafka:9092" # Kafka Broker Network Addresses (host:port,host:port)
-      SERVER_SERVLET_CONTEXTPATH: "/"
+      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
     restart: on-failure
 
 

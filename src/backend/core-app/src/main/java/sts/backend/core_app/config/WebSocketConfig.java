@@ -14,7 +14,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${FRONTEND_IP}")
     private String frontendIp;
 
-    @Value("${FRONTEND_LOCAL_PORT}")
+    @Value("${FRONTEND_PORT}")
     private String frontendPort;
 
     @Override
