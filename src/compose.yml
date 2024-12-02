@@ -13,6 +13,8 @@ services:
     volumes:
       - postgres_db_data:${DATABASE_VOLUME}
     restart: unless-stopped
+    networks:
+      - sts-network
 
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.2
@@ -22,6 +24,8 @@ services:
       KAFKA_BROKERCONNECT: "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
       SERVER_SERVLET_CONTEXTPATH: "${KAFDROP_CONTEXT_PATH}" 
     restart: on-failure
+    networks:
+      - sts-network
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
@@ -30,6 +34,9 @@ services:
       ZOOKEEPER_TICK_TIME: "${ZOOKEEPER_TICK_TIME}"
     ports:
       - "${ZOOKEEPER_LOCAL_PORT}:${ZOOKEEPER_CONTAINER_PORT}"
+    networks:
+      - sts-network
+
   
   kafka:
     image: confluentinc/cp-kafka:7.4.4
@@ -47,6 +54,8 @@ services:
       KAFKA_LOG_RETENTION_MS: "${KAFKA_RETENTION_MS}"
       KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: "${KAFKA_RETENTION_CHECK_INTERVAL_MS}"
     restart: unless-stopped
+    networks:
+      - sts-network
   
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
@@ -57,12 +66,16 @@ services:
     volumes:
       - elasticsearch_data:${ELASTICSEARCH_VOLUME}
     restart: unless-stopped
+    networks:
+      - sts-network
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.2
     ports:
       - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
     restart: on-failure
+    networks:
+      - sts-network
 
   backend:
     depends_on: 
@@ -99,6 +112,8 @@ services:
     volumes:
       - .m2:${M2_BACKEND_VOLUME}    
     restart: on-failure
+    networks:
+      - sts-network
 
   frontend:
     depends_on:
@@ -106,13 +121,25 @@ services:
     build:
       context: "${FRONTEND_CONTEXT_PATH}"
       dockerfile: "${FRONTEND_DOCKERFILE}"
+      args:
+        BACKEND_IP: ${BACKEND_IP}
+        BACKEND_PORT: ${BACKEND_CONTAINER_PORT}
+        BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
+        WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
     environment:
-      BACKEND_IP: ${BACKEND_IP}
-      BACKEND_PORT: ${BACKEND_LOCAL_PORT}
+      - VITE_BACKEND_IP=${BACKEND_IP}
+      - VITE_BACKEND_PORT=${BACKEND_CONTAINER_PORT}
+      - VITE_BACKEND_API_PREFIX=${BACKEND_API_PREFIX}
+      - VITE_WEBSOCKET_ENDPOINT=${WEBSOCKET_ENDPOINT}
     ports:
       - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
     restart: on-failure
+    networks:
+      - sts-network
 
+networks:
+  sts-network:
+    driver: bridge
 
 volumes:    
   postgres_db_data:

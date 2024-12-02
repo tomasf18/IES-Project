@@ -48,8 +48,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const user = useUser();
 
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
-    // baseURL: "http://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/api/v1",
+    baseURL: "http://" + import.meta.env.VITE_BACKEND_IP + ":" + import.meta.env.VITE_BACKEND_PORT + "/" + import.meta.env.VITE_BACKEND_API_PREFIX,
     headers: {
       "Content-Type": "application/json",
     },

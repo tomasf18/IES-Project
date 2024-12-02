@@ -119,6 +119,8 @@ interface SessionHistoricalData {
 
 let stompClientRealTimeData: StompJs.Client | null = null; // Keep track of the connection
 
+const websocket_url = "ws://" + import.meta.env.VITE_BACKEND_IP + ":" + import.meta.env.VITE_BACKEND_PORT + "/" + import.meta.env.VITE_WEBSOCKET_ENDPOINT;
+
 const connectWebSocketRealTimeData = async (sessionId: number, setSessionRealTimeData: Dispatch<SetStateAction<SessionRealTimeData | undefined>>) => {
 
     if (stompClientRealTimeData && stompClientRealTimeData.active) {
@@ -127,7 +129,7 @@ const connectWebSocketRealTimeData = async (sessionId: number, setSessionRealTim
     }
 
     stompClientRealTimeData = new StompJs.Client({
-        brokerURL: "ws://localhost:8080/backend-ws",    // WebSocket URL
+        brokerURL: websocket_url,    // WebSocket URL
         debug: (str) => console.log(str),               // Optional debugging logs
         reconnectDelay: 5000,                           // Time to wait before attempting to reconnect
         heartbeatIncoming: 4000,                        // Heartbeat checks for incoming messages
@@ -183,7 +185,7 @@ const connectWebSocketRealTimeInfo = async (teamId: number, setPlayersRealTimeIn
     }
 
     stompClientRealTimeInfo = new StompJs.Client({
-        brokerURL: "ws://localhost:8080/backend-ws",    
+        brokerURL: websocket_url,    
         debug: (str) => console.log(str),               
         reconnectDelay: 5000,                           
         heartbeatIncoming: 4000,                        
