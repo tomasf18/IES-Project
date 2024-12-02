@@ -59,6 +59,8 @@ interface SessionRealTimeInfo {
 
 let stompClientRealTimeInfo: StompJs.Client | null = null;
 
+const websocket_url = "ws://" + import.meta.env.VITE_BACKEND_IP + ":" + import.meta.env.VITE_BACKEND_PORT + "/" + import.meta.env.VITE_WEBSOCKET_ENDPOINT;
+
 const connectPlayerWebSocketRealTimeInfo = async (setSessionInfo: Dispatch<SetStateAction<SessionHistoricalInfo | SessionRealTimeInfo | null>>, playerId: string) => {
 
     if (stompClientRealTimeInfo && stompClientRealTimeInfo.active) {
@@ -67,7 +69,7 @@ const connectPlayerWebSocketRealTimeInfo = async (setSessionInfo: Dispatch<SetSt
     }
 
     stompClientRealTimeInfo = new StompJs.Client({
-        brokerURL: "ws://localhost:8080/backend-ws",
+        brokerURL: websocket_url,
         debug: (str) => console.log(str),
         reconnectDelay: 5000,
         heartbeatIncoming: 4000,

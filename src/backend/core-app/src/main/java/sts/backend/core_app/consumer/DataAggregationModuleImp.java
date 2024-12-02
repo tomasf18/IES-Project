@@ -11,6 +11,7 @@ import sts.backend.core_app.models.Team;
 import sts.backend.core_app.dto.session.Message;
 import sts.backend.core_app.consumer.interfaces.DataAggregationModule;
 import sts.backend.core_app.consumer.interfaces.DataTransformationModule;
+import sts.backend.core_app.consumer.interfaces.WebSocketController;
 import sts.backend.core_app.dto.session.Record;
 import sts.backend.core_app.dto.session.SessionInfoView;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
