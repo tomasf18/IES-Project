@@ -23,7 +23,7 @@ interface SensorsLast5Days {
 const getSensorsTeamWeek = async (axiosInstance: any) => {
   try {
     const response = await axiosInstance.get(
-      "/administrator/sensors-team-weak"
+      "/administrator/sensors-team-week"
     );
 
     if (response) {
