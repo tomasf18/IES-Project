@@ -1,8 +1,66 @@
-export { getSessionInfo, getSessionsTeam, postMatch, getTeamSensors, deleteTeamSensorsAssignPlayer, getPlayersWithoutSensor, postSensorPlayer, postSessions, postSessionsAssignPlayer, getTeamPlayersAvailableReaTimeInfo, getSessionRealTimeData, getBySessionHistoricalData, endSession, getBySessionRealTimeData } from "./CoachConsumer";
-export type { SensorAssign, PlayersWithoutSensor, Session, RealTimeInfo, SessionRealTimeData, SessionHistoricalData } from "./CoachConsumer";
-export { getTeamMembers, deleteRegistrationCode, deleteUser, refreshRegistrationCode, changeProfilePictureUrl } from "./TeamDirectorConsumer";
+export {
+  getSessionInfo,
+  getSessionsTeam,
+  postMatch,
+  getTeamSensors,
+  deleteTeamSensorsAssignPlayer,
+  getPlayersWithoutSensor,
+  postSensorPlayer,
+  postSessions,
+  postSessionsAssignPlayer,
+  getTeamPlayersAvailableReaTimeInfo,
+  getSessionRealTimeData,
+  getBySessionHistoricalData,
+  endSession,
+  getBySessionRealTimeData,
+  connectWebSocketRealTimeData,
+  connectWebSocketRealTimeInfo,
+} from "./CoachConsumer";
+export type {
+  SensorAssign,
+  PlayersWithoutSensor,
+  Session,
+  RealTimeInfo,
+  SessionRealTimeData,
+  SessionHistoricalData,
+  SessionInfo,
+} from "./CoachConsumer";
+export {
+  getTeamMembers,
+  deleteRegistrationCode,
+  deleteUser,
+  refreshRegistrationCode,
+  changeProfilePictureUrl,
+} from "./TeamDirectorConsumer";
 export type { TeamMembers } from "./TeamDirectorConsumer";
-export { getSessionsPlayer, getSessionHistoricalInfo, getSessionRealTimeInfo } from "./PlayerConsumer";
-export type { SessionHistoricalInfo, SessionRealTimeInfo } from "./PlayerConsumer";
-export { addTeamSensor, deleteTeamSensor, getTeamsInfo, createTeam, getTeamDirectors, deleteTeamDirector, addTeamDirector, deleteTeam } from "./AdminConsumer";
-export type { TeamDirectors } from "./AdminConsumer";
+export {
+  getSessionsPlayer,
+  getSessionHistoricalInfo,
+  getSessionRealTimeInfo,
+  getSessionsAllDaysOfYear,
+  connectPlayerWebSocketRealTimeInfo,
+} from "./PlayerConsumer";
+export type {
+  SessionHistoricalInfo,
+  SessionRealTimeInfo,
+  SessionsAllDaysOfYear,
+} from "./PlayerConsumer";
+export {
+  addTeamSensor,
+  deleteTeamSensor,
+  getTeamsInfo,
+  createTeam,
+  getTeamDirectors,
+  addTeamDirector,
+  deleteTeam,
+  getSensorsTeamWeek,
+  getSensorsLast5Days,
+  getSensorsDay,
+} from "./AdminConsumer";
+export type {
+  TeamDirectors,
+  SensorsTeamWeek,
+  SensorsLast5Days,
+} from "./AdminConsumer";
+export { postSignUpValidation } from "./AuthConsumer";
+export type { Auth } from "./AuthConsumer";

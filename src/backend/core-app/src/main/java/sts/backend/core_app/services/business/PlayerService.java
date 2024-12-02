@@ -14,6 +14,7 @@ import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.services.analysis.interfaces.BasicDataAnalysis;
+import sts.backend.core_app.services.analysis.interfaces.ElasticSearchAnalysis;
 import sts.backend.core_app.services.analysis.interfaces.RealTimeAnalysis;
 
 @Service
@@ -21,10 +22,12 @@ public class PlayerService {
 
     private final BasicDataAnalysis basicDataAnalysis;
     private final RealTimeAnalysis realTimeAnalysis;
+    private final ElasticSearchAnalysis elasticSearchAnalysis;
 
-    public PlayerService(BasicDataAnalysis basicDataAnalysis, RealTimeAnalysis realTimeAnalysis) {
+    public PlayerService(BasicDataAnalysis basicDataAnalysis, RealTimeAnalysis realTimeAnalysis, ElasticSearchAnalysis elasticSearchAnalysis) {
         this.basicDataAnalysis = basicDataAnalysis;
         this.realTimeAnalysis = realTimeAnalysis;
+        this.elasticSearchAnalysis = elasticSearchAnalysis;
     }
 
     public SessionsAllDayOfYear getPlayerSessionsAllDaysOfYear(Long playerId, Long year) throws ResourceNotFoundException {
@@ -41,12 +44,12 @@ public class PlayerService {
         
     }
 
-    public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
-        return realTimeAnalysis.addMetricValue(metricValue);
-    }
-
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
         return realTimeAnalysis.getRealTimeExtraDetailsLast24Hours(playerId);
+    }
+
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
+        return realTimeAnalysis.getPlayerIdBySensorId(sensorId);
     }
     
 }

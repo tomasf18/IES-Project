@@ -2,7 +2,6 @@ import { SideBar, Header, TeamsCard, ButtonWithIcon } from "../../components";
 import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks";
-import { Google } from "../../assets";
 import { getTeamsInfo } from "../../api";
 import { useEffect, useState } from "react";
 

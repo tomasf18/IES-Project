@@ -16,7 +16,7 @@ import java.util.Arrays;
 @Configuration
 public class WebConfig {
 
-    @Value("${FRONTEND_LOCAL_PORT}")
+    @Value("${FRONTEND_PORT}")
     private String frontendLocalPort;
 
     @Value("${FRONTEND_IP}")

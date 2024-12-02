@@ -11,7 +11,6 @@ import java.time.Duration;
 
 import org.springframework.stereotype.Service;
 
-import sts.backend.core_app.dto.player.MetricValue;
 import sts.backend.core_app.dto.player.RealTimeExtraDetailsPlayer;
 import sts.backend.core_app.dto.player.ValueTimeSeriesView;
 import sts.backend.core_app.dto.team.PlayersAvailableRealTimeInfo;
@@ -22,7 +21,6 @@ import sts.backend.core_app.dto.session.RealTimeInfoResponse;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.models.Player;
 import sts.backend.core_app.models.Match;
-import sts.backend.core_app.models.SensorTimeSeriesData;
 import sts.backend.core_app.persistence.interfaces.RelationalQueries;
 import sts.backend.core_app.models.Session;
 import sts.backend.core_app.persistence.interfaces.TimeSeriesQueries;
@@ -39,10 +37,6 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
         this.timeSeriesQueries = timeSeriesQueries;
     }
 
-    public SensorTimeSeriesData addMetricValue(MetricValue metricValue) throws ResourceNotFoundException {
-        return timeSeriesQueries.addMetricValue(metricValue.getPlayerId(), metricValue.getMetricName(), metricValue.getValue());
-    }
-
     @Override
     public RealTimeExtraDetailsPlayer getRealTimeExtraDetailsLast24Hours(Long playerId) {
         return timeSeriesQueries.getRealTimeExtraDetailsLast24Hours(playerId);
@@ -51,7 +45,7 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
     public List<PlayersAvailableRealTimeInfo> getPlayersAvailableRealTimeInfo(Long teamId) throws ResourceNotFoundException {
         List<PlayersAvailableRealTimeInfo> playersAvailableRealTimeInfo = new ArrayList<>();
         List<Player> players = relationalQueries.getAvailablePlayersByTeamId(teamId);
-        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(5);
+        LocalDateTime initialTimestamp = LocalDateTime.now().minusMinutes(1);
 
         for (Player player : players) {
             List<ValueTimeSeriesView> heartRateData = timeSeriesQueries.getHeartRateData(player.getUserId(), initialTimestamp);
@@ -322,5 +316,10 @@ public class RealTimeAnalysisImpl implements RealTimeAnalysis {
             return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers, opponentTeam, matchType, location, weather);
         } 
         return new RealTimeInfoResponse(sessionId, sessionName, date, time, participants, historicalDataPlayers);
+    }
+
+    @Override
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
+        return relationalQueries.getPlayerIdBySensorId(sensorId);
     }
 }

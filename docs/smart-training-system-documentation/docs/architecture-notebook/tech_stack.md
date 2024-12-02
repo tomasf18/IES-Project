@@ -8,7 +8,7 @@ sidebar_label: Tech Stack
 
 This section provides an overview of the technologies used in the **Smart Training System** and their purposes within the project. The architecture leverages modern technologies to ensure scalability, flexibility, and efficiency in handling real-time data and user interactions.
 
-![System Architecture Diagram](/img/architecture.0.2.0.svg)
+![System Architecture Diagram](/img/architecture.1.0.0.svg)
 
 ## Technology Stack and Purpose
 

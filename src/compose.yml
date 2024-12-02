@@ -1,25 +1,100 @@
+name: smart-training-system
+
 services:
+
   database:
     image: timescale/timescaledb:latest-pg16
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
     ports:
       - "${DATABASE_LOCAL_PORT}:${DATABASE_CONTAINER_PORT}"
     volumes:
       - postgres_db_data:${DATABASE_VOLUME}
     restart: unless-stopped
+    networks:
+      - sts-network
+
+  kafdrop:
+    image: obsidiandynamics/kafdrop:4.0.2
+    ports:
+      - "${KAFDROP_LOCAL_PORT}:${KAFDROP_CONTAINER_PORT}"
+    environment:
+      KAFKA_BROKERCONNECT: "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
+      SERVER_SERVLET_CONTEXTPATH: "${KAFDROP_CONTEXT_PATH}" 
+    restart: on-failure
+    networks:
+      - sts-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.4
+    environment:
+      ZOOKEEPER_CLIENT_PORT: "${ZOOKEEPER_CONTAINER_PORT}"
+      ZOOKEEPER_TICK_TIME: "${ZOOKEEPER_TICK_TIME}"
+    ports:
+      - "${ZOOKEEPER_LOCAL_PORT}:${ZOOKEEPER_CONTAINER_PORT}"
+    networks:
+      - sts-network
+
+  
+  kafka:
+    image: confluentinc/cp-kafka:7.4.4
+    depends_on:
+      - zookeeper
+    ports:
+      - "${KAFKA_LOCAL_PORT}:${KAFKA_CONTAINER_PORT}"
+    environment:
+      KAFKA_BROKER_ID: "${KAFKA_BROKER_ID}"
+      KAFKA_ZOOKEEPER_CONNECT: "${ZOOKEEPER_IP}:${ZOOKEEPER_CONTAINER_PORT}"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_IP}:${KAFKA_BROKER_PORT},PLAINTEXT_HOST://localhost:${KAFKA_LOCAL_PORT}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "${KAFKA_REPLICATION_FACTOR}"
+      KAFKA_LOG_RETENTION_MS: "${KAFKA_RETENTION_MS}"
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: "${KAFKA_RETENTION_CHECK_INTERVAL_MS}"
+    restart: unless-stopped
+    networks:
+      - sts-network
+  
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
+    volumes:
+      - elasticsearch_data:${ELASTICSEARCH_VOLUME}
+    restart: unless-stopped
+    networks:
+      - sts-network
+  
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    ports:
+      - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
+    restart: on-failure
+    networks:
+      - sts-network
 
   backend:
     depends_on: 
       - database
+      - kafka
+      - elasticsearch
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: "${BACKEND_CONTEXT_PATH}"
+      dockerfile: "${BACKEND_DOCKERFILE}"
     environment:
-      FRONTEND_LOCAL_PORT: ${FRONTEND_LOCAL_PORT}
+      FRONTEND_PORT: ${FRONTEND_LOCAL_PORT}
       FRONTEND_IP: ${FRONTEND_IP}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_IP}
+      ELASTICSEARCH_PORT: ${ELASTICSEARCH_CONTAINER_PORT}
+      WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+      BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
+      SWAGGER_API_DOCS_PATH: ${SWAGGER_API_DOCS_PATH}
+      SWAGGER_UI_PATH: ${SWAGGER_UI_PATH}
+      SWAGGER_UI_PART_PATH: ${SWAGGER_UI_PART_PATH}
       SPRING_APPLICATION_JSON: 
         '{
           "spring.datasource.url" : "jdbc:postgresql://database:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
@@ -27,30 +102,52 @@ services:
           "spring.datasource.password" : "${POSTGRES_PASSWORD}",
           "spring.jpa.show-sql" : "true",
           "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
-          "spring.jpa.hibernate.ddl-auto" : "update"
+          "spring.jpa.hibernate.ddl-auto" : "update",
+
+          "springdoc.api-docs.path" : "${SWAGGER_API_DOCS_PATH}",
+          "springdoc.swagger-ui.path" : "${SWAGGER_UI_PATH}",
+
+          "spring.kafka.bootstrap-servers" : "${KAFKA_IP}:${KAFKA_BROKER_PORT}",
+          "spring.elasticsearch.uris" : "http://${ELASTICSEARCH_IP}:${ELASTICSEARCH_CONTAINER_PORT}",
+          "spring.elasticsearch.username" : "${ELASTICSEARCH_USERNAME}",
+          "spring.elasticsearch.password" : "${ELASTICSEARCH_PASSWORD}"
+
         }'
+
     ports:
       - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
-      - .m2:/root/.m2     
-    restart: unless-stopped
+      - .m2:${M2_BACKEND_VOLUME}    
+    restart: on-failure
+    networks:
+      - sts-network
 
-  # frontend:
-  #   depends_on:
-  #     - backend
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     BACKEND_IP: ${BACKEND_IP}
-  #     BACKEND_PORT: ${BACKEND_LOCAL_PORT}
-  #   ports:
-  #     - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
-  #   restart: on-failure
-  
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: "${FRONTEND_CONTEXT_PATH}"
+      dockerfile: "${FRONTEND_DOCKERFILE}"
+      args:
+        BACKEND_IP: ${BACKEND_IP}
+        BACKEND_PORT: ${BACKEND_CONTAINER_PORT}
+        BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
+        WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+    environment:
+      - VITE_BACKEND_IP=${BACKEND_IP}
+      - VITE_BACKEND_PORT=${BACKEND_CONTAINER_PORT}
+      - VITE_BACKEND_API_PREFIX=${BACKEND_API_PREFIX}
+      - VITE_WEBSOCKET_ENDPOINT=${WEBSOCKET_ENDPOINT}
+    ports:
+      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
+    restart: on-failure
+    networks:
+      - sts-network
+
+networks:
+  sts-network:
+    driver: bridge # default driver
+
 volumes:    
   postgres_db_data:
-    
-
-
-    
+  elasticsearch_data:

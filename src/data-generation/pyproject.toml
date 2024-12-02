@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "data-generation"
+version = "0.1.0"
+description = ""
+authors = ["Joao <jpapinto@ua.pt>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+kafka-python = "^2.0.2"
+matplotlib = "^3.9.2"
+pandas = "^2.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

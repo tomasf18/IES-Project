@@ -17,9 +17,9 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     // Get session by trainerId and is open (endtime null)
     Optional<Session> findByTrainerUserIdAndEndTimeIsNull(Long trainerId);
-    
+
     @Query("""
-            SELECT  s.id AS sessionId, 
+            SELECT  s.id AS sessionId,
                     s.startTime as startTime,
                     s.name as sessionName,
                     s.endTime as endTime,
@@ -63,4 +63,3 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             """)
     Optional<Set<SessionInfoView>> findSessionInfoByPlayerId(@Param("playerId") Long playerId);
 }
-    

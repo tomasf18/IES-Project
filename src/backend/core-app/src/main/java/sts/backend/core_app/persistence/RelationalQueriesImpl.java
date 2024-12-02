@@ -154,7 +154,7 @@ public class RelationalQueriesImpl implements RelationalQueries {
     }
 
     public Player getPlayerById(Long playerId) throws ResourceNotFoundException {
-        return playerRepository.findById(playerId)
+        return userRepository.findPlayerByUserId(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Player with ID " + playerId + " not found"));
     }
 
@@ -173,6 +173,11 @@ public class RelationalQueriesImpl implements RelationalQueries {
             .orElseThrow(() -> new ResourceNotFoundException("Sensor with ID " + sensorId + " not found"));
     }
 
+    public Long getTeamIdByPlayers(Player player) throws ResourceNotFoundException {
+        return teamRepository.findTeamIdByPlayers(player)
+            .orElseThrow(() -> new ResourceNotFoundException("Team for player " + player + " not found"));
+    }
+
     // --- Get By other methods ---
 
     public Set<SessionInfoView> getSessionsInfoByTeam(Team team) throws ResourceNotFoundException {
@@ -183,6 +188,12 @@ public class RelationalQueriesImpl implements RelationalQueries {
     public Set<SessionInfoView> getSessionsInfoByPlayerId(Long playerId) throws ResourceNotFoundException {
         return sessionRepository.findSessionInfoByPlayerId(playerId)
             .orElseThrow(() -> new ResourceNotFoundException("Sessions for player with ID " + playerId + " not found"));
+    }
+    
+    public Set<SessionInfoView> getSessionByPlayerId(Long playerId) throws ResourceNotFoundException {
+        System.out.println("playerId: " + playerId);
+        return sessionRepository.findSessionInfoByPlayerId(playerId)
+            .orElseThrow(() -> new ResourceNotFoundException("Session for sensor with ID " + playerId));
     }
 
     public Set<Player> getPlayersInSessionBySessionId(Long sessionId) throws ResourceNotFoundException {
@@ -340,5 +351,12 @@ public class RelationalQueriesImpl implements RelationalQueries {
         }
         return userRepository.save(user);
     }
+
+    @Override
+    public Long getPlayerIdBySensorId(Long sensorId) throws ResourceNotFoundException {
+        return playerSensorRepository.findPlayerIdBySensorSensorId(sensorId)
+            .orElseThrow(() -> new ResourceNotFoundException("Player with sensor ID " + sensorId + " not found"));
+    }
+
 
 }

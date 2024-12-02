@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction } from "react";
+import * as StompJs from "@stomp/stompjs";
+
 interface Session {
     sessionName: string;
     sessionId: number;
@@ -111,6 +114,117 @@ interface SessionHistoricalData {
     type: string;
     location: string;
     weather: string;
+}
+
+
+let stompClientRealTimeData: StompJs.Client | null = null; // Keep track of the connection
+
+const websocket_url = "ws://" + import.meta.env.VITE_BACKEND_IP + ":" + import.meta.env.VITE_BACKEND_PORT + "/" + import.meta.env.VITE_WEBSOCKET_ENDPOINT;
+
+const connectWebSocketRealTimeData = async (sessionId: number, setSessionRealTimeData: Dispatch<SetStateAction<SessionRealTimeData | undefined>>) => {
+
+    if (stompClientRealTimeData && stompClientRealTimeData.active) {
+        console.log("WebSocket already connected");
+        return; // Prevent duplicate connection
+    }
+
+    stompClientRealTimeData = new StompJs.Client({
+        brokerURL: websocket_url,    // WebSocket URL
+        debug: (str) => console.log(str),               // Optional debugging logs
+        reconnectDelay: 5000,                           // Time to wait before attempting to reconnect
+        heartbeatIncoming: 4000,                        // Heartbeat checks for incoming messages
+    });
+
+    // Define behavior on successful connection
+    stompClientRealTimeData.onConnect = (frame) => {
+        console.log("Connected: " + frame);
+
+        // Subscribe to the topic and listen for updates
+        stompClientRealTimeData?.subscribe("/topic/realTimeInfo/" + sessionId, (message) => {
+            const newSessionRealTimeData = JSON.parse(message.body);
+            console.log("Received new data: ", newSessionRealTimeData);
+
+            setSessionRealTimeData((prevData) => ({
+                ...prevData,
+                ...newSessionRealTimeData,
+            }));
+        });
+    }
+
+    // Handle WebSocket errors
+    stompClientRealTimeData.onWebSocketError = (error) => {
+        console.error("WebSocket error: ", error);
+    };
+
+    // Handle STOMP protocol errors
+    stompClientRealTimeData.onStompError = (frame) => {
+        console.error("Broker reported error: " + frame.headers["message"]);
+        console.error("Additional details: " + frame.body);
+    };
+
+    // Activate the client
+    stompClientRealTimeData.activate();
+
+    // Cleanup on component unmount
+    return () => {
+        if (stompClientRealTimeData && stompClientRealTimeData.active) {
+            stompClientRealTimeData.deactivate();
+            console.log("WebSocket connection closed");
+        }
+    };
+}
+
+
+let stompClientRealTimeInfo: StompJs.Client | null = null; 
+
+const connectWebSocketRealTimeInfo = async (teamId: number, setPlayersRealTimeInfo: Dispatch<SetStateAction<RealTimeInfo[]>>) => {
+
+    if (stompClientRealTimeInfo && stompClientRealTimeInfo.active) {
+        console.log("WebSocket already connected");
+        return; // Prevent duplicate connection
+    }
+
+    stompClientRealTimeInfo = new StompJs.Client({
+        brokerURL: websocket_url,    
+        debug: (str) => console.log(str),               
+        reconnectDelay: 5000,                           
+        heartbeatIncoming: 4000,                        
+    });
+
+    // Define behavior on successful connection
+    stompClientRealTimeInfo.onConnect = (frame) => {
+        console.log("Connected: " + frame);
+
+        // Subscribe to the topic and listen for updates
+        stompClientRealTimeInfo?.subscribe("/topic/playersAvailableRealTimeInfo/" + teamId, (message) => {
+            const newPlayersRealTimeInfo = JSON.parse(message.body);
+            console.log("Received new data: ", newPlayersRealTimeInfo);
+
+            setPlayersRealTimeInfo(newPlayersRealTimeInfo);
+        });
+    }
+
+    // Handle WebSocket errors
+    stompClientRealTimeInfo.onWebSocketError = (error) => {
+        console.error("WebSocket error: ", error);
+    };
+
+    // Handle STOMP protocol errors
+    stompClientRealTimeInfo.onStompError = (frame) => {
+        console.error("Broker reported error: " + frame.headers["message"]);
+        console.error("Additional details: " + frame.body);
+    };
+
+    // Activate the client
+    stompClientRealTimeInfo.activate();
+
+    // Cleanup on component unmount
+    return () => {
+        if (stompClientRealTimeInfo && stompClientRealTimeInfo.active) {
+            stompClientRealTimeInfo.deactivate();
+            console.log("WebSocket connection closed");
+        }
+    };
 }
 
 
@@ -326,23 +440,28 @@ const getTeamPlayersAvailableReaTimeInfo = async (
 const getSessionRealTimeData = async (
     axiosInstance: any,
     trainerId: number
-) => {
+): Promise<SessionRealTimeData | null> => {
     try {
         const response = await axiosInstance.get(
             "/sessions/real-time-info-trainer?trainerId=" + trainerId
         );
 
-        if (response) {
+        if (response.status === 200) {
             console.log(response);
-            const authResponse = response.data as SessionRealTimeData;
-
-            return authResponse;
+            return response.data as SessionRealTimeData;
         }
-        return null;
-    } catch (error) {
-        console.error(error);
+
+        return null; 
+    } catch (error: any) {
+        if (error.response?.status === 404) {
+            console.warn("No session available for this trainer.");
+            return null;
+        }
+        console.error("Unexpected error:", error);
+        throw error;
     }
-}
+};
+
 
 const getBySessionRealTimeData = async (
     axiosInstance: any,
@@ -403,6 +522,8 @@ const endSession = async (
 }
 
 export {
+    connectWebSocketRealTimeData,
+    connectWebSocketRealTimeInfo,
     getSessionInfo,
     getSessionsTeam,
     getTeamSensors,
@@ -418,4 +539,4 @@ export {
     endSession,
     postMatch
 };
-export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData, SessionHistoricalData };
+export type { Session, SensorAssign, PlayersWithoutSensor, RealTimeInfo, SessionRealTimeData, SessionHistoricalData, SessionInfo };
