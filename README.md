@@ -18,7 +18,7 @@ This system aims to empower coaches with actionable insights, enabling them to m
 [[click] High resolution architecture diagram](/docs/resources/architecture/1.0.0/architecture.1.0.0.svg)
 ![System Architecture Diagram](/docs/resources/architecture/1.0.0/architecture.1.0.0.jpg)
 
-## Bookmarks
+## Bookmarks 
 
 **GitHub Repository**
 
