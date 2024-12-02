@@ -17,15 +17,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${FRONTEND_PORT}")
     private String frontendPort;
 
+    @Value("${WEBSOCKET_ENDPOINT}")
+    private String websocketEndpoint;
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // Enables simple broker for topics
-        config.enableSimpleBroker("/topic"); // Clients can subscribe to "/topic/"
+        config.enableSimpleBroker("/topic"); 
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Clients connect to WebSocket at "/backend-ws"
-        registry.addEndpoint("/backend-ws").setAllowedOrigins("http://" + frontendIp + ":" + frontendPort);
+        registry.addEndpoint("/" + websocketEndpoint).setAllowedOrigins("http://" + frontendIp + ":" + frontendPort);
     }
 }

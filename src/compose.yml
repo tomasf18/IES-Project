@@ -90,6 +90,11 @@ services:
       FRONTEND_IP: ${FRONTEND_IP}
       ELASTICSEARCH_HOST: ${ELASTICSEARCH_IP}
       ELASTICSEARCH_PORT: ${ELASTICSEARCH_CONTAINER_PORT}
+      WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+      BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
+      SWAGGER_API_DOCS_PATH: ${SWAGGER_API_DOCS_PATH}
+      SWAGGER_UI_PATH: ${SWAGGER_UI_PATH}
+      SWAGGER_UI_PART_PATH: ${SWAGGER_UI_PART_PATH}
       SPRING_APPLICATION_JSON: 
         '{
           "spring.datasource.url" : "jdbc:postgresql://database:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
@@ -141,12 +146,8 @@ services:
 
 networks:
   sts-network:
-    driver: bridge
+    driver: bridge # default driver
 
 volumes:    
   postgres_db_data:
   elasticsearch_data:
-    
-
-
-    
