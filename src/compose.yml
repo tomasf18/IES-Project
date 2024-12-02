@@ -102,13 +102,13 @@ services:
           "springdoc.api-docs.path" : "${SWAGGER_API_DOCS_PATH}",
           "springdoc.swagger-ui.path" : "${SWAGGER_UI_PATH}",
 
-          "spring.kafka.bootstrap-servers" : "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
+          "spring.kafka.bootstrap-servers" : "${KAFKA_IP}:${KAFKA_BROKER_PORT}",
+          "spring.elasticsearch.uris" : "http://${ELASTICSEARCH_IP}:${ELASTICSEARCH_CONTAINER_PORT}",
+          "spring.elasticsearch.username" : "${ELASTICSEARCH_USERNAME}",
+          "spring.elasticsearch.password" : "${ELASTICSEARCH_PASSWORD}"
 
         }'
 
-        # spring.elasticsearch.uris=http://elasticsearch:9200
-        # spring.elasticsearch.username=${ELASTICSEARCH_USERNAME}
-        # spring.elasticsearch.password=${ELASTICSEARCH_PASSWORD}
     ports:
       - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
