@@ -88,6 +88,8 @@ services:
     environment:
       FRONTEND_PORT: ${FRONTEND_LOCAL_PORT}
       FRONTEND_IP: ${FRONTEND_IP}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_IP}
+      ELASTICSEARCH_PORT: ${ELASTICSEARCH_CONTAINER_PORT}
       SPRING_APPLICATION_JSON: 
         '{
           "spring.datasource.url" : "jdbc:postgresql://database:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
