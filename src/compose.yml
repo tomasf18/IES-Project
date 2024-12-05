@@ -71,6 +71,8 @@ services:
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.2
+    depends_on:
+      - elasticsearch
     ports:
       - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
     restart: on-failure
@@ -133,11 +135,15 @@ services:
         BACKEND_PORT: ${BACKEND_CONTAINER_PORT}
         BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
         WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+        FRONTEND_HOST: ${FRONTEND_IP}
+        FRONTEND_PORT: ${FRONTEND_CONTAINER_PORT}
     environment:
       - VITE_BACKEND_IP=${BACKEND_IP}
       - VITE_BACKEND_PORT=${BACKEND_CONTAINER_PORT}
       - VITE_BACKEND_API_PREFIX=${BACKEND_API_PREFIX}
       - VITE_WEBSOCKET_ENDPOINT=${WEBSOCKET_ENDPOINT}
+      - VITE_FRONTEND_HOST=${FRONTEND_IP}
+      - VITE_FRONTEND_PORT=${FRONTEND_CONTAINER_PORT}
     ports:
       - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
     restart: on-failure
