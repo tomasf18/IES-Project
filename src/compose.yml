@@ -144,6 +144,16 @@ services:
     networks:
       - sts-network
 
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"  # Map host's port 80 to container's port 80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/html:/usr/share/nginx/html
+
 networks:
   sts-network:
     driver: bridge # default driver
