@@ -2,20 +2,20 @@ name: smart-training-system
 
 services:
 
+  # I don't want to expose the database port to the host machine, for security reasons
   database:
     image: timescale/timescaledb:latest-pg16
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DB: "${POSTGRES_DB}"
-    ports:
-      - "${DATABASE_LOCAL_PORT}:${DATABASE_CONTAINER_PORT}"
     volumes:
       - postgres_db_data:${DATABASE_VOLUME}
     restart: unless-stopped
     networks:
       - sts-network
 
+  # I want to expose the kafdrop port to the host machine, so that I can access it from the browser
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.2
     ports:
@@ -27,17 +27,16 @@ services:
     networks:
       - sts-network
 
+  # I don't want to expose the zookeeper port to the host machine, for security reasons
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.4
     environment:
       ZOOKEEPER_CLIENT_PORT: "${ZOOKEEPER_CONTAINER_PORT}"
       ZOOKEEPER_TICK_TIME: "${ZOOKEEPER_TICK_TIME}"
-    ports:
-      - "${ZOOKEEPER_LOCAL_PORT}:${ZOOKEEPER_CONTAINER_PORT}"
     networks:
       - sts-network
 
-  
+  # I want to expose the kafka port to the host machine, so that I can use it to produce messages 
   kafka:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
@@ -57,18 +56,18 @@ services:
     networks:
       - sts-network
   
+  # I don't want to expose the elasticsearch port to the host machine, for security reasons
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     environment:
       - discovery.type=single-node
-    ports:
-      - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
     volumes:
       - elasticsearch_data:${ELASTICSEARCH_VOLUME}
     restart: unless-stopped
     networks:
       - sts-network
   
+  # I want to expose the kibana port to the host machine, so that the admin can access it from the browser
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.2
     depends_on:
@@ -98,8 +97,11 @@ services:
       SWAGGER_UI_PATH: ${SWAGGER_UI_PATH}
       SWAGGER_UI_PART_PATH: ${SWAGGER_UI_PART_PATH}
       SPRING_APPLICATION_JSON: 
+          # "server.address" : "${BACKEND_IP}",
+          # "server.port" : "${BACKEND_CONTAINER_PORT}",
         '{
-          "spring.datasource.url" : "jdbc:postgresql://database:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
+
+          "spring.datasource.url" : "jdbc:postgresql://${DATABASE_IP}:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
           "spring.datasource.username" : "${POSTGRES_USER}",
           "spring.datasource.password" : "${POSTGRES_PASSWORD}",
           "spring.jpa.show-sql" : "true",
@@ -150,9 +152,18 @@ services:
     networks:
       - sts-network
 
+
 networks:
   sts-network:
-    driver: bridge # default driver
+    driver: macvlan
+    driver_opts:
+      parent: wlo1  # Replace with the VM network interface (ifconfig)
+    ipam: # IP Address Management
+      config:
+        - subnet: ${SUBNET}     # USE ifconfig TO CHECK IF THE IPS DOON´T COLLIDE WITH IPS EITHER FROM THE vm AND THE ua vpn  
+          ip_range: ${IP_RANGE} # same as above
+          # docker network ls -> See the networks created
+          # docker inspect <network_name> -> See the network details (each ip address assigned to each container)
 
 volumes:    
   postgres_db_data:
