@@ -129,11 +129,17 @@ services:
       context: "${FRONTEND_CONTEXT_PATH}"
       dockerfile: "${FRONTEND_DOCKERFILE}"
       args:
+        WEBSOCKET_SCHEME: ${WEBSOCKET_SCHEME}
+        HYPERTEXT_SCHEME: ${HYPERTEXT_SCHEME}
+        HOST_NAME: ${HOST_NAME}
         BACKEND_IP: ${BACKEND_IP}
         BACKEND_PORT: ${BACKEND_CONTAINER_PORT}
         BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
         WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
     environment:
+      - VITE_WEBSOCKET_SCHEME=${WEBSOCKET_SCHEME}
+      - VITE_HYPERTEXT_SCHEME=${HYPERTEXT_SCHEME}
+      - VITE_HOST_NAME=${HOST_NAME}
       - VITE_BACKEND_IP=${BACKEND_IP}
       - VITE_BACKEND_PORT=${BACKEND_CONTAINER_PORT}
       - VITE_BACKEND_API_PREFIX=${BACKEND_API_PREFIX}
@@ -153,6 +159,8 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/html:/usr/share/nginx/html
+    networks:
+      - sts-network
 
 networks:
   sts-network:
@@ -161,3 +169,5 @@ networks:
 volumes:    
   postgres_db_data:
   elasticsearch_data:
+
+    

@@ -59,7 +59,7 @@ interface SessionRealTimeInfo {
 
 let stompClientRealTimeInfo: StompJs.Client | null = null;
 
-const websocket_url = "ws://" + import.meta.env.VITE_BACKEND_IP + ":" + import.meta.env.VITE_BACKEND_PORT + "/" + import.meta.env.VITE_WEBSOCKET_ENDPOINT;
+const websocket_url = import.meta.env.VITE_WEBSOCKET_SCHEME + "://" + import.meta.env.VITE_HOST_NAME + "/" + import.meta.env.VITE_WEBSOCKET_ENDPOINT;
 
 const connectPlayerWebSocketRealTimeInfo = async (setSessionInfo: Dispatch<SetStateAction<SessionHistoricalInfo | SessionRealTimeInfo | null>>, playerId: string) => {
 
