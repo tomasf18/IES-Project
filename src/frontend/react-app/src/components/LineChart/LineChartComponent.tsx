@@ -1,11 +1,10 @@
-import React from "react";
 import {
-  LineChart,
+  AreaChart,
+  Area,
   ResponsiveContainer,
   XAxis,
   YAxis,
   Tooltip,
-  Line,
 } from "recharts";
 
 interface LineChartComponentProps {
@@ -21,19 +20,27 @@ const LineChartComponent: React.FC<LineChartComponentProps> = ({
 }) => {
   return (
     <ResponsiveContainer width="85%" height={height}>
-      <LineChart data={data}>
+      <AreaChart data={data}>
+        <defs>
+          <linearGradient id={`gradient-${strokeColor}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={strokeColor} stopOpacity={0.6} />
+            <stop offset="95%" stopColor={strokeColor} stopOpacity={0} />
+          </linearGradient>
+        </defs>
         <XAxis dataKey="name" strokeWidth={2} />
         <YAxis strokeWidth={2} />
         <Tooltip />
-        <Line
+        <Area
           type="monotone"
           dataKey="value"
           stroke={strokeColor}
-          strokeWidth={3}
-          dot={false}
+          fill={`url(#gradient-${strokeColor})`} // Use dynamic gradient ID
+          fillOpacity={1}
+          isAnimationActive={false}
         />
-      </LineChart>
+      </AreaChart>
     </ResponsiveContainer>
+
   );
 };
 
