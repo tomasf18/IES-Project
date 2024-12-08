@@ -22,7 +22,7 @@ sidebar_position: 1
 
 # Project Abstract
 
-**Smart Training System** is a web-based platform that will be designed to assist coaches in monitoring and analyzing player performance in real-time. The application will provide key physical statistics, including fatigue levels, heart rate, and effort. Utilizing distributed data streams from actual sensors or simulated sources, the platform will enhance real-time decision-making during training and matches. 
+**Smart Training System** is a web-based platform that will be designed to assist coaches in monitoring and analyzing player performance in real-time. The application will provide key physical statistics, including heart rate, body temperature and respiratory rate. Utilizing distributed data streams from sensors, the platform will enhance real-time decision-making during training and matches.
 
 **Key Features:**
 
@@ -31,4 +31,3 @@ sidebar_position: 1
 - **Comprehensive REST API**: Facilitates easy integration with the web portal and future mobile applications, allowing for scalability and flexibility.
 
 This system aims to empower coaches with actionable insights, enabling them to make informed decisions that improve team performance and player development.
-
