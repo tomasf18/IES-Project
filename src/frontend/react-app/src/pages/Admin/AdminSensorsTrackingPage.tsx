@@ -1,5 +1,5 @@
 import { SideBar, Header, StripedTable } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
+import { FaUsers, FaHeartPulse } from "react-icons/fa6";
 import { FaChartBar } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import {
@@ -94,11 +94,6 @@ export default function AdminSensorsTrackingPage() {
   const color = "#82ca9d"; // Highlight color for the selected bar
 
   const navLinks = [
-    {
-      icon: <FaCode />,
-      to: "/admin/endpoints",
-      label: "Endpoints",
-    },
     {
       icon: <FaHeartPulse />,
       to: "/admin/sensors-tracking",

@@ -1,5 +1,5 @@
 import { SideBar, Header, ConfigurationCard, StripedTable } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse, FaUserMinus, FaUserPlus, FaRegCopy, FaTrashCan } from "react-icons/fa6";
+import { FaUsers, FaHeartPulse, FaUserMinus, FaUserPlus, FaRegCopy, FaTrashCan } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextInput } from "flowbite-react";
 import { SimpleModal } from "../../components";
@@ -33,11 +33,6 @@ export default function AdminManageTeam() {
   }
 
   const navLinks = [
-    {
-      icon: <FaCode />,
-      to: "/admin/endpoints",
-      label: "Endpoints",
-    },
     {
       icon: <FaHeartPulse />,
       to: "/admin/sensors-tracking",

@@ -37,7 +37,6 @@ services:
     networks:
       - sts-network
 
-  
   kafka:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
@@ -61,6 +60,8 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
     environment:
       - discovery.type=single-node
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
     ports:
       - "${ELASTICSEARCH_LOCAL_PORT}:${ELASTICSEARCH_CONTAINER_PORT}"
     volumes:

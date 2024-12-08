@@ -1,5 +1,5 @@
 import { SideBar, Header, ConfigurationCard } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
+import { FaUsers, FaHeartPulse } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../hooks";
@@ -8,11 +8,6 @@ import { createTeam } from "../../api";
 export default function AdminAddTeam() {
 
   const navLinks = [
-    {
-      icon: <FaCode />,
-      to: "/admin/endpoints",
-      label: "Endpoints",
-    },
     {
       icon: <FaHeartPulse />,
       to: "/admin/sensors-tracking",
