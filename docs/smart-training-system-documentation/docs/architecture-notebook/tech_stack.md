@@ -13,43 +13,62 @@ This section provides an overview of the technologies used in the **Smart Traini
 ## Technology Stack and Purpose
 
 ### Nginx
-- **Purpose**: Reverse Proxy & Load Balancing
-  - SSL/TLS certificates (e.g., via certbot for certificate management)
-  - Load Balancing
+- **Purpose**:
+  - Reverse Proxy
+  - Monitoring
   - Caching
-  - Authentication
 
 ### Spring (Spring Boot)
-- **Purpose**: API & Business Logic Layer
+- **Purpose**: 
+  - API & Business Logic Layer
   - Integration with Databases (JPA)
   - Message Handling
   - Integration with Kafka (Consumer)
 
 ### Kafka
-- **Purpose**: Asynchronous Task Processing
-  - Message Brokering
+- **Purpose**: 
+  - Asynchronous Task Processing
+  - Message Broker
   - Event-Driven Architecture
 
 ### PostgreSQL
-- **Purpose**: Relational Data Storage
+- **Purpose**: 
+  - Relational Data Storage
   - Advanced Querying
-  - Integration with Spring
+  - Spring Integration
 
 ### Timescale DB
-- **Purpose**: Time-Series Data Storage
+- **Purpose**: 
+  - Time-Series Data Storage
   - Efficient Time-Series Querying
   - Scalability & Retention Policies
   - Seamless PostgreSQL Integration
 
 ### Docker
-- **Purpose**: Containerization & Microservices Architecture
+- **Purpose**: 
+  - Containerization
   - Portability & Scalability
   - Efficient Resource Management
 
-
 ### EK Stack (Elasticsearch, Kibana)
-- **Purpose**: Monitoring & Logging (Administrator)
+- **Purpose**: 
+  - Monitoring & Logging (Administrator)
   - Real-time Monitoring
   - Endpoints Analysis
   - Sensor Data Analysis
+
+### React
+- **Purpose**: 
+  - Frontend Framework
+  - Integration with APIs
+
+### Vite
+- **Purpose**: 
+  - Development Build Tool
+  - Fast Development Server
+
+### Tailwind CSS
+- **Purpose**: 
+  - Pre-build utility classes to style elements
+  - Responsive Design
 
