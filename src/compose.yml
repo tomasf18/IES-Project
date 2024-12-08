@@ -172,15 +172,16 @@ services:
 
 networks:
   sts-network:
-    driver: macvlan
-    driver_opts:
-      parent: wlo1  # Replace with the VM network interface (ifconfig)
-    ipam: # IP Address Management
-      config:
-        - subnet: ${SUBNET}     # USE ifconfig TO CHECK IF THE IPS DOON´T COLLIDE WITH IPS EITHER FROM THE vm AND THE ua vpn  
-          ip_range: ${IP_RANGE} # same as above
-          # docker network ls -> See the networks created
-          # docker inspect <network_name> -> See the network details (each ip address assigned to each container)
+    driver: bridge
+    # driver: macvlan
+    # driver_opts:
+    #   parent: enxcc96e59d0a92  # Replace with the VM network interface (ifconfig)
+    # ipam: # IP Address Management
+    #   config:
+    #     - subnet: ${SUBNET}     # USE ifconfig TO CHECK IF THE IPS DOON´T COLLIDE WITH IPS EITHER FROM THE vm AND THE ua vpn  
+    #       ip_range: ${IP_RANGE} # same as above
+    #       # docker network ls -> See the networks created
+    #       # docker inspect <network_name> -> See the network details (each ip address assigned to each container)
 
 volumes:    
   postgres_db_data:
