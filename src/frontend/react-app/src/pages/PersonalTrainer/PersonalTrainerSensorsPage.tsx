@@ -221,7 +221,7 @@ export default function PersonalTrainerSensorsPage() {
                 }
                 buttonText="Yes, I'm sure"
                 buttonClass={
-                    selectedPlayerId === null ? "bg-gray-100 w-1/2 rounded-lg py-2" : "bg-gray-300 hover:bg-gray-600 w-1/2 rounded-lg py-2"
+                    `${selectedPlayerId === null ? "bg-gray-200 cursor-not-allowed" : "bg-gray-300 hover:bg-gray-600"} rounded rounded-2xl px-10`
                 }
                 onConfirm={handleConfirm}
             />
