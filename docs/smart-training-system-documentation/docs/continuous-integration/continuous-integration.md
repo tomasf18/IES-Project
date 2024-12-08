@@ -2,6 +2,7 @@
 id: continuous-integration
 title: Continuous Integration
 sidebar_label: Continuous Integration
+sidebar_position: 7
 ---
 
 # Continuous Integration
