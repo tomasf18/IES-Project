@@ -5,7 +5,7 @@ sidebar_label: Personas
 sidebar_position: 2
 ---
 
-# Personas
+## Personas
 
 The design and development of the **Smart Training System** were supported by several Personas that represent the key users of the application. These include:
 
@@ -64,4 +64,3 @@ He is responsible for managing user access levels within the club's systems. JoÃ
 David is responsible for overseeing the Smart Training System's backend, including assigning permissions, monitoring performance, and ensuring that the system meets the club's security and operational needs. He regularly checks activity logs and security alerts to prevent any vulnerabilities from compromising the system.
 
 **MOTIVATION**: David aims to ensure the Smart Training System operates efficiently, that security protocols are enforced, and that the system settings are optimized to align with the clubâ€™s evolving needs.
-
