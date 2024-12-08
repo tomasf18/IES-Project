@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class WebConfig {
 
     @Value("${FRONTEND_PORT}")
-    private String frontendLocalPort;
+    private String frontendPort;
 
     @Value("${FRONTEND_IP}")
     private String frontendIp;
@@ -28,7 +28,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                    .allowedOrigins("http://" + frontendIp + ":" + frontendLocalPort)
+                    .allowedOrigins("http://" + frontendIp + ":" + frontendPort)
                     .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                     .allowedHeaders("*")
                     .allowCredentials(true);
@@ -68,7 +68,7 @@ public class WebConfig {
     @Bean
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://" + frontendIp + ":" + frontendLocalPort)); 
+        configuration.setAllowedOrigins(Arrays.asList("http://" + frontendIp + ":" + frontendPort)); 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -80,7 +80,7 @@ public class WebConfig {
     @Bean
     UrlBasedCorsConfigurationSource myWebsiteConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://" + frontendIp + ":" + frontendLocalPort));
+        configuration.setAllowedOrigins(Arrays.asList("http://" + frontendIp + ":" + frontendPort));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
