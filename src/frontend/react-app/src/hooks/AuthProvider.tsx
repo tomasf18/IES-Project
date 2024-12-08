@@ -46,9 +46,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string>(Cookies.get(tokenName) || "");
   const navigate = useNavigate();
   const user = useUser();
-
+  console.log(import.meta.env);
   const axiosInstance = axios.create({
-    baseURL: "http://" + import.meta.env.VITE_BACKEND_IP + ":" + import.meta.env.VITE_BACKEND_PORT + "/" + import.meta.env.VITE_BACKEND_API_PREFIX,
+    baseURL: import.meta.env.VITE_HYPERTEXT_SCHEME + "://" + import.meta.env.VITE_HOST_NAME + "/"  + import.meta.env.VITE_BACKEND_API_PREFIX,
     headers: {
       "Content-Type": "application/json",
     },

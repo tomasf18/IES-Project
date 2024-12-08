@@ -1,5 +1,5 @@
 import { SideBar, Header, TeamsCard, ButtonWithIcon } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
+import { FaUsers, FaHeartPulse } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks";
 import { getTeamsInfo } from "../../api";
@@ -8,11 +8,6 @@ import { useEffect, useState } from "react";
 export default function AdminTeamsManagingPage() {
   const auth = useAuth();
   const navLinks = [
-    {
-      icon: <FaCode />,
-      to: "/admin/endpoints",
-      label: "Endpoints",
-    },
     {
       icon: <FaHeartPulse />,
       to: "/admin/sensors-tracking",

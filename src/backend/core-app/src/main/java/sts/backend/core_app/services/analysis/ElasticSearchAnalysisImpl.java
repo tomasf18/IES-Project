@@ -20,7 +20,6 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.models.SensorsLogEntity;
-import sts.backend.core_app.models.EndpointsEntity;
 import sts.backend.core_app.models.Team;
 
 import sts.backend.core_app.dto.admin.SensorsTeamWeek;
@@ -35,13 +34,11 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
     private final RelationalQueries relationalQueries;
 
     private final IndexCoordinates sensorsIndex;
-    private final IndexCoordinates endpointsIndex;
 
     public ElasticSearchAnalysisImpl(ElasticsearchOperations elasticsearchOperations, RelationalQueries relationalQueries) {
         this.elasticsearchOperations = elasticsearchOperations;
         this.relationalQueries = relationalQueries;
         this.sensorsIndex = elasticsearchOperations.getIndexCoordinatesFor(SensorsLogEntity.class);
-        this.endpointsIndex = elasticsearchOperations.getIndexCoordinatesFor(EndpointsEntity.class);
     }
 
     public List<SensorsLogEntity> getLogs() {

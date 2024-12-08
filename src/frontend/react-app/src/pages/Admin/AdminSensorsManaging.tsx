@@ -1,5 +1,5 @@
 import { SideBar, Header, ConfigurationCard, StripedTable } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse, FaUserMinus } from "react-icons/fa6";
+import { FaUsers, FaHeartPulse, FaUserMinus } from "react-icons/fa6";
 import { MdOutlineSensors } from "react-icons/md";
 import { useLocation } from "react-router-dom";
 import { TextInput } from "flowbite-react";
@@ -14,7 +14,6 @@ import {
 
 export default function AdminSensorsTrackingPage() {
   const navLinks = [
-    { icon: <FaCode />, to: "/admin/endpoints", label: "Endpoints"},
     { icon: <FaHeartPulse />, to: "/admin/sensors-tracking", label: "Sensors Tracking"},
     { icon: <FaUsers />, to: "/admin/teams-managing", label: "Teams Managing"},
   ];
