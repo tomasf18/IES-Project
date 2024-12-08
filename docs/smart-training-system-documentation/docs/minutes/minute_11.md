@@ -2,6 +2,7 @@
 id: meeting_11
 title: Meeting 11 - November 23, 2024
 sidebar_label: Meeting 11 - November 23, 2024
+sidebar_position: 11
 ---
 
 # Meeting 11 - November 23, 2024
