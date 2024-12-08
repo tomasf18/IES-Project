@@ -9,6 +9,6 @@ sidebar_label: Architecture Notebook
 Welcome to the **Architecture** section. This area provides an in-depth look into the architecture diagram and view.
 ## Subsections
 
-- [Architecture Diagram](architecture_diagram)
+- [Architecture Diagram](architecture-diagram)
 - [Tech Stack](tech_stack)
 
