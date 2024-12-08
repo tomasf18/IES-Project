@@ -55,18 +55,24 @@ export default function Component() {
   }, [user.username]);
 
   return (
-    <form className="flex w-full max-w-xl flex-col gap-4 mx-auto" onSubmit={handleSubmitEvent}>
+    <form
+      className="flex w-full max-w-xl flex-col gap-4 mx-auto"
+      onSubmit={handleSubmitEvent}
+    >
       <h1 className="text-3xl font-semibold text-center text-gray-600 mb-4">
         Log In
       </h1>
-      <div>
-        <Button color="white" className="w-full">
+      <div className="relative">
+        <Button color="white" className="w-full cursor-not-allowed">
           <img
             src={Google}
             alt="Google"
             className="w-5 h-5 mr-3 transition duration-400 group-hover:invert"
           />
           Continue with Google
+          <span className="absolute inset-x-0 bottom-[-2rem] text-center text-sm text-gray-500">
+            (In the future...)
+          </span>
         </Button>
       </div>
 
@@ -112,7 +118,9 @@ export default function Component() {
         <Checkbox id="remember" className="text-gray-800 focus:ring-gray-600" />
         <Label htmlFor="remember">Remember me</Label>
       </div>
-      {error && <div className="text-red-500 font-bold text-center">{error}</div>}
+      {error && (
+        <div className="text-red-500 font-bold text-center">{error}</div>
+      )}
       <button
         type="submit"
         className="bg-gray-600 w-full h-full text-white py-2 px-4 rounded-lg hover:bg-gray-500"
