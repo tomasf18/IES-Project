@@ -11,7 +11,7 @@ sidebar_position: 1
 
 # Date
 
-**Aveiro, 07/10/2024**
+**Aveiro, 07/12/2024**
 
 # Students
 
