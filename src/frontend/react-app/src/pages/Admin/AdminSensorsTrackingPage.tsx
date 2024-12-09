@@ -29,7 +29,7 @@ export default function AdminSensorsTrackingPage() {
     []
   );
   const [sensorsDay, setSensorsDay] = useState<
-    { hour: string; accesses: unknown }[]
+    { date: string; accesses: unknown }[]
   >([]);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
@@ -76,8 +76,8 @@ export default function AdminSensorsTrackingPage() {
           if (response) {
             // Converte o objeto recebido para um array compatível com o gráfico
             const formattedData = Object.entries(response).map(
-              ([hour, accesses]) => ({
-                hour,
+              ([date, accesses]) => ({
+                date,
                 accesses,
               })
             );
@@ -218,7 +218,7 @@ export default function AdminSensorsTrackingPage() {
                   >
                     {/* Title */}
                     <h3 className="text-xl font-semibold text-center mb-4">
-                      Daily Comparison - Number of accesses per hour
+                      Daily Comparison - Number of accesses
                     </h3>
 
                     <div className=" w-full h-80">
@@ -273,7 +273,7 @@ export default function AdminSensorsTrackingPage() {
             </div>
           </div>
 
-          <div className="col-span-6">
+          <div className="col-span-6 max-h-[45rem] overflow-y-auto">
             <StripedTable
               widthClass={StripedTableWidthClass}
               heightClass={StripedTableHeightClass}
