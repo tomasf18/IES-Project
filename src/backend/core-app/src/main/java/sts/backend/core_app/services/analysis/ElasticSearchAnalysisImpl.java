@@ -149,18 +149,22 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
         Query query = new CriteriaQuery(criteria);
         SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
     
-        // Group logs by hour
-        Map<String, Long> logsByHour = searchHits.stream()
-            .map(SearchHit::getContent)
-            .map(log -> Instant.ofEpochMilli(log.getTimestamp()).atZone(ZoneId.systemDefault()).getHour())
-            .collect(Collectors.groupingBy(
-                hour -> String.format("%02d:00", hour), // Format the hour as HH:00
-                Collectors.counting()
-            ));
+        // Group logs by 10-second intervals
+        Map<String, Long> logsByInterval = searchHits.stream()
+        .map(SearchHit::getContent)
+        .map(log -> {
+            long timestamp = log.getTimestamp();
+            long intervalStart = (timestamp / 10000) * 10000; // Find the start of the 10-second interval
+            return Instant.ofEpochMilli(intervalStart).atZone(ZoneId.systemDefault()).toLocalTime();
+        })
+        .collect(Collectors.groupingBy(
+            time -> String.format("%02d:%02d:%02d", time.getHour(), time.getMinute(), time.getSecond()), // Format as HH:mm:ss
+            Collectors.counting()
+        ));
     
         // Convert to Map<String, Integer>
-        return logsByHour.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
+    return logsByInterval.entrySet().stream()
+    .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
     }
 
 
