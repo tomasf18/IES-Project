@@ -201,7 +201,7 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
             // Update the last sent time
             lastSensorsDaySentTime = currentTime;
         }
-    
+     
         // Send SensorsDay data
         LocalDate today = LocalDate.now();
         webSocketController.sendSensorsDay(getSensorsDay(today.toString()));
