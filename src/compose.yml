@@ -165,8 +165,8 @@ services:
     ports:
       - "80:80"  # Map host's port 80 to container's port 80
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf.d:${CONF_VOLUME}
+      - ./nginx/html:${HTML_VOLUME}
     networks:
       - sts-network
 
