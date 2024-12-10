@@ -1,6 +1,7 @@
 package sts.backend.core_app.consumer.interfaces;
 
 import java.util.List;
+import java.util.Map;
 
 import sts.backend.core_app.dto.admin.SensorsLast5Days;
 import sts.backend.core_app.dto.admin.SensorsTeamWeek;
@@ -14,4 +15,5 @@ public interface WebSocketController {
     public void sendPlayersRealTimeExtraDetails(Long playerId, RealTimeExtraDetailsResponse realTimeExtraDetailsResponse);
     public void sendSensorsTeamWeek(List<SensorsTeamWeek> sensorsTeamWeek);
     public void sendSensorsLast5Days(List<SensorsLast5Days> sensorsLast5Days);
+    public void sendSensorsDay(Map<String, Integer> sensorsDay);
 }

@@ -1,6 +1,7 @@
 package sts.backend.core_app.consumer;
 import java.util.List;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import java.util.Map;
 import org.springframework.stereotype.Controller;
 
 import sts.backend.core_app.dto.session.RealTimeExtraDetailsResponse;
@@ -36,5 +37,9 @@ public class WebSocketControllerImp implements WebSocketController {
 
     public void sendSensorsLast5Days(List<SensorsLast5Days> sensorsLast5Days) {
         messagingTemplate.convertAndSend("/topic/sensorsLast5Days", sensorsLast5Days);
+    }
+
+    public void sendSensorsDay(Map<String, Integer> sensorsDay) {
+        messagingTemplate.convertAndSend("/topic/sensorsDay", sensorsDay);
     }
 }

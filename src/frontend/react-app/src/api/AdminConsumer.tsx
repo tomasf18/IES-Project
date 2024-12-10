@@ -30,10 +30,73 @@ const websocket_url =
     "/" +
     import.meta.env.VITE_WEBSOCKET_ENDPOINT;
 
+let stompClientRealTimeSensorsDay: StompJs.Client | null = null;
+
+const connectWebSocketRealTimeSensorsDay = async (
+    setRealTimeSensorsDay: Dispatch<SetStateAction<{ date: string; accesses: unknown }[]>>
+) => {
+    if (stompClientRealTimeSensorsDay && stompClientRealTimeSensorsDay.active) {
+        console.log("WebSocket already connected");
+        return; // Prevent duplicate connection
+    }
+
+    stompClientRealTimeSensorsDay = new StompJs.Client({
+        brokerURL: websocket_url,
+        debug: (str) => console.log(str),
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+    });
+
+    // Define behavior on successful connection
+    stompClientRealTimeSensorsDay.onConnect = (frame) => {
+        console.log("Connected: " + frame);
+
+        // Subscribe to the topic and listen for updates
+        stompClientRealTimeSensorsDay?.subscribe(
+            "/topic/sensorsDay",
+            (message) => {
+                const newRealTimeSensorsDay = JSON.parse(message.body);
+                console.log("Received new dataqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq : ", newRealTimeSensorsDay);
+
+                const formattedData = Object.entries(newRealTimeSensorsDay).map(([date, accesses]) => ({
+                    date,
+                    accesses,
+                }));
+
+                setRealTimeSensorsDay(formattedData);
+            }
+        );
+    };
+
+    // Handle WebSocket errors
+    stompClientRealTimeSensorsDay.onWebSocketError = (error) => {
+        console.error("WebSocket error: ", error);
+    };
+
+    // Handle STOMP protocol errors
+    stompClientRealTimeSensorsDay.onStompError = (frame) => {
+        console.error("Broker reported error: " + frame.headers["message"]);
+        console.error("Additional details: " + frame.body);
+    };
+
+    // Activate the client
+    stompClientRealTimeSensorsDay.activate();
+
+    // Cleanup on component unmount
+    return () => {
+        if (stompClientRealTimeSensorsDay && stompClientRealTimeSensorsDay.active) {
+            stompClientRealTimeSensorsDay.deactivate();
+            console.log("WebSocket connection closed");
+        }
+    };
+};
+
 let stompClientSensorsLast5Days: StompJs.Client | null = null;
 
-const connectWebSocketSensorsLast5Days = async (setSensorsLast5Days: Dispatch<SetStateAction<SensorsLast5Days[]>>) => {
-    
+const connectWebSocketSensorsLast5Days = async (
+    setSensorsLast5Days: Dispatch<SetStateAction<SensorsLast5Days[]>>
+) => {
     if (stompClientSensorsLast5Days && stompClientSensorsLast5Days.active) {
         console.log("WebSocket already connected");
         return; // Prevent duplicate connection
@@ -330,6 +393,7 @@ const deleteTeam = async (axiosInstance: any, teamId: number) => {
 };
 
 export {
+    connectWebSocketRealTimeSensorsDay,
     connectWebSocketSensorsLast5Days,
     connectWebSocketSensorsTeamWeek,
     addTeamSensor,

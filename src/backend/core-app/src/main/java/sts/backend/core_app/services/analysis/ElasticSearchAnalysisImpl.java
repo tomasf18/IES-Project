@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,7 +37,8 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
     private final IndexCoordinates sensorsIndex;
     private final WebSocketController webSocketController;
 
-    public ElasticSearchAnalysisImpl(ElasticsearchOperations elasticsearchOperations, RelationalQueries relationalQueries, WebSocketController webSocketController) {
+    public ElasticSearchAnalysisImpl(ElasticsearchOperations elasticsearchOperations,
+            RelationalQueries relationalQueries, WebSocketController webSocketController) {
         this.elasticsearchOperations = elasticsearchOperations;
         this.relationalQueries = relationalQueries;
         this.sensorsIndex = elasticsearchOperations.getIndexCoordinatesFor(SensorsLogEntity.class);
@@ -170,15 +172,38 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
                                                                                                                      // HH:mm:ss
                         Collectors.counting()));
 
-        // Convert to Map<String, Integer>
+        // Convert to TreeMap<String, Integer> to ensure ordering by keys
         return logsByInterval.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().intValue(),
+                        (e1, e2) -> e1,
+                        TreeMap::new));
     }
+
+    private volatile long lastSensorsDaySentTime = 0;
 
     public void addSensorsLog(SensorsLogEntity sensorsLogEntity) {
         elasticsearchOperations.save(sensorsLogEntity, sensorsIndex);
-        // call websocket controller to send the returned valuse of the three functions above
+        // call websocket controller to send the returned valuse of the three functions
+        // above
         webSocketController.sendSensorsTeamWeek(getSensors());
         webSocketController.sendSensorsLast5Days(getSensorsLast5Days());
+ 
+        long currentTime = System.currentTimeMillis();
+    
+        synchronized (this) {
+            // Check if the last sent time was less than 10 seconds ago
+            if (currentTime - lastSensorsDaySentTime < 10_000) {
+                System.out.println("SensorsDay update skipped: Sent less than 10 seconds ago.");
+                return;
+            }
+            // Update the last sent time
+            lastSensorsDaySentTime = currentTime;
+        }
+    
+        // Send SensorsDay data
+        LocalDate today = LocalDate.now();
+        webSocketController.sendSensorsDay(getSensorsDay(today.toString()));
     }
 }

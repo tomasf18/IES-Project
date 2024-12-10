@@ -22,7 +22,9 @@ import {
     SensorsLast5Days,
     connectWebSocketSensorsTeamWeek,
     connectWebSocketSensorsLast5Days,
+    connectWebSocketRealTimeSensorsDay,
 } from "../../api";
+import { useRef } from "react";
 
 export default function AdminSensorsTrackingPage() {
     const auth = useAuth();
@@ -38,29 +40,55 @@ export default function AdminSensorsTrackingPage() {
     const [selectedDay, setSelectedDay] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // Fetch initial data and connect WebSocket
-    useEffect(() => {
-        if (selectedDay !== null && sensorsLast5Days[selectedDay]) {
-            const selectedDate = sensorsLast5Days[selectedDay].date;
+    const cleanupWebSocketRef = useRef<(() => void) | null | undefined>(null);
 
-            // Fetch sensors for the selected day
-            getSensorsDay(auth.axiosInstance, selectedDate)
-                .then((response) => {
-                    if (response) {
-                        const formattedData = Object.entries(response).map(
-                            ([date, accesses]) => ({
-                                date,
-                                accesses,
-                            })
-                        );
-                        setSensorsDay(formattedData);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching sensors day:", error);
-                });
-        }
-    }, [selectedDay]); // Runs only when `selectedDay` changes
+    useEffect(() => {
+        const fetchDataAndConnectWebSocket = async () => {
+            if (selectedDay === null || !sensorsLast5Days[selectedDay]) return;
+    
+            const selectedDate = sensorsLast5Days[selectedDay].date;
+    
+            // Fetch daily data
+            try {
+                const response = await getSensorsDay(auth.axiosInstance, selectedDate);
+                if (response) {
+                    const formattedData = Object.entries(response).map(([date, accesses]) => ({
+                        date,
+                        accesses,
+                    }));
+                    setSensorsDay(formattedData);
+                }
+            } catch (error) {
+                console.error("Error fetching sensors day:", error);
+            }
+    
+            // Cleanup existing WebSocket if it exists
+            if (cleanupWebSocketRef.current) {
+                cleanupWebSocketRef.current();
+                cleanupWebSocketRef.current = null;
+            }
+    
+            // Connect WebSocket only if selectedDay is the last day (real-time data)
+            if (selectedDay === sensorsLast5Days.length - 1) {
+                console.log("Connecting WebSocket for sensorsDay...");
+                cleanupWebSocketRef.current = await connectWebSocketRealTimeSensorsDay(
+                    setSensorsDay
+                ) || null; // Fallback to null if undefined is returned
+            }
+        };
+    
+        fetchDataAndConnectWebSocket();
+    
+        return () => {
+            // Cleanup WebSocket on unmount or before re-running
+            if (cleanupWebSocketRef.current) {
+                console.log("Cleaning up WebSocket connection...");
+                cleanupWebSocketRef.current();
+                cleanupWebSocketRef.current = null;
+            }
+        };
+    }, [selectedDay, auth.axiosInstance]);
+    
 
     useEffect(() => {
         const fetchAndConnectWebSocketSensorsLast5Days = async () => {
@@ -376,3 +404,4 @@ export default function AdminSensorsTrackingPage() {
         </div>
     );
 }
+

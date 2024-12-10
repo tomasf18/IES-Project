@@ -46,6 +46,7 @@ export type {
     SessionsAllDaysOfYear,
 } from "./PlayerConsumer";
 export {
+    connectWebSocketRealTimeSensorsDay,
     connectWebSocketSensorsLast5Days,
     connectWebSocketSensorsTeamWeek,
     addTeamSensor,
