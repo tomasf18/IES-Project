@@ -15,7 +15,7 @@ Key Features:
 
 This system aims to empower coaches with actionable insights, enabling them to make informed decisions that improve team performance and player development.
 
-[[click] High resolution architecture diagram](/docs/resources/architecture/1.0.0/architecture.1.0.0.svg)
+[[click] High resolution architecture diagram](/docs/resources/architecture/2.0.0/architecture.2.0.0.svg)
 ![System Architecture Diagram](/docs/resources/architecture/2.0.0/architecture.2.0.0.jpg)
 
 ## Bookmarks 
