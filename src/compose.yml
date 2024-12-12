@@ -15,11 +15,11 @@ services:
     networks:
       - sts-network
 
-  # I want to expose the kafdrop port to the host machine, so that I can access it from the browser
+  # I only want to expose the port of the kafdrop container for testing purposes
   kafdrop:
     image: obsidiandynamics/kafdrop:4.0.2
-    ports:
-      - "${KAFDROP_LOCAL_PORT}:${KAFDROP_CONTAINER_PORT}"
+    # ports:
+    #   - "${KAFDROP_LOCAL_PORT}:${KAFDROP_CONTAINER_PORT}"
     environment:
       KAFKA_BROKERCONNECT: "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
       SERVER_SERVLET_CONTEXTPATH: "${KAFDROP_CONTEXT_PATH}" 
@@ -36,7 +36,7 @@ services:
     networks:
       - sts-network
 
-  # I want to expose the kafka port to the host machine, so that I can use it to produce messages 
+  # I want to expose the kafka port to the host machine, so that I can use it to send messages to the kafka topic
   kafka:
     image: confluentinc/cp-kafka:7.4.4
     depends_on:
@@ -67,17 +67,18 @@ services:
     networks:
       - sts-network
   
-  # I want to expose the kibana port to the host machine, so that the admin can access it from the browser
+  # I only want to expose the port of the kibana container for testing purposes
   kibana:
     image: docker.elastic.co/kibana/kibana:7.10.2
     depends_on:
       - elasticsearch
-    ports:
-      - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
+    # ports:
+    #   - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
     restart: on-failure
     networks:
       - sts-network
 
+  # I don't want to expose the backend port to the host machine, for security reasons
   backend:
     depends_on: 
       - database
@@ -87,7 +88,7 @@ services:
       context: "${BACKEND_CONTEXT_PATH}"
       dockerfile: "${BACKEND_DOCKERFILE}"
     environment:
-      FRONTEND_PORT: ${FRONTEND_LOCAL_PORT}
+      FRONTEND_PORT: ${FRONTEND_CONTAINER_PORT}
       FRONTEND_IP: ${FRONTEND_IP}
       ELASTICSEARCH_HOST: ${ELASTICSEARCH_IP}
       ELASTICSEARCH_PORT: ${ELASTICSEARCH_CONTAINER_PORT}
@@ -118,14 +119,15 @@ services:
 
         }'
 
-    ports:
-      - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
+    # ports:
+    #   - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
       - .m2:${M2_BACKEND_VOLUME}    
     restart: on-failure
     networks:
       - sts-network
 
+  # I don't want to expose the frontend port to the host machine, for security reasons
   frontend:
     depends_on:
       - backend
@@ -152,8 +154,8 @@ services:
       - VITE_WEBSOCKET_ENDPOINT=${WEBSOCKET_ENDPOINT}
       - VITE_FRONTEND_HOST=${FRONTEND_IP}
       - VITE_FRONTEND_PORT=${FRONTEND_CONTAINER_PORT}
-    ports:
-      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
+    # ports:
+    #   - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
     restart: on-failure
     networks:
       - sts-network
@@ -172,6 +174,7 @@ services:
 
 networks:
   sts-network:
+    driver: bridge
 
 volumes:    
   postgres_db_data:
