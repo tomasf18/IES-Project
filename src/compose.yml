@@ -106,8 +106,6 @@ services:
       SWAGGER_UI_PATH: ${SWAGGER_UI_PATH}
       SWAGGER_UI_PART_PATH: ${SWAGGER_UI_PART_PATH}
       SPRING_APPLICATION_JSON: 
-          # "server.address" : "${BACKEND_IP}",
-          # "server.port" : "${BACKEND_CONTAINER_PORT}",
         '{
 
           "spring.datasource.url" : "jdbc:postgresql://${DATABASE_IP}:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
