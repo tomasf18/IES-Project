@@ -1,43 +1,189 @@
+name: smart-training-system
+
 services:
+
+  # I don't want to expose the database port to the host machine, for security reasons
   database:
     image: timescale/timescaledb:latest-pg16
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${DATABASE_LOCAL_PORT}:${DATABASE_CONTAINER_PORT}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
     volumes:
-      - db_data:${DATABASE_VOLUME}
-    restart: unless-stopped
+      - postgres_db_data:${DATABASE_VOLUME}
+    # restart: unless-stopped
+    networks:
+      - sts-network
 
+  # I only want to expose the port of the kafdrop container for testing purposes
+  kafdrop:
+    image: obsidiandynamics/kafdrop:4.0.2
+    # ports:
+    #   - "${KAFDROP_LOCAL_PORT}:${KAFDROP_CONTAINER_PORT}"
+    environment:
+      KAFKA_BROKERCONNECT: "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
+      SERVER_SERVLET_CONTEXTPATH: "${KAFDROP_CONTEXT_PATH}" 
+    # restart: on-failure
+    networks:
+      - sts-network
+
+  # I don't want to expose the zookeeper port to the host machine, for security reasons
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.4
+    environment:
+      ZOOKEEPER_CLIENT_PORT: "${ZOOKEEPER_CONTAINER_PORT}"
+      ZOOKEEPER_TICK_TIME: "${ZOOKEEPER_TICK_TIME}"
+    networks:
+      - sts-network
+
+  # I want to expose the kafka port to the host machine, so that I can use it to send messages to the kafka topic
+  kafka:
+    image: confluentinc/cp-kafka:7.4.4
+    depends_on:
+      - zookeeper
+    ports:
+      - "${KAFKA_LOCAL_PORT}:${KAFKA_CONTAINER_PORT}"
+    environment:
+      KAFKA_BROKER_ID: "${KAFKA_BROKER_ID}"
+      KAFKA_ZOOKEEPER_CONNECT: "${ZOOKEEPER_IP}:${ZOOKEEPER_CONTAINER_PORT}"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_IP}:${KAFKA_BROKER_PORT},PLAINTEXT_HOST://${HOST_NAME}:${KAFKA_LOCAL_PORT}
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "${KAFKA_REPLICATION_FACTOR}"
+      KAFKA_LOG_RETENTION_MS: "${KAFKA_RETENTION_MS}"
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: "${KAFKA_RETENTION_CHECK_INTERVAL_MS}"
+    # restart: unless-stopped
+    networks:
+      - sts-network
+  
+  # I don't want to expose the elasticsearch port to the host machine, for security reasons
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - elasticsearch_data:${ELASTICSEARCH_VOLUME}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://${ELASTICSEARCH_IP}:${ELASTICSEARCH_CONTAINER_PORT}"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    # restart: unless-stopped
+    networks:
+      - sts-network
+  
+  # I only want to expose the port of the kibana container for testing purposes
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.2
+    depends_on:
+      - elasticsearch
+    # ports:
+    #   - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
+    # restart: on-failure
+    networks:
+      - sts-network
+
+  # I don't want to expose the backend port to the host machine, for security reasons
   backend:
     depends_on: 
-      - database
-    image: tomassf/ies-project-backend:latest
+      database:
+        condition: service_started
+      kafka:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+    build:
+      context: "${BACKEND_CONTEXT_PATH}"
+      dockerfile: "${BACKEND_DOCKERFILE}"
     environment:
+      FRONTEND_PORT: ${FRONTEND_CONTAINER_PORT}
+      FRONTEND_IP: ${FRONTEND_IP}
+      ELASTICSEARCH_HOST: ${ELASTICSEARCH_IP}
+      ELASTICSEARCH_PORT: ${ELASTICSEARCH_CONTAINER_PORT}
+      WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+      BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
+      SWAGGER_API_DOCS_PATH: ${SWAGGER_API_DOCS_PATH}
+      SWAGGER_UI_PATH: ${SWAGGER_UI_PATH}
+      SWAGGER_UI_PART_PATH: ${SWAGGER_UI_PART_PATH}
       SPRING_APPLICATION_JSON: 
         '{
-          "spring.datasource.url" : "jdbc:postgresql://database:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
+
+          "spring.datasource.url" : "jdbc:postgresql://${DATABASE_IP}:${DATABASE_CONTAINER_PORT}/${POSTGRES_DB}",
           "spring.datasource.username" : "${POSTGRES_USER}",
           "spring.datasource.password" : "${POSTGRES_PASSWORD}",
           "spring.jpa.show-sql" : "true",
           "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
-          "spring.jpa.hibernate.ddl-auto" : "update"
-        }'
-    ports:
-      - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
-    volumes:
-      - .m2:/root/.m2     
-    restart: unless-stopped
+          "spring.jpa.hibernate.ddl-auto" : "update",
 
+          "springdoc.api-docs.path" : "${SWAGGER_API_DOCS_PATH}",
+          "springdoc.swagger-ui.path" : "${SWAGGER_UI_PATH}",
+
+          "spring.kafka.bootstrap-servers" : "${KAFKA_IP}:${KAFKA_BROKER_PORT}",
+          "spring.elasticsearch.uris" : "http://${ELASTICSEARCH_IP}:${ELASTICSEARCH_CONTAINER_PORT}",
+          "spring.elasticsearch.username" : "${ELASTICSEARCH_USERNAME}",
+          "spring.elasticsearch.password" : "${ELASTICSEARCH_PASSWORD}"
+
+        }'
+
+    # ports:
+    #   - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
+    volumes:
+      - .m2:${M2_BACKEND_VOLUME}    
+    # restart: on-failure
+    networks:
+      - sts-network
+
+  # I don't want to expose the frontend port to the host machine, for security reasons
   frontend:
     depends_on:
       - backend
-    image: tomassf/ies-project-frontend:latest
-    ports:
-      - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}" 
-    restart: unless-stopped
+    build:
+      context: "${FRONTEND_CONTEXT_PATH}"
+      dockerfile: "${FRONTEND_DOCKERFILE}"
+      args:
+        WEBSOCKET_SCHEME: ${WEBSOCKET_SCHEME}
+        HYPERTEXT_SCHEME: ${HYPERTEXT_SCHEME}
+        HOST_NAME: ${HOST_NAME}
+        BACKEND_IP: ${BACKEND_IP}
+        BACKEND_PORT: ${BACKEND_CONTAINER_PORT}
+        BACKEND_API_PREFIX: ${BACKEND_API_PREFIX}
+        WEBSOCKET_ENDPOINT: ${WEBSOCKET_ENDPOINT}
+        FRONTEND_HOST: ${FRONTEND_IP}
+        FRONTEND_PORT: ${FRONTEND_CONTAINER_PORT}
+    environment:
+      - VITE_WEBSOCKET_SCHEME=${WEBSOCKET_SCHEME}
+      - VITE_HYPERTEXT_SCHEME=${HYPERTEXT_SCHEME}
+      - VITE_HOST_NAME=${HOST_NAME}
+      - VITE_BACKEND_IP=${BACKEND_IP}
+      - VITE_BACKEND_PORT=${BACKEND_CONTAINER_PORT}
+      - VITE_BACKEND_API_PREFIX=${BACKEND_API_PREFIX}
+      - VITE_WEBSOCKET_ENDPOINT=${WEBSOCKET_ENDPOINT}
+      - VITE_FRONTEND_HOST=${FRONTEND_IP}
+      - VITE_FRONTEND_PORT=${FRONTEND_CONTAINER_PORT}
+    # ports:
+    #   - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
+    # restart: on-failure
+    networks:
+      - sts-network
 
-volumes:
-  db_data:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    depends_on:
+      - frontend
+    ports:
+      - "${NGINX_LOCAL_PORT}:${NGINX_CONTAINER_PORT}"
+    volumes:
+      - ./nginx/conf.d:${CONF_VOLUME}
+      - ./nginx/html:${HTML_VOLUME}
+    # restart: unless-stopped
+    networks:
+      - sts-network
+
+networks:
+  sts-network:
+    driver: bridge
+
+volumes:    
+  postgres_db_data:
+  elasticsearch_data:

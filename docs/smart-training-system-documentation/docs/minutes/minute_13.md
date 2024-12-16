@@ -1,9 +1,8 @@
 ---
-
 id: meeting_13  
 title: Meeting 13 - December 7, 2024  
-sidebar_label: Meeting 13 - December 7, 2024  
-
+sidebar_label: Meeting 13 - December 7, 2024
+sidebar_position: 13
 ---
 
 # Meeting Notes: December 7, 2024  

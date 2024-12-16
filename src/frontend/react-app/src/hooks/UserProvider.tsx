@@ -35,7 +35,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
 
   const redirectHomeByUserType = () => {
     // navigate by user type
-    if (user?.roles.includes("ROLE_ADMIN")) navigate("/admin/endpoints");
+    if (user?.roles.includes("ROLE_ADMIN")) navigate("/admin/sensors-tracking");
     else if (user?.roles.includes("ROLE_PLAYER")) navigate("/player/home");
     else if (user?.roles.includes("ROLE_COACH")) navigate("/coach/sessions");
     else if (user?.roles.includes("ROLE_PERSONAL_TRAINER")) navigate("/personal-trainer/start-session");

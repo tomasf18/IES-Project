@@ -2,7 +2,7 @@
 id: minutes-overview
 title: Meeting Minutes Overview
 sidebar_label: Meeting Minutes Overview
-sidebar_position: 6
+sidebar_position: 8
 ---
 
 # Meeting Minutes Overview

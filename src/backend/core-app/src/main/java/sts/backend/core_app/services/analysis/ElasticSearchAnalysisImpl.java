@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -20,38 +21,40 @@ import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import sts.backend.core_app.models.SensorsLogEntity;
-import sts.backend.core_app.models.EndpointsEntity;
 import sts.backend.core_app.models.Team;
 
 import sts.backend.core_app.dto.admin.SensorsTeamWeek;
 import sts.backend.core_app.dto.admin.SensorsLast5Days;
 import sts.backend.core_app.exceptions.ResourceNotFoundException;
 import sts.backend.core_app.services.analysis.interfaces.ElasticSearchAnalysis;
+import sts.backend.core_app.consumer.interfaces.WebSocketController;
 
 @Service
 public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
-    
+
     private final ElasticsearchOperations elasticsearchOperations;
     private final RelationalQueries relationalQueries;
-
     private final IndexCoordinates sensorsIndex;
-    private final IndexCoordinates endpointsIndex;
+    private final WebSocketController webSocketController;
 
-    public ElasticSearchAnalysisImpl(ElasticsearchOperations elasticsearchOperations, RelationalQueries relationalQueries) {
+    public ElasticSearchAnalysisImpl(ElasticsearchOperations elasticsearchOperations,
+            RelationalQueries relationalQueries, WebSocketController webSocketController) {
         this.elasticsearchOperations = elasticsearchOperations;
         this.relationalQueries = relationalQueries;
         this.sensorsIndex = elasticsearchOperations.getIndexCoordinatesFor(SensorsLogEntity.class);
-        this.endpointsIndex = elasticsearchOperations.getIndexCoordinatesFor(EndpointsEntity.class);
+        this.webSocketController = webSocketController;
     }
 
     public List<SensorsLogEntity> getLogs() {
-        // TODO: remove this method (only to demonstrate how to read data from Elasticsearch)
+        // TODO: remove this method (only to demonstrate how to read data from
+        // Elasticsearch)
         long now = System.currentTimeMillis();
         long oneMinutesAgo = now - 5 * 60 * 1000;
 
         Criteria criteria = new Criteria("timestamp").greaterThanEqual(oneMinutesAgo);
         Query query = new CriteriaQuery(criteria);
-        SearchHits<SensorsLogEntity> searchHis = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
+        SearchHits<SensorsLogEntity> searchHis = elasticsearchOperations.search(query, SensorsLogEntity.class,
+                sensorsIndex);
         return searchHis.stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
@@ -68,7 +71,8 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
         // criteria for the last 5 days
         Criteria criteria = new Criteria("timestamp").greaterThanEqual(fiveDaysAgo);
         Query query = new CriteriaQuery(criteria);
-        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
+        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class,
+                sensorsIndex);
 
         // group logs by team
         Map<Long, List<SensorsLogEntity>> logsByTeam = searchHits.stream()
@@ -82,9 +86,9 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
             int logsCount = logs.size();
 
             String state;
-            if (logsCount >= 1000) {          // threshold for critical state
+            if (logsCount >= 1000) { // threshold for critical state
                 state = "critical";
-            } else if (logsCount >= 500) {    // threshold for flooded state
+            } else if (logsCount >= 500) { // threshold for flooded state
                 state = "flooded";
             } else {
                 state = "normal";
@@ -117,19 +121,20 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
         // criteria for the last 5 days
         Criteria criteria = new Criteria("timestamp").greaterThanEqual(fiveDaysAgo);
         Query query = new CriteriaQuery(criteria);
-        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
+        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class,
+                sensorsIndex);
 
         // group logs by day
         Map<LocalDate, Long> logsByDay = searchHits.stream()
-            .map(SearchHit::getContent)
-            .map(log -> Instant.ofEpochMilli(log.getTimestamp()).atZone(ZoneId.systemDefault()).toLocalDate())
-            .collect(Collectors.groupingBy(date -> date, Collectors.counting()));
-        
+                .map(SearchHit::getContent)
+                .map(log -> Instant.ofEpochMilli(log.getTimestamp()).atZone(ZoneId.systemDefault()).toLocalDate())
+                .collect(Collectors.groupingBy(date -> date, Collectors.counting()));
+
         // get the last 5 days
         List<LocalDate> last5Days = IntStream.rangeClosed(0, 4)
-            .mapToObj(i -> LocalDate.now().minusDays(i))
-            .sorted()
-            .collect(Collectors.toList());
+                .mapToObj(i -> LocalDate.now().minusDays(i))
+                .sorted()
+                .collect(Collectors.toList());
 
         // Result list
         List<SensorsLast5Days> result = new ArrayList<>();
@@ -146,28 +151,59 @@ public class ElasticSearchAnalysisImpl implements ElasticSearchAnalysis {
         LocalDate localDate = LocalDate.parse(date);
         long startOfDay = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
         long endOfDay = localDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
-    
+
         // Criteria for the day
         Criteria criteria = new Criteria("timestamp").greaterThanEqual(startOfDay).and("timestamp").lessThan(endOfDay);
         Query query = new CriteriaQuery(criteria);
-        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class, sensorsIndex);
-    
-        // Group logs by hour
-        Map<String, Long> logsByHour = searchHits.stream()
-            .map(SearchHit::getContent)
-            .map(log -> Instant.ofEpochMilli(log.getTimestamp()).atZone(ZoneId.systemDefault()).getHour())
-            .collect(Collectors.groupingBy(
-                hour -> String.format("%02d:00", hour), // Format the hour as HH:00
-                Collectors.counting()
-            ));
-    
-        // Convert to Map<String, Integer>
-        return logsByHour.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().intValue()));
+        SearchHits<SensorsLogEntity> searchHits = elasticsearchOperations.search(query, SensorsLogEntity.class,
+                sensorsIndex);
+
+        // Group logs by 10-second intervals
+        Map<String, Long> logsByInterval = searchHits.stream()
+                .map(SearchHit::getContent)
+                .map(log -> {
+                    long timestamp = log.getTimestamp();
+                    long intervalStart = (timestamp / 10000) * 10000; // Find the start of the 10-second interval
+                    return Instant.ofEpochMilli(intervalStart).atZone(ZoneId.systemDefault()).toLocalTime();
+                })
+                .collect(Collectors.groupingBy(
+                        time -> String.format("%02d:%02d:%02d", time.getHour(), time.getMinute(), time.getSecond()), // Format
+                                                                                                                     // as
+                                                                                                                     // HH:mm:ss
+                        Collectors.counting()));
+
+        // Convert to TreeMap<String, Integer> to ensure ordering by keys
+        return logsByInterval.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().intValue(),
+                        (e1, e2) -> e1,
+                        TreeMap::new));
     }
 
+    private volatile long lastSensorsDaySentTime = 0;
 
     public void addSensorsLog(SensorsLogEntity sensorsLogEntity) {
         elasticsearchOperations.save(sensorsLogEntity, sensorsIndex);
+        // call websocket controller to send the returned valuse of the three functions
+        // above
+        webSocketController.sendSensorsTeamWeek(getSensors());
+        webSocketController.sendSensorsLast5Days(getSensorsLast5Days());
+ 
+        long currentTime = System.currentTimeMillis();
+    
+        synchronized (this) {
+            // Check if the last sent time was less than 10 seconds ago
+            if (currentTime - lastSensorsDaySentTime < 10_000) {
+                System.out.println("SensorsDay update skipped: Sent less than 10 seconds ago.");
+                return;
+            }
+            // Update the last sent time
+            lastSensorsDaySentTime = currentTime;
+        }
+     
+        // Send SensorsDay data
+        LocalDate today = LocalDate.now();
+        webSocketController.sendSensorsDay(getSensorsDay(today.toString()));
     }
 }

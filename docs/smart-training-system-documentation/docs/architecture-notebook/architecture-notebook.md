@@ -2,6 +2,7 @@
 id: architecture-notebook
 title: Architecture Notebook
 sidebar_label: Architecture Notebook
+sidebar_position: 5
 ---
 
 # Architecture

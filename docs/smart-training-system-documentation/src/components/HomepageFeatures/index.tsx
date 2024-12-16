@@ -14,7 +14,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_fitness_stats_sht6.svg').default,
     description: (
       <>
-        Track player statistics like heart rate, fatigue levels, and performance metrics in real-time, providing actionable insights during training and matches.
+        Track player statistics like heart rate, body temperature and respiratory rate, providing actionable insights during training and matches.
       </>
     ),
   },
