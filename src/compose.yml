@@ -187,5 +187,3 @@ networks:
 volumes:    
   postgres_db_data:
   elasticsearch_data:
-
-    
