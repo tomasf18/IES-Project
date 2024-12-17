@@ -5,18 +5,19 @@ sidebar_label: Vision Statement
 sidebar_position: 1
 ---
 
-# Vision Statement
+## Vision Statement
 
 **Smart Training System (STS)** is a web-based application designed to support **coaches**, **team directors**, **personal trainers**, and **players** in real-time monitoring and analysis of player performance. It addresses the need for immediate access to crucial metrics such as:
 
-- **Fatigue Levels**
 - **Heart Rate**
+- **Body Temperature**
+- **Respiratory Rate**
 
-By providing these insights, the platform enhances decision-making during training sessions and matches, allowing coaches to optimize player performance and strategies effectively.
+By providing these insights, the platform enhances decision-making during training and matches, allowing coaches to optimize player performance and strategies effectively.
 
 ## Problem Statement
 
-The primary problem that the system solves is the **lack of accessible real-time performance data**, which limits coaches' and trainers' ability to make informed adjustments. Key features designed to address this include:
+The primary problem our system aims to solve is the **lack of accessible real-time performance data**, which limits coaches’ and trainers’ ability to make informed adjustments.Key features designed to address this include:
 
 - **User Access Management** for team directors
 - **Performance Statistics** for coaches
@@ -26,7 +27,7 @@ These features focus on delivering targeted functionality that meets the specifi
 
 ## Project Focus
 
-Initially, the project considered broader features catering to **football fans**, providing comprehensive information about the Premier League. However, the focus has shifted to prioritize the needs of **coaches**, **team directors**, and **personal trainers**. This refined approach ensures that the system effectively supports their decision-making processes while maintaining **data security** and **confidentiality**.
+The project **initially** aimed to offer extensive features for football fans, including comprehensive coverage of the English Football League and the Premier League. However, the focus **has now shifted** towards addressing the needs of coaches, team directors, and personal trainers from clubs **worldwide** who seek **advanced analysis tools to improve decision-making** during training sessions and matches.
 
 ## Differentiation
 
@@ -35,7 +36,7 @@ The **STS platform** differentiates itself by emphasizing:
 - **Real-Time Data Collection**: Immediate feedback and adjustments
 - **User-Friendly Interfaces**: Tailored for coaches, team directors, personal trainers, and players
 
-This focus sets STS apart from existing solutions that primarily rely on post-game analysis, enabling proactive performance management.
+This focus enables immediate feedback and adjustments, setting it apart from **existing solutions** that primarily **rely on post-game** and in-train analysis.
 
 ## Development Insights
 
@@ -46,4 +47,3 @@ The project concept emerged from **team collaboration** and **insights from prof
 - **Injury Alerts**
 
 directed the development of a system that effectively meets user requirements.
-

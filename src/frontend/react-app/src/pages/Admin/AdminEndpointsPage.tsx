@@ -1,5 +1,5 @@
 import { SideBar, Header, StripedTable, Navbar } from "../../components";
-import { FaUsers, FaCode, FaHeartPulse } from "react-icons/fa6";
+import { FaUsers, FaHeartPulse } from "react-icons/fa6";
 import { FaChartBar } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import {
@@ -56,11 +56,6 @@ export default function AdminEndpointsPage() {
     
 
   const navLinks = [
-    {
-      icon: <FaCode />,
-      to: "/admin/endpoints",
-      label: "Endpoints",
-    },
     {
       icon: <FaHeartPulse />,
       to: "/admin/sensors-tracking",
