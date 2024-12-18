@@ -21,7 +21,7 @@ if len(sys.argv) < 2:
 sensor_ids = [int(id_str) for id_str in sys.argv[1:]]
 
 # Kafka Configuration
-bootstrap_servers = 'deti-ies-06.ua.pt:29092'  # Adjust if your Kafka broker is at a different address
+bootstrap_servers = 'localhost:29092'  # Adjust if your Kafka broker is at a different address
 topic_name = f'sensor_data'
 
 # Initialize Kafka Producer with JSON serialization

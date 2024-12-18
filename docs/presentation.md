@@ -20,7 +20,7 @@
     - O board foi criado no GitHub e foi dividido em 4 colunas: Todo, In Progress, Review e Done.
     
     - Número de User Stories: 23
-    - Número de Branchs: 
+    - Número de Branchs:
     - Número de Pull Requests (Separar por Label):
     - Número de Issues:
     - Número de Commits:      
