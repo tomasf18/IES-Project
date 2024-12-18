@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: "${POSTGRES_DB}"
     volumes:
       - postgres_db_data:${DATABASE_VOLUME}
-    # restart: unless-stopped
+    restart: on-failure
     networks:
       - sts-network
 
@@ -23,7 +23,7 @@ services:
     environment:
       KAFKA_BROKERCONNECT: "${KAFKA_IP}:${KAFKA_BROKER_PORT}"
       SERVER_SERVLET_CONTEXTPATH: "${KAFDROP_CONTEXT_PATH}" 
-    # restart: on-failure
+    restart: on-failure
     networks:
       - sts-network
 
@@ -33,6 +33,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: "${ZOOKEEPER_CONTAINER_PORT}"
       ZOOKEEPER_TICK_TIME: "${ZOOKEEPER_TICK_TIME}"
+    restart: on-failure
     networks:
       - sts-network
 
@@ -52,7 +53,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "${KAFKA_REPLICATION_FACTOR}"
       KAFKA_LOG_RETENTION_MS: "${KAFKA_RETENTION_MS}"
       KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: "${KAFKA_RETENTION_CHECK_INTERVAL_MS}"
-    # restart: unless-stopped
+    restart: on-failure
     networks:
       - sts-network
   
@@ -68,7 +69,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    # restart: unless-stopped
+    restart: on-failure
     networks:
       - sts-network
   
@@ -79,7 +80,7 @@ services:
       - elasticsearch
     # ports:
     #   - "${KIBANA_LOCAL_PORT}:${KIBANA_CONTAINER_PORT}"
-    # restart: on-failure
+    restart: on-failure
     networks:
       - sts-network
 
@@ -129,7 +130,7 @@ services:
     #   - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
       - .m2:${M2_BACKEND_VOLUME}    
-    # restart: on-failure
+    restart: on-failure
     networks:
       - sts-network
 
@@ -162,7 +163,7 @@ services:
       - VITE_FRONTEND_PORT=${FRONTEND_CONTAINER_PORT}
     # ports:
     #   - "${FRONTEND_LOCAL_PORT}:${FRONTEND_CONTAINER_PORT}"
-    # restart: on-failure
+    restart: on-failure
     networks:
       - sts-network
 
@@ -176,13 +177,16 @@ services:
     volumes:
       - ./nginx/conf.d:${CONF_VOLUME}
       - ./nginx/html:${HTML_VOLUME}
-    # restart: unless-stopped
+    restart: on-failure
     networks:
       - sts-network
 
 networks:
   sts-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.1.0/24
 
 volumes:    
   postgres_db_data:
