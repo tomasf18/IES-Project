@@ -62,7 +62,7 @@ The system relies on sensor data to simulate real-time performance metrics. To g
    ```
 5. Run the `producer.py` script to generate and send sensor data. Replace `<sensor_id1>` and `<sensor_id2>` with the desired sensor IDs:
    ```bash
-   python3 producer.py <sensor_id1> <sensor_id2>
+   python3 producer.py <sensorID_1> <sensorID_2>
    ```
 
 ---
