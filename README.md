@@ -1,5 +1,7 @@
 # STS - Smart Training System
 
+## `Grade: 19.7/20`
+
 ## Project Abstract
 
 **Smart Training System** is a web-based platform designed to assist coaches in monitoring and analyzing player performance in real-time. The application provides key physical statistics, including heart rate, body temperature, and respiratory rate. Utilizing distributed data streams from sensors, the platform enhances real-time decision-making during training and matches.
