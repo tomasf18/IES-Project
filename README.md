@@ -26,17 +26,21 @@ This system empowers coaches with actionable insights, enabling them to make inf
 To start the Smart Training System application locally, follow these steps:
 
 1. Navigate to the `src/` directory:
-   ```bash
-   cd src/
-   ```
+```bash
+cd src/
+```
 2. Build and run the Docker containers:
-   ```bash
-   docker compose up --build
-   ```
+```bash
+docker compose up --build
+```
 3. Access the application in your browser at:
-   ```
-   http://localhost
-   ```
+```
+http://localhost
+```
+4. To stop the application, press `Ctrl + C` in the terminal and run:
+```bash
+docker compose down
+```
 
 ---
 
@@ -45,25 +49,25 @@ To start the Smart Training System application locally, follow these steps:
 The system relies on sensor data to simulate real-time performance metrics. To generate and send this data to Kafka for consumption by the application:
 
 1. Navigate to the `data-generation` directory:
-   ```bash
-   cd src/data-generation/
-   ```
+```bash
+cd src/data-generation/
+```
 2. Activate the Poetry environment:
-   ```bash
-   poetry shell
-   ```
+```bash
+poetry shell
+```
 3. Install the necessary dependencies:
-   ```bash
-   poetry install
-   ```
+```bash
+poetry install
+```
 4. Navigate to the `data_generation/` folder:
-   ```bash
-   cd data_generation/
-   ```
+```bash
+cd data_generation/
+```
 5. Run the `producer.py` script to generate and send sensor data. Replace `<sensorID_1>` and `<sensorID_2>` with the desired sensor IDs:
-   ```bash
-   python3 producer.py <sensorID_1> <sensorID_2>
-   ```
+```bash
+python3 producer.py <sensorID_1> <sensorID_2>
+```
 
 ---
 
@@ -72,21 +76,21 @@ The system relies on sensor data to simulate real-time performance metrics. To g
 The project includes comprehensive documentation hosted locally. To view the documentation:
 
 1. Navigate to the documentation directory:
-   ```bash
-   cd docs/smart-training-system-documentation/
-   ```
+```bash
+cd docs/smart-training-system-documentation/
+```
 2. Install the required dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 3. Start the documentation server:
-   ```bash
-   npm start
-   ```
+```bash
+npm start
+```
 4. Access the documentation in your browser at:
-   ```
-   http://localhost:4000
-   ```
+```
+http://localhost:4000
+```
 
 ---
 
