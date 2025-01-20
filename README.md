@@ -68,6 +68,7 @@ cd data_generation/
 ```bash
 python3 producer.py <sensorID_1> <sensorID_2>
 ```
+6. To stop the data generation, press `Ctrl + C` in the terminal.
 
 ---
 
@@ -91,6 +92,7 @@ npm start
 ```
 http://localhost:4000
 ```
+5. To stop the documentation server, press `Ctrl + C` in the terminal.
 
 ---
 
