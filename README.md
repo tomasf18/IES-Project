@@ -19,6 +19,26 @@ This system empowers coaches with actionable insights, enabling them to make inf
 
 ---
 
+## Methodologies and Practices
+
+This project had as its main goal to be developed using widely adopted software engineering methodologies to ensure enterprise-level quality and collaboration:
+
+- **Agile Development**:  
+  The team followed an agile methodology, using iterative sprints to plan, develop, and deliver increments of the system.  
+  - **Backlog Management**: User stories were prioritized and tracked using GitHub Projects with Scrum boards.  
+  - **Sprint Planning and Reviews**: Each sprint was associated with specific deliverables, documented through iteration backlogs and meeting minutes.
+
+- **Feature-Branching Workflow**:  
+  Development was managed using the GitHub Flow. Feature branches were linked to user stories, and changes were integrated through pull requests with code reviews.
+
+- **Container-Based Deployment**:  
+  Docker was used to containerize services, ensuring modularity and ease of deployment. The architecture followed a multi-layer approach, with separate containers for data ingestion, processing, and the web interface.
+
+- **REST API**:  
+  A RESTful API was designed and documented using OpenAPI/Swagger, allowing seamless interaction between system components and external integrations.
+
+---
+
 ## Getting Started
 
 ### 1. Running the Project
