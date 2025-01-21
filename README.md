@@ -37,6 +37,31 @@ This project had as its main goal to be developed using widely adopted software 
 - **REST API**:  
   A RESTful API was designed and documented using OpenAPI/Swagger, allowing seamless interaction between system components and external integrations.
 
+
+### Repository Statistics
+
+As stated, this project was developed in a collaborative environment, using GitHub as the primary platform for version control, issue tracking, and collaboration. Below are some key statistics from the original private repository:
+
+- **Commits**: 610+
+- **Branches**: 160
+- **Releases**: 9
+- **Contributors**: 4
+- **Issues**: 270+
+- **Pull Requests**: 190+
+
+These statistics highlight the scale of the project and the collaborative effort that went into its development.
+
+#### Visual Overview
+
+**Main Repository Page**  
+![MainPage](/docs/resources/readme/MainPage.png)
+
+**Issues Management**  
+![Issues](/docs/resources/readme/Issues.png)
+
+**Pull Request Workflow**  
+![PullRequests](/docs/resources/readme/PullRequests.png)
+
 ---
 
 ## Getting Started
