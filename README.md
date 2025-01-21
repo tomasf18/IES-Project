@@ -143,7 +143,7 @@ http://localhost:4000
 
 ## Bookmarks
 
-**GitHub Repository**  
+**GitHub Repository (private | source of the project)**  
 - [STS - Smart Training System Repository](https://github.com/detiuaveiro/ies-24-25-group-project-201)
 
 **Mockup**  
