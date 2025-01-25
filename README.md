@@ -13,6 +13,7 @@
 - **Comprehensive REST API**: Facilitates easy integration with the web portal and future mobile applications, allowing for scalability and flexibility.
 
 This system empowers coaches with actionable insights, enabling them to make informed decisions that improve team performance and player development.
+For detailed information, please refer to the **[full documentation of the project](#3-accessing-the-full-documentation)** or to the **[Project Report](docs/reports/IESProjectSpecificationReport.pdf)**.
 
 [[click] High resolution architecture diagram](/docs/resources/architecture/2.0.1/architecture.2.0.1.svg)  
 ![System Architecture Diagram](/docs/resources/architecture/2.0.1/architecture.2.0.1.jpg)
@@ -89,7 +90,31 @@ docker compose down
 
 ---
 
-### 2. Generating Sensor Data
+### 2. Accessing the REST API Documentation (Swagger)
+
+The REST API documentation is generated using Swagger and provides detailed information about the available endpoints and request/response formats. To access the Swagger UI:
+
+1. On [compose file](src/compose.yml), you need to open the port `8080` for the `backend` service, so that the Swagger UI can be accessed. It is closed by default, for security reasons, since we are using Nginx as a reverse proxy.
+This can be made by uncommenting the following lines (129-130):
+```yaml
+    # ports:
+    #   - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
+```
+
+2. Rebuild and run the Docker containers:
+```bash
+docker compose down
+docker compose up --build
+```
+
+3. Access the Swagger UI in your browser at:
+```
+http://localhost:8080/swagger-ui/index.html
+```
+
+---
+
+### 3. Generating Sensor Data
 
 The system relies on sensor data to simulate real-time performance metrics. To generate and send this data to Kafka for consumption by the application:
 
@@ -117,7 +142,7 @@ python3 producer.py <sensorID_1> <sensorID_2>
 
 ---
 
-### 3. Accessing the Full Documentation
+### 4. Accessing the Full Documentation
 
 The project includes comprehensive documentation hosted locally. To view the documentation:
 

@@ -126,8 +126,8 @@ services:
 
         }'
 
-    # ports:
-    #   - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
+    ports:
+      - "${BACKEND_LOCAL_PORT}:${BACKEND_CONTAINER_PORT}"
     volumes:
       - .m2:${M2_BACKEND_VOLUME}    
     restart: on-failure
